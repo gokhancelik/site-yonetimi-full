@@ -1,4 +1,3 @@
-<data-table [dataSource]="dataSource" (onInitNewRow)="create()" (onToolbarPreparing)="onToolbarPreparing($event)"
-    (onEditingStart)="edit($event)" [columns]="columns" title="Site Listesi" name="siteler"
+<data-table [dataSource]="dataSource" [title]="'Site Listesi'" [columns]="columns" [editMode]="'row'" name="siteler"
     (onRowUpdating)="onRowUpdating($event)">
 </data-table>

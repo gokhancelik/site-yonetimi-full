@@ -7,7 +7,11 @@ const routes: Routes = [{
   path: '',
   component: AdminComponent,
   children: [
-
+    {
+      path: 'site',
+      loadChildren: () => import('./site/site.module')
+        .then(m => m.SiteModule),
+    }
   ]
 }];
 
