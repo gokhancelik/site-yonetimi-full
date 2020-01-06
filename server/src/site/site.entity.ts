@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Blok } from '../blok/blok.entity';
 
-@Entity()
+@Entity({name:'Site'})
 export class Site {
   @PrimaryGeneratedColumn('uuid')
   id: string;

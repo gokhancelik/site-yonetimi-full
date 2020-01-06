@@ -1,25 +1,15 @@
 import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { SiteService } from './site.service';
 import { Site } from './site.entity';
+import { BaseController } from '../abstract/base.controller';
 
 @Controller('site')
-export class SiteController {
-    constructor(private siteService: SiteService) {
+export class SiteController extends BaseController<Site, SiteService> {
+    constructor(service: SiteService) {
+        super(service);
     }
-    @Get()
-    findAll(): Promise<Site[]> {
-        return this.siteService.findAll();
-    }
-    @Post()
-    create(@Body() site: Site): Promise<Site> {
-        return this.siteService.create(site);
-    }
-    @Put(':id')
-    update(@Param('id') id: string, @Body() site: Site) {
-        return this.siteService.update(id, site);
-    }
-    @Delete(':id')
-    delete(@Param('id') id: string) {
-        return this.siteService.delete(id);
+    @Post(':id/assignAidatGrubu')
+    assignAidatGrubu(@Param('id') id: string, @Body() params: { aidatGrubuId: string, baslangicTarihi: Date }) {
+        return (this.service as SiteService).assignAidatGrubu(id, params.aidatGrubuId, params.baslangicTarihi);
     }
 }

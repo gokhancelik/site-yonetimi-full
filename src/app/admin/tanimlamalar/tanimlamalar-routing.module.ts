@@ -4,6 +4,8 @@ import { SiteComponent } from './site/site.component';
 import { SiteListComponent } from './site/site-list/site-list.component';
 import { BlokComponent } from './blok/blok.component';
 import { BlokListComponent } from './blok/blok-list/blok-list.component';
+import { BagimsizBolumComponent } from './bagimsiz-bolum/bagimsiz-bolum.component';
+import { BagimsizBolumListComponent } from './bagimsiz-bolum/bagimsiz-bolum-list/bagimsiz-bolum-list.component';
 
 
 const routes: Routes = [
@@ -24,6 +26,16 @@ const routes: Routes = [
       {
         path: 'list',
         component: BlokListComponent
+      }
+    ]
+  },
+  {
+    path: 'bagimsiz-bolum',
+    component: BagimsizBolumComponent,
+    children: [
+      {
+        path: 'list',
+        component: BagimsizBolumListComponent
       }
     ]
   },

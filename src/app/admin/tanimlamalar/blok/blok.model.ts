@@ -1,8 +1,6 @@
-import { Site } from '../site/site.model';
-
-export class Blok {
+export interface Blok {
     ad: string;
     id: string;
     aciklama: string;
-    site: Site;
+    siteId: string;
 }

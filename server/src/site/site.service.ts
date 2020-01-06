@@ -2,23 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { DeleteResult } from 'typeorm';
 import { Site } from './site.entity';
 import { SiteRepository } from './site.repository';
+import { BaseService } from '../abstract/base.service';
+import { BlokService } from '../blok/blok.service';
+import { AidatGrubuAtandigiYer, BagimsizBolumAidatGrubu } from '../aidat-grubu/bagimsiz-bolum-aidat-grubu.entity';
 
 @Injectable()
-export class SiteService {
-    constructor(
-        private readonly repository: SiteRepository,
-    ) { }
+export class SiteService extends BaseService<Site>{
 
-    findAll(): Promise<Site[]> {
-        return this.repository.find();
+    constructor(repository: SiteRepository, private blokService: BlokService) {
+        super(repository);
     }
-    async create(site: Site): Promise<Site> {
-        return await this.repository.save(site);
-    }
-    async update(id: string, site: Site): Promise<Site> {
-        return await this.repository.save(site);
-    }
-    async delete(id: string): Promise<DeleteResult> {
-        return await this.repository.delete(id);
+    async assignAidatGrubu(id: string, aidatGrubuId: string, baslangicTarihi: Date, atandigiYer: AidatGrubuAtandigiYer = AidatGrubuAtandigiYer.Site): Promise<BagimsizBolumAidatGrubu[]> {
+        let result = []
+        let bloks = await this.blokService.findBySiteId(id);
+        for (let i = 0; i < bloks.length; i++) {
+            const blok = bloks[i];
+            let res = await this.blokService.assignAidatGrubu(blok.id, aidatGrubuId, baslangicTarihi, atandigiYer);
+            result = [...result, ...res]
+        }
+        return result;
     }
 }

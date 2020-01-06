@@ -1,0 +1,19 @@
+import { Controller, Get, Param, Body, Post } from '@nestjs/common';
+import { BagimsizBolum } from './bagimsiz-bolum.entity';
+import { BaseController } from '../abstract/base.controller';
+import { BagimsizBolumService } from './bagimsiz-bolum.service';
+
+@Controller('bagimsiz-bolum')
+export class BagimsizBolumController extends BaseController<BagimsizBolum, BagimsizBolumService> {
+    constructor(service: BagimsizBolumService) {
+        super(service);
+    }
+    @Get(':blokId/bagimsizBolums')
+    findByBlokId(@Param('blokId') blokId: string): Promise<BagimsizBolum[]> {
+        return (this.service as BagimsizBolumService).findByBlokId(blokId);
+    }
+    @Post(':id/assignAidatGrubu')
+    assignAidatGrubu(@Param('id') id: string, @Body() params: { aidatGrubuId: string, baslangicTarihi: Date }) {
+        return (this.service as BagimsizBolumService).assignAidatGrubu(id, params.aidatGrubuId, params.baslangicTarihi);
+    }
+}

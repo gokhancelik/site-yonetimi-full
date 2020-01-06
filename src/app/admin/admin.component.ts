@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NbMenuItem } from '@nebular/theme';
+import { NbMenuItem, NbIconLibraries } from '@nebular/theme';
 
 @Component({
   selector: 'app-admin',
@@ -10,15 +10,22 @@ export class AdminComponent implements OnInit {
   menu: NbMenuItem[] = [
     {
       title: 'Tanımlamalar',
-      icon: 'home-outline',
+      icon: 'cog',
       children: [
         {
           title: 'Site',
           link: '/admin/tanimlamalar/site/list',
+          icon: 'city',
         },
         {
           title: 'Blok',
           link: '/admin/tanimlamalar/blok/list',
+          icon: 'building'
+        },
+        {
+          title: 'Bağımsız Bölüm',
+          link: '/admin/tanimlamalar/bagimsiz-bolum/list',
+          icon: 'home'
         },
       ]
     },
@@ -49,7 +56,13 @@ export class AdminComponent implements OnInit {
       ],
     },
   ];
-  constructor() { }
+  constructor(
+    private iconLibraries: NbIconLibraries) {
+
+    this.iconLibraries.registerFontPack('font-awesome', { packClass: 'fa', iconClassPrefix: 'fa' });
+    this.iconLibraries.registerFontPack('font-awesome-5', { packClass: 'fas', iconClassPrefix: 'fa' });
+    this.iconLibraries.setDefaultPack('font-awesome-5');
+  }
 
   ngOnInit() {
   }
