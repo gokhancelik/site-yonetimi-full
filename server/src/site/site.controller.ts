@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { SiteService } from './site.service';
 import { Site } from './site.entity';
-import { InsertResult } from 'typeorm';
 
 @Controller('site')
 export class SiteController {

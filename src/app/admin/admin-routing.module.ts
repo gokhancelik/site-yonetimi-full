@@ -8,9 +8,9 @@ const routes: Routes = [{
   component: AdminComponent,
   children: [
     {
-      path: 'site',
-      loadChildren: () => import('./site/site.module')
-        .then(m => m.SiteModule),
+      path: 'tanimlamalar',
+      loadChildren: () => import('./tanimlamalar/tanimlamalar.module')
+        .then(m => m.TanimlamalarModule),
     }
   ]
 }];

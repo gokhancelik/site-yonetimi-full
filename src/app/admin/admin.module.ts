@@ -4,8 +4,12 @@ import { CommonModule } from '@angular/common';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
 import { HeaderComponent } from './header/header.component';
-import { NbThemeModule, NbLayoutModule, NbMenuModule, NbSidebarModule, NbIconModule, NbActionsModule, NbSearchModule, NbUserModule, NbContextMenuModule } from '@nebular/theme';
+import {
+  NbThemeModule, NbLayoutModule, NbMenuModule, NbSidebarModule, NbIconModule,
+  NbActionsModule, NbSearchModule, NbUserModule, NbContextMenuModule
+} from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -22,7 +26,8 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
     NbActionsModule,
     NbSearchModule,
     NbUserModule,
-    NbContextMenuModule
+    NbContextMenuModule,
+    HttpClientModule
   ]
 })
 export class AdminModule { }

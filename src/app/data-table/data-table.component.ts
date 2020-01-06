@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input, AfterViewInit, ViewChild } from '@angular/core';
+import { DxDataGridComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'data-table',
@@ -6,7 +7,7 @@ import { Component, OnInit, EventEmitter, Output, Input, AfterViewInit, ViewChil
   styleUrls: ['./data-table.component.scss']
 })
 export class DataTableComponent implements OnInit, AfterViewInit {
-  // @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
+  @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
   @Output() onRowUpdating: EventEmitter<any> = new EventEmitter();
   @Output() onInitNewRow: EventEmitter<any> = new EventEmitter();
   @Output() onEditingStart: EventEmitter<any> = new EventEmitter();
@@ -28,6 +29,6 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   ngOnInit() {
   }
   ngAfterViewInit() {
-    // this.dxGridReady.emit(this.dataGrid);
+    this.dxGridReady.emit(this.dataGrid);
   }
 }

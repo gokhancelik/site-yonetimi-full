@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Site } from '../../../../../server/src/site/site.entity';
-import { BaseListComponent } from '../../base-list.component';
 import { SiteService } from '../site.service';
+import { Site } from '../site.model';
+import { BaseListComponent } from '../../../../admin/base-list.component';
 
 @Component({
   selector: 'app-site-list',
@@ -11,7 +11,7 @@ import { SiteService } from '../site.service';
 export class SiteListComponent extends BaseListComponent<Site> implements OnInit {
   columns: any[];
   constructor(service: SiteService) {
-    super(service, Site);
+    super(service);
     this.columns = [{
       key: 'id',
       name: 'Id',

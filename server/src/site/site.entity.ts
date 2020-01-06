@@ -6,7 +6,7 @@ export class Site {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 500 })
+  @Column({ type: 'nvarchar', length: 500 })
   ad: string;
 
   @Column('text')

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, InsertResult, DeleteResult } from 'typeorm';
+import { DeleteResult } from 'typeorm';
 import { Site } from './site.entity';
 import { SiteRepository } from './site.repository';
 

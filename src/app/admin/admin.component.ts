@@ -9,10 +9,18 @@ import { NbMenuItem } from '@nebular/theme';
 export class AdminComponent implements OnInit {
   menu: NbMenuItem[] = [
     {
-      title: 'Dashboard',
+      title: 'Tanımlamalar',
       icon: 'home-outline',
-      link: '/pages/dashboard',
-      home: true,
+      children: [
+        {
+          title: 'Site',
+          link: '/admin/tanimlamalar/site/list',
+        },
+        {
+          title: 'Blok',
+          link: '/admin/tanimlamalar/blok/list',
+        },
+      ]
     },
     {
       title: 'FEATURES',

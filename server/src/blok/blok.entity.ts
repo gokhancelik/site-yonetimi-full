@@ -9,9 +9,12 @@ export class Blok {
     @Column({ length: 500 })
     ad: string;
 
-    @Column('text')
+    @Column({ type: 'text', nullable: true })
     aciklama: string;
 
     @ManyToOne(type => Site, site => site.bloks)
     site: Site;
+
+    @Column({ type: 'uuid' })
+    siteId: string;
 }

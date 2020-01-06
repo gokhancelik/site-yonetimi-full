@@ -7,8 +7,7 @@ export abstract class BaseListComponent<T> implements OnInit {
     settings: any = {};
     public hiddenColumns: Array<string> = new Array<string>('id');
     dataSource: CustomStore;
-    constructor(protected service: BaseCrudService,
-        private classReference: new () => T = null) {
+    constructor(protected service: BaseCrudService) {
         this.settings.allowEdit = true;
         this.settings.allowCreate = true;
         this.settings.allowDelete = true;
@@ -19,21 +18,20 @@ export abstract class BaseListComponent<T> implements OnInit {
             key: 'id',
             loadMode: 'raw',
             load: () => {
-                return this.service.getList(this.classReference).toPromise();
+                return this.service.getList().toPromise();
             },
             insert: (values) => {
+                console.log(values)
                 return this.service.add(values).toPromise();
             },
             update: (key, values) => {
+                console.log(values)
                 return this.service.update(key, values).toPromise();
             },
             remove: (key) => {
                 return this.service.delete(key).toPromise();
             },
         });
-    }
-    getList(odataQs: string = ''): any {
-        return this.service.getList(this.classReference, odataQs).pipe(map(res => res.items));
     }
     onRowUpdating(options) {
         options.newData = Object.assign({}, options.oldData, options.newData);

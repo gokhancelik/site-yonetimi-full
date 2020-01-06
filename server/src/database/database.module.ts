@@ -7,11 +7,11 @@ import { Blok } from '../blok/blok.entity';
     imports: [
         TypeOrmModule.forRoot({
             type: 'mssql',
-            host: '94.73.148.5',
-            port: 1433,
-            username: 'u8998566_uZSitY',
-            password: '4g3QRqNxMAAgTp3',
-            database: 'u8998566_zsity',
+            host: 'localhost',
+            port: 7010,
+            username: 'sa',
+            password: 'qwe123**',
+            database: 'zsity',
             entities: [
                 Site,
                 Blok
