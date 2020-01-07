@@ -10,4 +10,7 @@ export class BagimsizBolumService extends BaseCrudService {
   constructor(http: HttpClient) {
     super(http, 'bagimsiz-bolum');
   }
+  assignAidatGrubu(id, data: { aidatGrubuId: string, baslangicTarihi: Date }) {
+    return this.http.post<any>(`${this.baseUrl}${this.path}/${id}/assignAidatGrubu`, data)
+  }
 }

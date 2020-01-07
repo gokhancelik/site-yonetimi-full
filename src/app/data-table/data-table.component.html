@@ -5,14 +5,16 @@
     {{title || name}}
   </nb-card-header>
   <nb-card-body>
-    <dx-data-grid id="{{name}}GridContainer" [wordWrapEnabled]="true" (onInitialized)="onInitialized.emit($event)"
-      (onEditorPreparing)="onEditorPreparing.emit($event)" (onToolbarPreparing)="onToolbarPreparing.emit($event)"
-      (onEditingStart)="onEditingStart.emit($event)" [errorRowEnabled]="false" [dataSource]="dataSource"
-      (onRowUpdating)="onRowUpdating.next($event)" (onInitNewRow)="onInitNewRow.next($event)"
-      [allowColumnReordering]="true" [showColumnLines]="true" [showRowLines]="true" [showBorders]="true"
-      [rowAlternationEnabled]="true" [allowColumnResizing]="true" [columnAutoWidth]="true">
+    <dx-data-grid id="{{name}}GridContainer"  [wordWrapEnabled]="true"
+      (onInitialized)="onInitialized.emit($event)" (onEditorPreparing)="onEditorPreparing.emit($event)"
+      (onToolbarPreparing)="onToolbarPreparing.emit($event)" (onEditingStart)="onEditingStart.emit($event)"
+      [errorRowEnabled]="false" [dataSource]="dataSource" (onRowUpdating)="onRowUpdating.next($event)"
+      (onInitNewRow)="onInitNewRow.next($event)" [allowColumnReordering]="true" [showColumnLines]="true"
+      [showRowLines]="true" [showBorders]="true" [rowAlternationEnabled]="true" [allowColumnResizing]="true"
+      [columnAutoWidth]="true">
       <dxo-group-panel [visible]="true"></dxo-group-panel>
       <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+      <dxo-selection [selectAllMode]="'allPages'" [showCheckBoxesMode]="'always'" mode="multiple"></dxo-selection>
       <dxo-export [enabled]="true" [fileName]="name" [allowExportSelectedData]="true"></dxo-export>
       <dxo-paging [enabled]="true"></dxo-paging>
       <dxo-state-storing [enabled]="true" type="localStorage" storageKey="{{name}}Grid"></dxo-state-storing>

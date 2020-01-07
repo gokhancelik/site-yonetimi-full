@@ -15,7 +15,9 @@ export class AdminComponent implements OnInit {
         {
           title: 'Site',
           link: '/admin/tanimlamalar/site/list',
-          icon: 'city',
+          icon: {
+            icon:'city',
+          },
         },
         {
           title: 'Blok',
@@ -26,6 +28,16 @@ export class AdminComponent implements OnInit {
           title: 'Bağımsız Bölüm',
           link: '/admin/tanimlamalar/bagimsiz-bolum/list',
           icon: 'home'
+        },
+        {
+          title: 'Aidat Grupları',
+          link: '/admin/tanimlamalar/aidat-grubu/list',
+          icon: 'tags'
+        },
+        {
+          title: 'Hesap Tanımları',
+          link: '/admin/tanimlamalar/hesap-tanimi/list',
+          icon: 'cash-register'
         },
       ]
     },

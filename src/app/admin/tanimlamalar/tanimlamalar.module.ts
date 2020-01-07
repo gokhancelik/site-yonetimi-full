@@ -8,14 +8,27 @@ import { SiteComponent } from './site/site.component';
 import { DataTableModule } from 'src/app/data-table/data-table.module';
 import { BagimsizBolumComponent } from './bagimsiz-bolum/bagimsiz-bolum.component';
 import { BagimsizBolumListComponent } from './bagimsiz-bolum/bagimsiz-bolum-list/bagimsiz-bolum-list.component';
+import { AidatGrubuComponent } from './aidat-grubu/aidat-grubu.component';
+import { AidatGrubuListComponent } from './aidat-grubu/aidat-grubu-list/aidat-grubu-list.component';
+import { DxPopupModule, DxFormModule, DxDateBoxModule, DxSelectBoxModule, DxButtonModule, DxValidatorModule } from 'devextreme-angular';
+import { FormsModule } from '@angular/forms';
+import { HesapTanimiComponent } from './hesap-tanimi/hesap-tanimi.component';
+import { HesapTanimiListComponent } from './hesap-tanimi/hesap-tanimi-list/hesap-tanimi-list.component';
 
 
 @NgModule({
-  declarations: [BlokListComponent, SiteListComponent, BlokComponent, SiteComponent, BagimsizBolumComponent, BagimsizBolumListComponent],
+  declarations: [BlokListComponent, SiteListComponent, BlokComponent, SiteComponent, BagimsizBolumComponent, BagimsizBolumListComponent, AidatGrubuComponent, AidatGrubuListComponent, HesapTanimiComponent, HesapTanimiListComponent],
   imports: [
     CommonModule,
     TanimlamalarRoutingModule,
-    DataTableModule
+    DataTableModule,
+    DxPopupModule,
+    DxFormModule,
+    DxDateBoxModule,
+    DxSelectBoxModule,
+    DxButtonModule,
+    DxValidatorModule,
+    FormsModule
   ]
 })
 export class TanimlamalarModule { }

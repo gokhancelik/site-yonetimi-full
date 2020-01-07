@@ -6,6 +6,15 @@ import { BagimsizBolum } from '../bagimsiz-bolum/bagimsiz-bolum.entity';
 import { AidatGrubu } from '../aidat-grubu/aidat-grubu.entity';
 import { FaizGrubu } from '../faiz-grubu/faiz-grubu.entity';
 import { BagimsizBolumAidatGrubu } from '../aidat-grubu/bagimsiz-bolum-aidat-grubu.entity';
+import { GelirGiderTanimi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entity';
+import { BankaTanim } from '../banka-tanim/banka-tanim.entity';
+import { HesapTanimi } from '../hesap-tanimi/hesap-tanimi.entity';
+import { Kisi } from '../kisi/kisi.entity';
+import { BagimsizBolumKisi } from '../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity';
+import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
+import { Tahsilat } from '../tahsilat/tahsilat.entity';
+import { TahakkukTahsilat } from '../tahsilat/tahakkuk-tahsilat.entity';
+import { TahsilatKalem } from '../tahsilat/tahsilat-kalem.entity';
 
 @Module({
     imports: [
@@ -35,7 +44,16 @@ import { BagimsizBolumAidatGrubu } from '../aidat-grubu/bagimsiz-bolum-aidat-gru
                 BagimsizBolum,
                 AidatGrubu,
                 FaizGrubu,
-                BagimsizBolumAidatGrubu
+                BagimsizBolumAidatGrubu,
+                GelirGiderTanimi,
+                BankaTanim,
+                HesapTanimi,
+                Kisi,
+                BagimsizBolumKisi,
+                Tahakkuk,
+                Tahsilat,
+                TahakkukTahsilat,
+                TahsilatKalem
             ],
             synchronize: true,
         })

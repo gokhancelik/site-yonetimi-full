@@ -7,6 +7,13 @@ import { BlokModule } from './src/blok/blok.module';
 import { BagimsizBolumModule } from './src/bagimsiz-bolum/bagimsiz-bolum.module';
 import { AidatGrubuModule } from './src/aidat-grubu/aidat-grubu.module';
 import { FaizGrubuModule } from './src/faiz-grubu/faiz-grubu.module';
+import { GelirGiderTanimiModule } from './src/gelir-gider-tanimi/gelir-gider-tanimi.module';
+import { HesapTanimiModule } from './src/hesap-tanimi/hesap-tanimi.module';
+import { BankaTanimModule } from './src/banka-tanim/banka-tanim.module';
+import { KisiModule } from './src/kisi/kisi.module';
+import { BagimsizBolumKisiModule } from './src/bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.module';
+import { TahakkukModule } from './src/tahakkuk/tahakkuk.module';
+import { TahsilatModule } from './src/tahsilat/tahsilat.module';
 
 @Module({
   imports: [
@@ -20,7 +27,14 @@ import { FaizGrubuModule } from './src/faiz-grubu/faiz-grubu.module';
     BlokModule,
     BagimsizBolumModule,
     AidatGrubuModule,
-    FaizGrubuModule
+    FaizGrubuModule,
+    GelirGiderTanimiModule,
+    HesapTanimiModule,
+    BankaTanimModule,
+    KisiModule,
+    BagimsizBolumKisiModule,
+    TahakkukModule,
+    TahsilatModule
   ],
   controllers: [],
   providers: []

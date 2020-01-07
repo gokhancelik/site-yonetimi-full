@@ -3,6 +3,9 @@ import { BagimsizBolum } from '../bagimsiz-bolum.model';
 import { BaseListComponent } from '../../../base-list.component';
 import { BlokService } from '../../blok/blok.service';
 import { BagimsizBolumService } from '../bagimsiz-bolum.service';
+import { DxDataGridComponent } from 'devextreme-angular';
+import { AidatGrubuService } from '../../aidat-grubu/aidat-grubu.service';
+import { AidatGrubu } from '../../aidat-grubu/aidat-grubu.model';
 
 @Component({
   selector: 'app-bagimsiz-bolum-list',
@@ -11,7 +14,12 @@ import { BagimsizBolumService } from '../bagimsiz-bolum.service';
 })
 export class BagimsizBolumListComponent extends BaseListComponent<BagimsizBolum> implements OnInit {
   columns: any[];
-  constructor(service: BagimsizBolumService, blokService: BlokService) {
+  popupVisible = false;
+  bbAidatGrubu: any = {};
+  grid: DxDataGridComponent;
+  aidatGruplari: AidatGrubu[];
+  constructor(service: BagimsizBolumService, blokService: BlokService,
+    private aidatGrubuService: AidatGrubuService) {
     super(service);
     this.columns = [{
       key: 'id',
@@ -61,5 +69,38 @@ export class BagimsizBolumListComponent extends BaseListComponent<BagimsizBolum>
       },
       visible: true,
     }];
+    this.aidatGrubuService.getList<AidatGrubu>()
+      .subscribe(d => {
+        this.aidatGruplari = d;
+      })
+  }
+  onToolbarPreparing(e) {
+    e.toolbarOptions.items.unshift({
+      location: 'after',
+      widget: 'dxButton',
+      options: {
+        icon: 'upload',
+        hint: 'Aidat Grubu Ata',
+        onClick: this.assignAidatGrubuOpenModal.bind(this),
+      },
+    });
+  }
+  gridReady(e: DxDataGridComponent) {
+    this.grid = e;
+  }
+  assignAidatGrubuOpenModal(e) {
+    let selectedBBs = this.grid.selectedRowKeys;
+    this.popupVisible = selectedBBs && selectedBBs.length > 0;
+  }
+  assignAidatGrubu(e, form) {
+    let selectedBBs = this.grid.selectedRowKeys;
+    for (let i = 0; i < selectedBBs.length; i++) {
+      const bb = selectedBBs[i];
+      (this.service as BagimsizBolumService)
+        .assignAidatGrubu(bb, this.bbAidatGrubu)
+        .subscribe(d => {
+          this.popupVisible = false;
+        });
+    }
   }
 }

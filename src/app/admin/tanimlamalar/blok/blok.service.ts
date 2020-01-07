@@ -10,4 +10,7 @@ export class BlokService extends BaseCrudService {
   constructor(http: HttpClient) {
     super(http, 'blok');
   }
+  assignAidatGrubu(id, data: { aidatGrubuId: string, baslangicTarihi: Date }) {
+    this.http.post<any>(`${this.baseUrl}${this.path}/${id}/assignAidatGrubu`, data)
+  }
 }
