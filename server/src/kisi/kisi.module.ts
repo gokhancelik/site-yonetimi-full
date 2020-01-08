@@ -8,6 +8,7 @@ import { DatabaseModule } from '../database/database.module';
 @Module({
   imports: [TypeOrmModule.forFeature([Kisi]), DatabaseModule],
   controllers: [KisiController],
-  providers: [KisiService]
+  providers: [KisiService],
+  exports: [KisiService]
 })
-export class KisiModule {}
+export class KisiModule { }

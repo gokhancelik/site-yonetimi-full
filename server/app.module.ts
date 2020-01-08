@@ -14,6 +14,7 @@ import { KisiModule } from './src/kisi/kisi.module';
 import { BagimsizBolumKisiModule } from './src/bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.module';
 import { TahakkukModule } from './src/tahakkuk/tahakkuk.module';
 import { TahsilatModule } from './src/tahsilat/tahsilat.module';
+import { AuthModule } from './src/auth/auth.module';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { TahsilatModule } from './src/tahsilat/tahsilat.module';
     KisiModule,
     BagimsizBolumKisiModule,
     TahakkukModule,
-    TahsilatModule
+    TahsilatModule,
+    AuthModule
   ],
   controllers: [],
   providers: []

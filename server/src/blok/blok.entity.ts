@@ -10,6 +10,9 @@ export class Blok {
     @Column({ length: 500 })
     ad: string;
 
+    @Column({ length: 50, nullable: true })
+    kod: string;
+
     @Column({ type: 'text', nullable: true })
     aciklama: string;
 
