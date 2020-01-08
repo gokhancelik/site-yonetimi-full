@@ -14,10 +14,14 @@ import { DxPopupModule, DxFormModule, DxDateBoxModule, DxSelectBoxModule, DxButt
 import { FormsModule } from '@angular/forms';
 import { HesapTanimiComponent } from './hesap-tanimi/hesap-tanimi.component';
 import { HesapTanimiListComponent } from './hesap-tanimi/hesap-tanimi-list/hesap-tanimi-list.component';
+import { KisiComponent } from './kisi/kisi.component';
+import { KisiListComponent } from './kisi/kisi-list/kisi-list.component';
+import { FaizGrubuComponent } from './faiz-grubu/faiz-grubu.component';
+import { FaizGrubuListComponent } from './faiz-grubu/faiz-grubu-list/faiz-grubu-list.component';
 
 
 @NgModule({
-  declarations: [BlokListComponent, SiteListComponent, BlokComponent, SiteComponent, BagimsizBolumComponent, BagimsizBolumListComponent, AidatGrubuComponent, AidatGrubuListComponent, HesapTanimiComponent, HesapTanimiListComponent],
+  declarations: [BlokListComponent, SiteListComponent, BlokComponent, SiteComponent, BagimsizBolumComponent, BagimsizBolumListComponent, AidatGrubuComponent, AidatGrubuListComponent, HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent, FaizGrubuComponent, FaizGrubuListComponent],
   imports: [
     CommonModule,
     TanimlamalarRoutingModule,

@@ -30,9 +30,19 @@ export class AdminComponent implements OnInit {
           icon: 'home'
         },
         {
+          title: 'Kişi',
+          link: '/admin/tanimlamalar/kisi/list',
+          icon: 'user'
+        },
+        {
           title: 'Aidat Grupları',
           link: '/admin/tanimlamalar/aidat-grubu/list',
           icon: 'tags'
+        },
+        {
+          title: 'Faiz Grupları',
+          link: '/admin/tanimlamalar/faiz-grubu/list',
+          icon: 'percentage'
         },
         {
           title: 'Hesap Tanımları',

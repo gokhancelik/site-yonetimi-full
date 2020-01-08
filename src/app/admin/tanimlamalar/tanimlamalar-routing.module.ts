@@ -10,6 +10,10 @@ import { AidatGrubuComponent } from './aidat-grubu/aidat-grubu.component';
 import { AidatGrubuListComponent } from './aidat-grubu/aidat-grubu-list/aidat-grubu-list.component';
 import { HesapTanimiComponent } from './hesap-tanimi/hesap-tanimi.component';
 import { HesapTanimiListComponent } from './hesap-tanimi/hesap-tanimi-list/hesap-tanimi-list.component';
+import { KisiComponent } from './kisi/kisi.component';
+import { KisiListComponent } from './kisi/kisi-list/kisi-list.component';
+import { FaizGrubuComponent } from './faiz-grubu/faiz-grubu.component';
+import { FaizGrubuListComponent } from './faiz-grubu/faiz-grubu-list/faiz-grubu-list.component';
 
 
 const routes: Routes = [
@@ -44,12 +48,32 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'kisi',
+    component: KisiComponent,
+    children: [
+      {
+        path: 'list',
+        component: KisiListComponent
+      }
+    ]
+  },
+  {
     path: 'aidat-grubu',
     component: AidatGrubuComponent,
     children: [
       {
         path: 'list',
         component: AidatGrubuListComponent
+      }
+    ]
+  },
+  {
+    path: 'faiz-grubu',
+    component: FaizGrubuComponent,
+    children: [
+      {
+        path: 'list',
+        component: FaizGrubuListComponent
       }
     ]
   },

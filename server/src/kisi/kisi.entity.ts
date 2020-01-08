@@ -13,6 +13,9 @@ export class Kisi {
     soyad: string;
 
     @Column({ length: 50, nullable: true })
+    tcKimlikNo: string;
+
+    @Column({ length: 50, nullable: true })
     telefon: string;
 
     @Column({ length: 50, nullable: true })
@@ -23,6 +26,9 @@ export class Kisi {
 
     @Column({ length: 100, nullable: true })
     eposta: string;
+
+    @Column({ length: 100, nullable: true })
+    sifre: string;
 
     @OneToMany(type => BagimsizBolumKisi, bbag => bbag.kisi)
     bagimsizBolumKisis!: BagimsizBolumKisi[];

@@ -11,7 +11,7 @@ export class FaizGrubu {
     @Column({ length: 500, nullable: true })
     aciklama: string;
 
-    @Column({ type: 'decimal', nullable: false })
+    @Column({ type: 'decimal', nullable: false, scale: 5, precision: 5 })
     oran: number;
 
 }
