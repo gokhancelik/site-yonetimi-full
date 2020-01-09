@@ -1,7 +1,6 @@
-import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
-import { AuthResult } from '../models/auth-result';
 
 @Component({
   selector: 'app-login',
@@ -9,52 +8,22 @@ import { AuthResult } from '../models/auth-result';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  user = { username: '', password: '' }
+  error: string;
+  constructor(private authService: AuthService,
+    private router: Router) { }
 
-
-  redirectDelay: number = 0;
-  showMessages: any = {};
-  strategy: string = '';
-
-  errors: string[] = [];
-  messages: string[] = [];
-  user: any = {};
-  submitted: boolean = false;
-  // socialLinks: NbAuthSocialLink[] = [];
-  rememberMe = false;
-
-  constructor(protected service: AuthService,
-    protected cd: ChangeDetectorRef,
-    protected router: Router) {
-
-    // this.redirectDelay = this.getConfigValue('forms.login.redirectDelay');
-    // this.showMessages = this.getConfigValue('forms.login.showMessages');
-    // this.strategy = this.getConfigValue('forms.login.strategy');
-    // this.socialLinks = this.getConfigValue('forms.login.socialLinks');
-    // this.rememberMe = this.getConfigValue('forms.login.rememberMe');
+  ngOnInit() {
   }
-  ngOnInit(): void {
-  }
-  login(): void {
-    this.errors = [];
-    this.messages = [];
-    this.submitted = true;
-
-    this.service.authenticate(this.strategy, this.user).subscribe((result: AuthResult) => {
-      this.submitted = false;
-
-      if (result.isSuccess()) {
-        this.messages = result.getMessages();
-      } else {
-        this.errors = result.getErrors();
-      }
-
-      const redirect = result.getRedirect();
-      if (redirect) {
-        setTimeout(() => {
-          return this.router.navigateByUrl(redirect);
-        }, this.redirectDelay);
-      }
-      this.cd.detectChanges();
-    });
+  login() {
+    this.error = '';
+    this.authService.authenticate(this.user)
+      .subscribe(d => {
+        localStorage.setItem('token', d.access_token);
+        this.router.navigate([this.authService.redirectUrl]);
+        this.authService.redirectUrl = '';
+      }, (e) => {
+        this.error = 'Kullanıcı adı veya şifre hatalı';
+      });
   }
 }

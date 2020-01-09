@@ -49,10 +49,21 @@ export class AdminComponent implements OnInit {
           link: '/admin/tanimlamalar/hesap-tanimi/list',
           icon: 'cash-register'
         },
+        {
+          title: 'Gelir-Gider Tanımları',
+          link: '/admin/tanimlamalar/gelir-gider-tanimi/list',
+          icon: 'receipt'
+        },
       ]
     }
   ];
+  constructor(
+    private iconLibraries: NbIconLibraries) {
 
+    this.iconLibraries.registerFontPack('font-awesome', { packClass: 'fa', iconClassPrefix: 'fa' });
+    this.iconLibraries.registerFontPack('font-awesome-5', { packClass: 'fas', iconClassPrefix: 'fa' });
+    this.iconLibraries.setDefaultPack('font-awesome-5');
+  }
 
   ngOnInit() {
   }

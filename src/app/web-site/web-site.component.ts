@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService, Token } from '../auth/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-web-site',
@@ -7,12 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WebSiteComponent implements OnInit {
   navbarOpen: boolean;
-
-  constructor() { }
+  get user(): Token {
+    return this.authService.getUser();
+  }
+  constructor(private authService: AuthService,
+    private router: Router) { }
 
   ngOnInit() {
   }
   toggleNavbar() {
     this.navbarOpen = !this.navbarOpen;
+  }
+  logout(e) {
+    e.preventDefault();
+    this.authService.logout();
+    this.router.navigate(['']);
   }
 }

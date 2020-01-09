@@ -16,6 +16,7 @@ export class TahakkukService extends BaseService<Tahakkuk> {
         return this.repository.createQueryBuilder('tahakkuk')
             .innerJoin('tahakkuk.bagimsizBolumKisi', 'bbk')
             .where('bbk.kisiId = :userId', { userId })
+            .andWhere('tahakkuk.durumu = 0')
             .getMany();
     }
 }

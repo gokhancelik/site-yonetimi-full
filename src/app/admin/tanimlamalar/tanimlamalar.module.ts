@@ -18,10 +18,12 @@ import { KisiComponent } from './kisi/kisi.component';
 import { KisiListComponent } from './kisi/kisi-list/kisi-list.component';
 import { FaizGrubuComponent } from './faiz-grubu/faiz-grubu.component';
 import { FaizGrubuListComponent } from './faiz-grubu/faiz-grubu-list/faiz-grubu-list.component';
+import { GelirGiderTanimComponent } from './gelir-gider-tanim/gelir-gider-tanim.component';
+import { GelirGiderTanimListComponent } from './gelir-gider-tanim/gelir-gider-tanim-list/gelir-gider-tanim-list.component';
 
 
 @NgModule({
-  declarations: [BlokListComponent, SiteListComponent, BlokComponent, SiteComponent, BagimsizBolumComponent, BagimsizBolumListComponent, AidatGrubuComponent, AidatGrubuListComponent, HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent, FaizGrubuComponent, FaizGrubuListComponent],
+  declarations: [BlokListComponent, SiteListComponent, BlokComponent, SiteComponent, BagimsizBolumComponent, BagimsizBolumListComponent, AidatGrubuComponent, AidatGrubuListComponent, HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent, FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent],
   imports: [
     CommonModule,
     TanimlamalarRoutingModule,

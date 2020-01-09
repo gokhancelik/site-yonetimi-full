@@ -4,6 +4,7 @@ import { OnlineIslemlerComponent } from './online-islemler.component';
 import { OnlineIslemlerRoutingModule } from './online-islemler-routing.module';
 import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
 import { TahakkukListComponent } from './tahakkuk-list/tahakkuk-list.component';
+import { DataTableModule } from '../../data-table/data-table.module';
 
 
 
@@ -13,6 +14,7 @@ import { TahakkukListComponent } from './tahakkuk-list/tahakkuk-list.component';
     CommonModule,
     OnlineIslemlerRoutingModule,
     NgbTabsetModule,
+    DataTableModule
   ]
 })
 export class OnlineIslemlerModule { }

@@ -14,6 +14,8 @@ import { KisiComponent } from './kisi/kisi.component';
 import { KisiListComponent } from './kisi/kisi-list/kisi-list.component';
 import { FaizGrubuComponent } from './faiz-grubu/faiz-grubu.component';
 import { FaizGrubuListComponent } from './faiz-grubu/faiz-grubu-list/faiz-grubu-list.component';
+import { GelirGiderTanimComponent } from './gelir-gider-tanim/gelir-gider-tanim.component';
+import { GelirGiderTanimListComponent } from './gelir-gider-tanim/gelir-gider-tanim-list/gelir-gider-tanim-list.component';
 
 
 const routes: Routes = [
@@ -84,6 +86,16 @@ const routes: Routes = [
       {
         path: 'list',
         component: HesapTanimiListComponent
+      }
+    ]
+  },
+  {
+    path: 'gelir-gider-tanimi',
+    component: GelirGiderTanimComponent,
+    children: [
+      {
+        path: 'list',
+        component: GelirGiderTanimListComponent
       }
     ]
   },

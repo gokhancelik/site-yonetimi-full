@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NbPasswordAuthStrategy, NbAuthModule, NbAuthJWTToken } from '@nebular/auth';
 import { environment } from 'src/environments/environment';
 import { NbThemeModule } from '@nebular/theme';
+import { AuthInterceptor } from './auth/interceptors/auth-intercepter';
+// import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,7 @@ import { NbThemeModule } from '@nebular/theme';
       forms: {},
     }),
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
