@@ -15,6 +15,7 @@ import { BagimsizBolumKisiModule } from './src/bagimsiz-bolum-kisi/bagimsiz-bolu
 import { TahakkukModule } from './src/tahakkuk/tahakkuk.module';
 import { TahsilatModule } from './src/tahsilat/tahsilat.module';
 import { AuthModule } from './src/auth/auth.module';
+import { OnlineIslemlerModule } from './src/online-islemler/online-islemler.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { AuthModule } from './src/auth/auth.module';
     BagimsizBolumKisiModule,
     TahakkukModule,
     TahsilatModule,
-    AuthModule
+    AuthModule,
+    OnlineIslemlerModule
   ],
   controllers: [],
   providers: []

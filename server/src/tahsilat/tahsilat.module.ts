@@ -10,6 +10,7 @@ import { TahakkukTahsilat } from './tahakkuk-tahsilat.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Tahsilat, TahsilatKalem, TahakkukTahsilat]), DatabaseModule],
   providers: [TahsilatService],
-  controllers: [TahsilatController]
+  controllers: [TahsilatController],
+  exports: [TahsilatService]
 })
-export class TahsilatModule {}
+export class TahsilatModule { }

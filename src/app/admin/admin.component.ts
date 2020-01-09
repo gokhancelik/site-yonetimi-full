@@ -16,7 +16,7 @@ export class AdminComponent implements OnInit {
           title: 'Site',
           link: '/admin/tanimlamalar/site/list',
           icon: {
-            icon:'city',
+            icon: 'city',
           },
         },
         {
@@ -50,41 +50,9 @@ export class AdminComponent implements OnInit {
           icon: 'cash-register'
         },
       ]
-    },
-    {
-      title: 'FEATURES',
-      group: true,
-    },
-    {
-      title: 'Auth',
-      icon: 'lock-outline',
-      children: [
-        {
-          title: 'Login',
-          link: '/auth/login',
-        },
-        {
-          title: 'Register',
-          link: '/auth/register',
-        },
-        {
-          title: 'Request Password',
-          link: '/auth/request-password',
-        },
-        {
-          title: 'Reset Password',
-          link: '/auth/reset-password',
-        },
-      ],
-    },
+    }
   ];
-  constructor(
-    private iconLibraries: NbIconLibraries) {
 
-    this.iconLibraries.registerFontPack('font-awesome', { packClass: 'fa', iconClassPrefix: 'fa' });
-    this.iconLibraries.registerFontPack('font-awesome-5', { packClass: 'fas', iconClassPrefix: 'fa' });
-    this.iconLibraries.setDefaultPack('font-awesome-5');
-  }
 
   ngOnInit() {
   }

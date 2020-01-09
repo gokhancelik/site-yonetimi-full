@@ -7,8 +7,7 @@ export class AuthController {
     constructor(private readonly authService: AuthService) { }
     @UseGuards(AuthGuard('local'))
     @Post('login')
-    async login(@Body() user) {
-        return this.authService.login(user);
-        
+    async login(@Request() request) {
+        return this.authService.login(request.user);
     }
 }

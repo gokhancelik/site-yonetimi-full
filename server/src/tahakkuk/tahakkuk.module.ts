@@ -4,10 +4,12 @@ import { TahakkukController } from './tahakkuk.controller';
 import { Tahakkuk } from './tahakkuk.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseModule } from '../database/database.module';
+import { KisiModule } from '../kisi/kisi.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Tahakkuk]), DatabaseModule],
   providers: [TahakkukService],
-  controllers: [TahakkukController]
+  controllers: [TahakkukController],
+  exports: [TahakkukService]
 })
-export class TahakkukModule {}
+export class TahakkukModule { }

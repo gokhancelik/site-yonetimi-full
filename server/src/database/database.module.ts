@@ -33,11 +33,19 @@ import { TahsilatKalem } from '../tahsilat/tahsilat-kalem.entity';
         // }),
         TypeOrmModule.forRoot({
             type: 'mssql',
+
+            // host: 'localhost',
+            // port: 7010,
+            // username: 'sa',
+            // password: 'qwe123**',
+            // database: 'zsity',
+
             host: '94.73.148.5',
             port: 1433,
             username: 'u8998566_uZSitY',
             password: '4g3QRqNxMAAgTp3',
             database: 'u8998566_zsity',
+
             entities: [
                 Site,
                 Blok,
@@ -58,5 +66,6 @@ import { TahsilatKalem } from '../tahsilat/tahsilat-kalem.entity';
             synchronize: true,
         })
     ],
+    exports: []
 })
 export class DatabaseModule { }

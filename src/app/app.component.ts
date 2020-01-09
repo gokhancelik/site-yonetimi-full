@@ -19,5 +19,4 @@ export class AppComponent {
     locale('tr-TR');
     config({ defaultCurrency: 'TRY', decimalSeparator: ',', thousandsSeparator: '.' });
   }
-
 }

@@ -12,14 +12,19 @@ export class AuthService {
     async validateUser(username: string, pass: string): Promise<any> {
         const user = await this.kisiService.findOneByUserName(username);
         if (user && user.sifre === pass) {
-            const { sifre, ...result } = user;
+            let result = {
+                id: user.id,
+                ad: user.ad,
+                soyad: user.soyad,
+                username
+            };
             return result;
         }
         return null;
     }
 
     async login(user: any) {
-        const payload = { username: user.username, sub: user.userId };
+        const payload = { username: user.username, sub: user.id };
         return {
             access_token: this.jwtService.sign(payload),
         };

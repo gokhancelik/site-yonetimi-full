@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container">
+        <a class="navbar-brand" [routerLink]="['/']">Nilüfer Adası</a>
+        <button class="navbar-toggler" type="button" (click)="toggleNavbar()" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse ">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" [routerLink]="['/']">Ana Sayfa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" [routerLink]="['mevzuat']">Mevzuat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" [routerLink]="['yonetim-kurulu']">Yönetim</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" [routerLink]="['hesap-bilgileri']">Hesap
+                        Bilgileri</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" ngbDropdown>
+                    <a class="nav-link" style="cursor: pointer" ngbDropdownToggle id="navbarDropdown2" role="button">
+                        @User.Identity.Name
+                    </a>
+                    <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-right">
+                        <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Çıkış Yap</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" [routerLink]="['online-islemler']">Online
+                        İşlemler</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <router-outlet></router-outlet>
+</div>
