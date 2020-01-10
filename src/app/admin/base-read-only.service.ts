@@ -31,7 +31,6 @@ export abstract class BaseReadOnlyService {
     }
     getList<T>(): Observable<Array<T>> {
         return this.http.get<Array<T>>(`${this.baseUrl}${this.path}`).pipe(map(d => {
-            console.log(d);
             return d;
         }));
     }

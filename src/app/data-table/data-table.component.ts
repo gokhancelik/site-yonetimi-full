@@ -1,5 +1,6 @@
-import { Component, OnInit, EventEmitter, Output, Input, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, AfterViewInit, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'data-table',
@@ -24,7 +25,12 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   @Input() allowAdding = true;
   @Input() allowUpdating = true;
   @Input() allowDeleting = true;
-  constructor() {
+
+  public get isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
   }
   ngOnInit() {
   }

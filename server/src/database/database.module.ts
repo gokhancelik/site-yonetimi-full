@@ -45,7 +45,6 @@ import { TahsilatKalem } from '../tahsilat/tahsilat-kalem.entity';
             username: 'u8998566_uZSitY',
             password: '4g3QRqNxMAAgTp3',
             database: 'u8998566_zsity',
-
             entities: [
                 Site,
                 Blok,

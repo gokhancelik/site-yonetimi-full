@@ -4,6 +4,7 @@ import { Tahakkuk } from '../models/tahakkuk.model';
 import { BaseListComponent } from '../../../admin/base-list.component';
 import CustomStore from 'devextreme/data/custom_store';
 import { GelirGiderTanimService } from '../../../admin/tanimlamalar/gelir-gider-tanim/gelir-gider-tanim.service';
+import { DxDataGridComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-tahakkuk-list',
@@ -11,12 +12,16 @@ import { GelirGiderTanimService } from '../../../admin/tanimlamalar/gelir-gider-
   styleUrls: ['./tahakkuk-list.component.scss']
 })
 export class TahakkukListComponent implements OnInit {
+  columns: any[];
+  data: Tahakkuk[];
+  dataSource: CustomStore;
   ngOnInit(): void {
   }
-  columns: any[];
-  dataSource: CustomStore;
   constructor(private service: OnlineIslemlerService,
     private gelirGiderTanimiService: GelirGiderTanimService) {
+    this.service.getOdenmemisAidatlar().subscribe(d => {
+      this.data = d;
+    });
     this.dataSource = new CustomStore({
       key: 'id',
       loadMode: 'raw',
@@ -62,5 +67,11 @@ export class TahakkukListComponent implements OnInit {
       },
     }
     ];
+  }
+  onGridReady(e: DxDataGridComponent) {
+    e.onSelectionChanged.subscribe(d => {
+      console.log(d)
+    });
+
   }
 }

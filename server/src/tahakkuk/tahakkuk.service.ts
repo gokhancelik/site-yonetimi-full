@@ -13,10 +13,13 @@ export class TahakkukService extends BaseService<Tahakkuk> {
         super(repository);
     }
     getOdenmemisAidatlar(userId): Promise<Tahakkuk[]> {
+        let today = new Date();
+        let gelecekAy = new Date(today.getFullYear(), today.getMonth() + 1, 1);
         return this.repository.createQueryBuilder('tahakkuk')
             .innerJoin('tahakkuk.bagimsizBolumKisi', 'bbk')
             .where('bbk.kisiId = :userId', { userId })
-            .andWhere('tahakkuk.durumu = 0')
+            .andWhere('tahakkuk.durumu = 0 AND tahakkuk.vadeTarihi <= :tarih', { tarih: gelecekAy })
+            .orderBy('tahakkuk.vadeTarihi')
             .getMany();
     }
 }

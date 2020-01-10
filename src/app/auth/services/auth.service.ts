@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { isPlatformBrowser } from '@angular/common';
 
 
 export interface Token {
@@ -14,22 +15,34 @@ export interface Token {
 })
 export class AuthService {
   redirectUrl: any = '';
-  constructor(private http: HttpClient) { }
+  isBrowser: boolean;
+  constructor(private http: HttpClient,
+    @Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
   authenticate(model: any) {
     return this.http.post<any>(`${environment.apiUrl}auth/login`, model)
   }
   getToken(): string {
-    return localStorage.getItem('token');
+    if (this.isBrowser) {
+      return localStorage.getItem('token');
+    }
+    return '';
   }
+  
   getUser(): Token {
-    let token = this.getToken();
-    if (token) {
-      return JSON.parse(atob(token.split('.')[1]));
+    if (this.isBrowser) {
+      let token = this.getToken();
+      if (token) {
+        return JSON.parse(atob(token.split('.')[1]));
+      }
     }
     return null;
   }
   logout() {
-    localStorage.removeItem('token');
+    if (this.isBrowser) {
+      localStorage.removeItem('token');
+    }
   }
   isAuthenticated() {
     let token = this.getUser();
