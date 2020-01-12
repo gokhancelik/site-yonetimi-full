@@ -6,6 +6,7 @@ export enum HareketTipi {
 export interface GelirGiderTanimi {
     id: string;
     ad: string;
+    kod: string;
     aciklama: string;
     hareketTipi: HareketTipi;
 }

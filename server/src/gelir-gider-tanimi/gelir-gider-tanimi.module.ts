@@ -9,6 +9,7 @@ import { DatabaseModule } from '../database/database.module';
 @Module({
   imports: [TypeOrmModule.forFeature([GelirGiderTanimi, GelirGiderTanimiRepository]), DatabaseModule],
   controllers: [GelirGiderTanimiController],
-  providers: [GelirGiderTanimiService]
+  providers: [GelirGiderTanimiService],
+  exports: [GelirGiderTanimiService]
 })
-export class GelirGiderTanimiModule {}
+export class GelirGiderTanimiModule { }

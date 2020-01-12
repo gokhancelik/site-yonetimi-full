@@ -5,7 +5,7 @@
     {{title || name}}
   </nb-card-header>
   <nb-card-body>
-    <dx-data-grid *ngIf="isBrowser" id="{{name}}GridContainer"  [wordWrapEnabled]="true"
+    <dx-data-grid *ngIf="isBrowser" id="{{name}}GridContainer" [wordWrapEnabled]="true"
       (onInitialized)="onInitialized.emit($event)" (onEditorPreparing)="onEditorPreparing.emit($event)"
       (onToolbarPreparing)="onToolbarPreparing.emit($event)" (onEditingStart)="onEditingStart.emit($event)"
       [errorRowEnabled]="false" [dataSource]="dataSource" (onRowUpdating)="onRowUpdating.next($event)"
@@ -14,6 +14,10 @@
       [columnAutoWidth]="true">
       <dxo-group-panel [visible]="true"></dxo-group-panel>
       <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+      <dxo-summary>
+        <dxi-total-item [column]="col.key" *ngFor="let col of totalSummaryColumns" [valueFormat]="col.format" [summaryType]="col.totalSummaryType">
+        </dxi-total-item>
+      </dxo-summary>
       <dxo-selection [selectAllMode]="'allPages'" [showCheckBoxesMode]="'always'" mode="multiple"></dxo-selection>
       <dxo-export [enabled]="true" [fileName]="name" [allowExportSelectedData]="true"></dxo-export>
       <dxo-paging [enabled]="true"></dxo-paging>
@@ -23,6 +27,7 @@
       <dxo-editing [mode]="editMode" [allowAdding]="allowAdding" [allowUpdating]="allowUpdating"
         [allowDeleting]="allowDeleting" [useIcons]="true">
       </dxo-editing>
+
       <dxo-header-filter [visible]="true">
       </dxo-header-filter>
       <dxo-filter-panel [visible]="true">

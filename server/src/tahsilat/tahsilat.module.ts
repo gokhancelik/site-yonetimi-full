@@ -6,9 +6,10 @@ import { Tahsilat } from './tahsilat.entity';
 import { DatabaseModule } from '../database/database.module';
 import { TahsilatKalem } from './tahsilat-kalem.entity';
 import { TahakkukTahsilat } from './tahakkuk-tahsilat.entity';
+import { GelirGiderTanimiModule } from '../gelir-gider-tanimi/gelir-gider-tanimi.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Tahsilat, TahsilatKalem, TahakkukTahsilat]), DatabaseModule],
+  imports: [TypeOrmModule.forFeature([Tahsilat, TahsilatKalem, TahakkukTahsilat]), DatabaseModule, GelirGiderTanimiModule],
   providers: [TahsilatService],
   controllers: [TahsilatController],
   exports: [TahsilatService]

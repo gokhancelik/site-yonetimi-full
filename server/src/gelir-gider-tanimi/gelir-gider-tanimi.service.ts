@@ -9,4 +9,7 @@ export class GelirGiderTanimiService extends BaseService<GelirGiderTanimi>{
     constructor(repository: GelirGiderTanimiRepository) {
         super(repository);
     }
+    getByKod(kod: string): Promise<GelirGiderTanimi> {
+        return (this.repository as GelirGiderTanimiRepository).getByKod(kod);
+    }
 }

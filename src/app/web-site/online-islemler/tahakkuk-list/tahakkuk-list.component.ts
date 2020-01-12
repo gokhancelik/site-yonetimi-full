@@ -5,6 +5,8 @@ import { BaseListComponent } from '../../../admin/base-list.component';
 import CustomStore from 'devextreme/data/custom_store';
 import { GelirGiderTanimService } from '../../../admin/tanimlamalar/gelir-gider-tanim/gelir-gider-tanim.service';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { OdemeService } from '../odeme.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tahakkuk-list',
@@ -15,12 +17,18 @@ export class TahakkukListComponent implements OnInit {
   columns: any[];
   data: Tahakkuk[];
   dataSource: CustomStore;
+  seciliTahakkuklar: Tahakkuk[];
+  grid: DxDataGridComponent;
   ngOnInit(): void {
   }
   constructor(private service: OnlineIslemlerService,
-    private gelirGiderTanimiService: GelirGiderTanimService) {
+    private router: Router,
+    private odemeService: OdemeService,
+    gelirGiderTanimiService: GelirGiderTanimService
+  ) {
     this.service.getOdenmemisAidatlar().subscribe(d => {
       this.data = d;
+      console.log(d);
     });
     this.dataSource = new CustomStore({
       key: 'id',
@@ -53,25 +61,41 @@ export class TahakkukListComponent implements OnInit {
       visible: true,
     },
     {
-      key: 'tutar',
-      name: 'Tutar',
+      key: 'aciklama',
+      name: 'Açıklama',
+      type: 'string',
+    },
+    {
+      key: 'faiz',
+      name: 'Faiz',
+      totalSummaryType: 'sum',
       type: 'number',
       visible: true,
       format: {
         type: 'currency',
-      },
-      editorOptions: {
-        format: {
-          type: 'currency',
-        },
-      },
+        precision: 2
+      }
+    },
+    {
+      key: 'kalanTutar',
+      name: 'Kalan Tutar',
+      totalSummaryType: 'sum',
+      type: 'number',
+      visible: true,
+      format: {
+        type: 'currency',
+        precision: 2
+      }
     }
     ];
   }
   onGridReady(e: DxDataGridComponent) {
     e.onSelectionChanged.subscribe(d => {
-      console.log(d)
     });
-
+    this.grid = e;
+  }
+  odemeYap() {
+    this.odemeService.seciliTahakkuklar = this.grid.instance.getSelectedRowsData();
+    this.router.navigate(['online-islemler', 'odeme'])
   }
 }

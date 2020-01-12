@@ -30,6 +30,16 @@ export class GelirGiderTanimListComponent extends BaseListComponent<GelirGiderTa
       visible: true,
     },
     {
+      key: 'kod',
+      name: 'Kod',
+      type: 'string',
+      validators: [{
+        type: 'required',
+        message: 'Kod zorunludur',
+      }],
+      visible: true,
+    },
+    {
       key: 'aciklama',
       name: 'Açıklama',
       type: 'string',

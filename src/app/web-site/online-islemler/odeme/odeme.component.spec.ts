@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OnlineIslemlerComponent } from './online-islemler.component';
+import { OdemeComponent } from './odeme.component';
 
-describe('OnlineIslemlerComponent', () => {
-  let component: OnlineIslemlerComponent;
-  let fixture: ComponentFixture<OnlineIslemlerComponent>;
+describe('OdemeComponent', () => {
+  let component: OdemeComponent;
+  let fixture: ComponentFixture<OdemeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OnlineIslemlerComponent ]
+      declarations: [ OdemeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OnlineIslemlerComponent);
+    fixture = TestBed.createComponent(OdemeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

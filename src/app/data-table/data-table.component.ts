@@ -25,6 +25,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   @Input() allowAdding = true;
   @Input() allowUpdating = true;
   @Input() allowDeleting = true;
+  totalSummaryColumns: any[];
 
   public get isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
@@ -33,6 +34,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
   }
   ngOnInit() {
+    this.totalSummaryColumns = this.columns.filter(p => !!p.totalSummaryType)
   }
   ngAfterViewInit() {
     this.dxGridReady.emit(this.dataGrid);
