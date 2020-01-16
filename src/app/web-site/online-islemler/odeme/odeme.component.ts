@@ -48,5 +48,7 @@ export class OdemeComponent implements OnInit {
       });
   }
   odemeyiTamamla(e) {
+    this.onlineIslemlerService.odeme(this.tahsilat)
+      .subscribe(console.log)
   }
 }
