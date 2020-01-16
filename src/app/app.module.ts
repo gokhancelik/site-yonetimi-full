@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,7 +11,11 @@ import { environment } from 'src/environments/environment';
 import { NbThemeModule } from '@nebular/theme';
 import { AuthInterceptor } from './auth/interceptors/auth-intercepter';
 // import { AuthModule } from './auth/auth.module';
+import { registerLocaleData } from '@angular/common';
+import localeTr from '@angular/common/locales/tr';
+import localeTrExtra from '@angular/common/locales/extra/tr';
 
+registerLocaleData(localeTr, localeTrExtra);
 @NgModule({
   declarations: [
     AppComponent
@@ -43,7 +47,8 @@ import { AuthInterceptor } from './auth/interceptors/auth-intercepter';
       forms: {},
     }),
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  { provide: LOCALE_ID, useValue: 'tr-TR' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

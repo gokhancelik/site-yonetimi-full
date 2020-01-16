@@ -39,7 +39,6 @@ import { TahsilatKalem } from '../tahsilat/tahsilat-kalem.entity';
             // username: 'sa',
             // password: 'qwe123**',
             // database: 'zsity',
-
             host: '94.73.148.5',
             port: 1433,
             username: 'u8998566_uZSitY',

@@ -68,7 +68,7 @@
             </div>
         </div>
     </div>
-    <div class="col" *ngIf="seciliTahakkuklar && seciliTahakkuklar.length">
+    <div class="col" *ngIf="tahsilat">
         <div class="card">
             <h5 class="card-header">Ödeme Bilgileri</h5>
             <div class="card-body">
@@ -76,10 +76,10 @@
                     <thead>
                         <tr>
                             <th>
-                                Ödeme Tipi
+                                Vade Tarihi
                             </th>
                             <th>
-                                Vade Tarihi
+                                Ödeme Tipi
                             </th>
                             <th class="text-right">
                                 Ödenecek Tutar
@@ -87,33 +87,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of seciliTahakkuklar">
+                        <tr *ngFor="let row of tahsilat.tahsilatKalems">
                             <td>
-                                {{row.odemeTipiId}}
+                                {{row.tahakkuk?.vadeTarihi|date}}
                             </td>
                             <td>
-                                {{row.vadeTarihi|date}}
+                                {{row.odemeTipi?.ad}}
                             </td>
                             <td class="text-right">
-                                {{row.kalanTutar|currency}}
+                                {{row.tutar| currency : 'TRY'}}
                             </td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="2"><b> Faiz:</b></td>
-                            <td class="text-right"><b> {{ (seciliTahakkuklar|sum:'faiz')|currency}}</b>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><b> Banka Komisyonu:</b></td>
-                            <td class="text-right"><b> </b></td>
-                        </tr>
-
-                        <tr>
                             <td colspan="2"><b> Toplam:</b></td>
                             <td class="text-right"><b>
-                                    {{ ((seciliTahakkuklar|sum:'faiz') + (seciliTahakkuklar|sum:'kalanTutar'))|currency}}</b>
+                                    {{ tahsilat.tutar|currency: 'TRY'}}</b>
                             </td>
                         </tr>
                     </tfoot>

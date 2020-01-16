@@ -1,9 +1,11 @@
+import { GelirGiderTanimi } from './gelir-gider-tanimi.model';
+
 export enum AidatDurumu {
     Odenmedi,
     Odendi,
     Icrada
 }
-export class Tahakkuk {
+export interface Tahakkuk {
     id: string;
     vadeTarihi: Date;
     sonTahsilatTarihi: Date;
@@ -16,10 +18,5 @@ export class Tahakkuk {
     durumu: AidatDurumu;
     kalanTutar: number;
     faiz: number;
-    deserialize(input: Object): Tahakkuk {
-        Object.keys(input).forEach(key => {
-            this[key] = input[key];
-        });
-        return this;
-    }
+    odemeTipi: GelirGiderTanimi;
 }

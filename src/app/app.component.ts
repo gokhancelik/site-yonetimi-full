@@ -17,6 +17,6 @@ export class AppComponent {
   constructor() {
     loadMessages(devextr);
     locale('tr-TR');
-    config({ defaultCurrency: 'TRY', decimalSeparator: ',', thousandsSeparator: '.' });
+    config({ defaultCurrency: 'TRY' });
   }
 }

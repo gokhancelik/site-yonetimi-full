@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { OdemeService } from '../odeme.service';
 import { Tahakkuk } from '../models/tahakkuk.model';
 import { Router } from '@angular/router';
+import { OnlineIslemlerService } from '../online-islemler.service';
+import { Tahsilat } from '../models/tahsilat.model';
 
 @Component({
   selector: 'app-odeme',
@@ -13,7 +15,9 @@ export class OdemeComponent implements OnInit {
   yillar: any[];
   model: any = {};
   seciliTahakkuklar: Tahakkuk[];
+  tahsilat: Tahsilat;
   constructor(private odemeService: OdemeService,
+    private onlineIslemlerService: OnlineIslemlerService,
     private router: Router) { }
 
   ngOnInit() {
@@ -23,20 +27,25 @@ export class OdemeComponent implements OnInit {
       return;
     }
     this.aylar = Array.from(Array(12).keys()).map(x => {
-      let y = x + 1;
-      let id = y > 9 ? y : `0${y}`;
+      const y = x + 1;
+      const id = y > 9 ? y : `0${y}`;
       return {
-        id: id,
+        id,
         ad: id
-      }
+      };
     });
     this.yillar = Array.from(Array(10).keys()).map(x => {
-      let buYil = new Date().getFullYear();
+      const buYil = new Date().getFullYear();
       return {
         id: buYil + x,
         ad: buYil + x
-      }
+      };
     });
+    this.onlineIslemlerService.tahsilatOlustur(this.seciliTahakkuklar)
+      .subscribe(d => {
+        console.log(d)
+        this.tahsilat = d;
+      });
   }
   odemeyiTamamla(e) {
   }

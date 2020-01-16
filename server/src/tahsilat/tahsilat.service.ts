@@ -6,12 +6,16 @@ import { OdenmemisTahakkuk } from '../tahakkuk/odenmemis-tahakkuk.dto';
 import { TahsilatKalem } from './tahsilat-kalem.entity';
 import { GelirGiderTanimi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entity';
 import { GelirGiderTanimiService } from '../gelir-gider-tanimi/gelir-gider-tanimi.service';
+import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
+import { TahakkukService } from '../tahakkuk/tahakkuk.service';
 
 @Injectable()
 export class TahsilatService extends BaseService<Tahsilat>{
 
 
-    constructor(repository: TahsilatRepository, private gelirGiderTanimiService: GelirGiderTanimiService) {
+    constructor(repository: TahsilatRepository,
+        private gelirGiderTanimiService: GelirGiderTanimiService,
+        private tahakkukService: TahakkukService) {
         super(repository);
     }
     getTahsilatlarByUserId(userId: any): Promise<Tahsilat[]> {
@@ -25,19 +29,20 @@ export class TahsilatService extends BaseService<Tahsilat>{
         tahsilat.durumu = TahsilatDurumu.Bekliyor;
         tahsilat.bagimsizBolumKisiId = seciliTahakkuklar[0].bagimsizBolumKisiId;
         tahsilat.tahsilatKalems = [];
-        for (let i = 0; i < seciliTahakkuklar.length; i++) {
-            const st = seciliTahakkuklar[i];
+        for (const st of seciliTahakkuklar) {
+            var tahakkuk = await this.tahakkukService.findById(st.id);
             var tahsilatKalem = new TahsilatKalem();
-            tahsilatKalem.odemeTipi = st.odemeTipi;
+            tahsilatKalem.odemeTipi = await this.gelirGiderTanimiService.findById(st.odemeTipiId);
             tahsilatKalem.odemeTipiId = st.odemeTipiId;
             tahsilatKalem.tahakkukId = st.id;
+            tahsilatKalem.tahakkuk = tahakkuk;
             tahsilatKalem.tutar = st.tutar - st.odenenTutar;
             tahsilat.tahsilatKalems.push(tahsilatKalem);
             if (st.faiz > 0) {
                 var tahsilatKalem = new TahsilatKalem();
-                tahsilatKalem.odemeTipiId = st.odemeTipiId;
                 tahsilatKalem.tahakkukId = st.id;
                 tahsilatKalem.tutar = st.faiz;
+                tahsilatKalem.tahakkuk = tahakkuk;
                 let gelirTanimi = await this.gelirGiderTanimiService.getByKod(GelirGiderTanimi.Faiz);
                 tahsilatKalem.odemeTipiId = gelirTanimi.id;
                 tahsilatKalem.odemeTipi = gelirTanimi;
@@ -45,9 +50,9 @@ export class TahsilatService extends BaseService<Tahsilat>{
             }
             if (st.bankaKomisyonu > 0) {
                 var tahsilatKalem = new TahsilatKalem();
-                tahsilatKalem.odemeTipiId = st.odemeTipiId;
                 tahsilatKalem.tahakkukId = st.id;
                 tahsilatKalem.tutar = st.faiz;
+                tahsilatKalem.tahakkuk = tahakkuk;
                 let gelirTanimi = await this.gelirGiderTanimiService.getByKod(GelirGiderTanimi.BankaKomisyonu);
                 tahsilatKalem.odemeTipiId = gelirTanimi.id;
                 tahsilatKalem.odemeTipi = gelirTanimi;

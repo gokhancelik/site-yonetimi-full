@@ -7,6 +7,9 @@ export abstract class BaseService<TEntity> {
     findAll(): Promise<TEntity[]> {
         return this.repository.find();
     }
+    findById(id: string): Promise<TEntity> {
+        return this.repository.findOne(id);
+    }
     async create(site: TEntity): Promise<TEntity> {
         return await this.repository.save(site);
     }

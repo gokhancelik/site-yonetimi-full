@@ -34,13 +34,13 @@ export class Tahakkuk {
     @Column({ type: 'uuid' })
     odemeTipiId: string;
 
-    @ManyToOne(type => GelirGiderTanimi)
+    @ManyToOne(type => GelirGiderTanimi, { eager: true })
     odemeTipi!: GelirGiderTanimi;
 
     @Column({ type: 'uuid' })
     bagimsizBolumKisiId: string;
 
-    @ManyToOne(type => BagimsizBolumKisi)
+    @ManyToOne(type => BagimsizBolumKisi, { eager: true })
     bagimsizBolumKisi!: BagimsizBolumKisi;
 
     @Column({ type: 'int' })
