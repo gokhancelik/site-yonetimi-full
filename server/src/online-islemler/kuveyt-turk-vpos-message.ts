@@ -6,30 +6,30 @@ export enum BrandName {
     Visa = 100
 }
 export enum Currency {
-    TRL = 949,
-    USD = 978,
-    GBP = 826,
-    EUR = 978,
-    JPY = 392,
+    TRL = '0949',
+    USD = '0978',
+    GBP = '0826',
+    EUR = '0978',
+    JPY = '0392',
 }
 export enum TransactionType {
-    Sale,
-    Auth,
-    Vft,
-    Point,
-    Cancel,
-    Refund,
-    Capture,
-    Reversal,
-    CampaignSearch,
-    CardTest,
-    BatchClosedSuccessSearch,
-    SurchargeSearch,
-    VFTSale,
-    VFTSearch,
-    PointSearch,
-    PointSale,
-    Credit
+    Sale = 'Sale',
+    Auth = 'Auth',
+    Vft = 'Vft',
+    Point = 'Point',
+    Cancel = 'Cancel',
+    Refund = 'Refund',
+    Capture = 'Capture',
+    Reversal = 'Reversal',
+    CampaignSearch = 'CampaignSearch',
+    CardTest = 'CardTest',
+    BatchClosedSuccessSearch = 'BatchClosedSuccessSearch',
+    SurchargeSearch = 'SurchargeSearch',
+    VFTSale = 'VFTSale',
+    VFTSearch = 'VFTSearch',
+    PointSearch = 'PointSearch',
+    PointSale = 'PointSale',
+    Credit = 'Credit',
 }
 
 export class KuveytTurkVPosMessage {
@@ -38,15 +38,18 @@ export class KuveytTurkVPosMessage {
     get hashData(): string {
         if (this.password != null) {
             // SHA1 sha = new SHA1CryptoServiceProvider();
-            const sha = crypto.createHash('sha1');
-            sha.update(this.password);
-            const hash = sha.digest('base64');
+            const shaPass = crypto.createHash('sha1');
+            shaPass.update(this.password);
+            const hash = shaPass.digest('base64');
             // string HashedPassword = Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(Password)));
-            // string hashstr = MerchantId + MerchantOrderId + Amount + OkUrl + FailUrl + UserName + HashedPassword;
+            let hashstr = this.merchantId + this.merchantOrderId + this.amount + this.okUrl + this.failUrl + this.userName + hash;
             // byte[] hashbytes = System.Text.Encoding.GetEncoding('ISO-8859-9').GetBytes(hashstr);
             // byte[] inputbytes = sha.ComputeHash(hashbytes);
             // string hash = Convert.ToBase64String(inputbytes);
-            return hash;
+            const shaData = crypto.createHash('sha1');
+            shaData.update(hashstr);
+            const hashedData = shaData.digest('base64');
+            return hashedData;
         }
         return '';
     }
@@ -132,7 +135,7 @@ export class KuveytTurkVPosMessage {
         if (this.merchantOrderId) {
             xmlStr += `<MerchantOrderId>${this.merchantOrderId}</MerchantOrderId>`;
         }
-        xmlStr += `<TransactionSecurity>${3}</TransactionSecurity>`;
+        xmlStr += `<TransactionSecurity>3</TransactionSecurity>`;
         if (this.additionalData) {
             xmlStr += `<KuveytTurkVPosAdditionalData>
                 <AdditionalData>
@@ -151,4 +154,14 @@ export class KuveytTurkVPosMessage {
 export interface AdditionalData {
     key: string;
     data: string;
+}
+export interface VPosTransactionResponseContract {
+    IsEnrolled: string;
+    IsVirtual: string;
+    ResponseCode: string;
+    ResponseMessage: string;
+    OrderId: string;
+    TransactionTime: string;
+    ReferenceId: string;
+    BusinessKey: string;
 }

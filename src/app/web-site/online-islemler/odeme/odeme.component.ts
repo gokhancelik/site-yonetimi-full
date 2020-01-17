@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { OnlineIslemlerService } from '../online-islemler.service';
 import { Tahsilat } from '../models/tahsilat.model';
 import { SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { OdemeGatewayComponent } from '../odeme-gateway/odeme-gateway.component';
 
 @Component({
   selector: 'app-odeme',
@@ -14,12 +16,19 @@ import { SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl, DomSanitizer
 export class OdemeComponent implements OnInit {
   aylar: any[];
   yillar: any[];
-  model: any = {};
+  model: any = {
+    cardHolderName: 'Gökhan Çelik',
+    cardNumber: '4033602562020327',
+    cardExpireDateMonth: '01',
+    cardExpireDateYear: 2020,
+    cardCVV2: '861'
+  };
   seciliTahakkuklar: Tahakkuk[];
   tahsilat: Tahsilat;
   sonucUrl: any;
   @ViewChild('iFrameRef', { static: true }) iFrameRef;
   constructor(private odemeService: OdemeService,
+    private modalService: NgbModal,
     private onlineIslemlerService: OnlineIslemlerService,
     protected sanitizer: DomSanitizer,
     private router: Router) { }
@@ -55,6 +64,11 @@ export class OdemeComponent implements OnInit {
     this.onlineIslemlerService.odeme({ tahsilat: this.tahsilat, creditCard: this.model })
       .subscribe(d => {
         this.sonucUrl = this.transform(d.htmlResponse);
+        let odemeModal = this.modalService.open(OdemeGatewayComponent);
+        odemeModal.componentInstance.data = this.sonucUrl;
+        odemeModal.result.then(() => {
+
+        });
       });
   }
   public transform(value: any) {

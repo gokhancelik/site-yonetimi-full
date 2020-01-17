@@ -5,9 +5,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { TahsilatService } from '../tahsilat/tahsilat.service';
 import { Tahsilat } from '../tahsilat/tahsilat.entity';
 import { OdenmemisTahakkuk } from '../tahakkuk/odenmemis-tahakkuk.dto';
-import { KuveytTurkVPosMessage, Currency, TransactionType, BrandName } from './kuveyt-turk-vpos-message';
+import { KuveytTurkVPosMessage, Currency, TransactionType, BrandName, VPosTransactionResponseContract } from './kuveyt-turk-vpos-message';
 import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import * as xml2js from 'xml2js';
 @Controller('online-islemler')
 export class OnlineIslemlerController {
     /**
@@ -35,7 +36,15 @@ export class OnlineIslemlerController {
     }
     @Post('odeme-hatali')
     async odemeHatali(@Body() model: any): Promise<any> {
-        return of(model).toPromise();
+        const parser = new xml2js.Parser({ explicitArray: false });
+        const sonuc: { sonuc?: boolean, hataKodu?: string, hataMesaji?: string } = {};
+        parser.parseString(decodeURIComponent(model.AuthenticationResponse).replace(/\+/g, ' '),
+            (err, result: { VPosTransactionResponseContract: VPosTransactionResponseContract }) => {
+                sonuc.sonuc = false;
+                sonuc.hataKodu = result.VPosTransactionResponseContract.ResponseCode;
+                sonuc.hataMesaji = result.VPosTransactionResponseContract.ResponseMessage;
+            });
+        return of(sonuc).toPromise();
     }
     @UseGuards(AuthGuard('jwt'))
     @Post('odeme')
@@ -50,14 +59,14 @@ export class OnlineIslemlerController {
         const Password = 'api123'; //  api rollü kullanici sifresi
         const gServer = 'https://boatest.kuveytturk.com.tr/boa.virtualpos.services/Home/ThreeDModelPayGate';
         const payment = new KuveytTurkVPosMessage(
-            model.tahsilat.tutar.toLocaleString('tr-TR'),
+            model.tahsilat.tutar.toLocaleString('tr-TR').replace('.', '').replace(',', ''),
             CustomerId,
             model.creditCard.cardHolderName,
             model.creditCard.cardNumber,
             model.creditCard.brandName ? model.creditCard.brandName : BrandName.MasterCard,
             model.creditCard.cardCVV2,
             model.creditCard.cardExpireDateMonth,
-            model.creditCard.cardExpireDateYear,
+            model.creditCard.cardExpireDateYear.toString().substring(2),
             Currency.TRL,
             OkUrl,
             FailUrl,
@@ -74,7 +83,7 @@ export class OnlineIslemlerController {
                 'Content-Type': 'application/xml',
             }
         }).pipe(map(d => {
-            return { htmlResponse: d.data }
+            return { htmlResponse: d.data };
         })).pipe(catchError(e => {
             throw new HttpException(e.response.data, e.response.status);
         })).toPromise();
