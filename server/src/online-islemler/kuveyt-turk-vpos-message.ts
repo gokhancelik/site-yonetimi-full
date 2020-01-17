@@ -1,17 +1,18 @@
-public enum BrandName {
+import * as crypto from 'crypto';
+export enum BrandName {
     Troy = 400,
     AmericanExpress = 300,
     MasterCard = 200,
     Visa = 100
 }
-public enum Currency {
+export enum Currency {
     TRL = 949,
     USD = 978,
     GBP = 826,
     EUR = 978,
     JPY = 392,
 }
-public enum TransactionType {
+export enum TransactionType {
     Sale,
     Auth,
     Vft,
@@ -32,100 +33,122 @@ public enum TransactionType {
 }
 
 export class KuveytTurkVPosMessage {
-    private readonly NumberFormatInfo _moneyFormatInfo;
 
-    KuveytTurkVPosMessage() {
-        _moneyFormatInfo = new NumberFormatInfo();
-        _moneyFormatInfo.NumberDecimalSeparator = ".";
-    }
-    OkUrl: string;
-    FailUrl: string;
-    APIVersion: string;
-    get HashData(): string {
-        if (Password != null) {
-            SHA1 sha = new SHA1CryptoServiceProvider();
-            string HashedPassword = Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(Password)));
-            string hashstr = MerchantId + MerchantOrderId + Amount + OkUrl + FailUrl + UserName + HashedPassword;
-            byte[] hashbytes = System.Text.Encoding.GetEncoding("ISO-8859-9").GetBytes(hashstr);
-            byte[] inputbytes = sha.ComputeHash(hashbytes);
-            string hash = Convert.ToBase64String(inputbytes);
+    apiVersion: string;
+    get hashData(): string {
+        if (this.password != null) {
+            // SHA1 sha = new SHA1CryptoServiceProvider();
+            const sha = crypto.createHash('sha1');
+            sha.update(this.password);
+            const hash = sha.digest('base64');
+            // string HashedPassword = Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(Password)));
+            // string hashstr = MerchantId + MerchantOrderId + Amount + OkUrl + FailUrl + UserName + HashedPassword;
+            // byte[] hashbytes = System.Text.Encoding.GetEncoding('ISO-8859-9').GetBytes(hashstr);
+            // byte[] inputbytes = sha.ComputeHash(hashbytes);
+            // string hash = Convert.ToBase64String(inputbytes);
             return hash;
         }
-        return "";
+        return '';
     }
-    MerchantId: string;
-    CustomerId: string;
-    UserName: string;
-    Password: string;
-    CardNumber: string;
-    CardExpireDateYear: string;
-    CardExpireDateMonth: string;
-    CardCVV2: string;
-    CardHolderName: string;
-    CardType: BrandName;
-    TransactionType: TransactionType;
-    InstallmentCount: number;
-    Amount: string;
-    get DisplayAmount() { return this.Amount; }
-    CurrencyCode: Currency;
-    MerchantOrderId: string;
-    TransactionSecurity: string;
-    ServiceUrl: string;
-    AdditionalData: string;
+    get displayAmount() { return this.amount; }
+    transactionSecurity: string;
+    additionalData: AdditionalData;
+    constructor(public amount: string,
+        public customerId: string,
+        public cardHolderName: string,
+        public cardNumber: string,
+        public cardType: BrandName,
+        public cardCVV2: string,
+        public cardExpireDateMonth: string,
+        public cardExpireDateYear: string,
+        public currencyCode: Currency,
+        public okUrl: string,
+        public failUrl: string,
+        public merchantId: string,
+        public merchantOrderId: string,
+        public userName: string,
+        public password: string,
+        public serviceUrl: string,
+        public transactionType: TransactionType,
+        public installmentCount: number
+    ) {
+    }
     toXML(): string {
-        StringBuilder strXML = new StringBuilder();
-        strXML.AppendFormat("<{0}>", "KuveytTurkVPosMessage");
-        if (!string.IsNullOrWhiteSpace(APIVersion))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "APIVersion", APIVersion);
-        if (!string.IsNullOrWhiteSpace(OkUrl))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "OkUrl", OkUrl);
-        if (!string.IsNullOrWhiteSpace(FailUrl))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "FailUrl", FailUrl);
-        if (!string.IsNullOrWhiteSpace(HashData))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "HashData", HashData);
-        if (!string.IsNullOrWhiteSpace(MerchantId))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "MerchantId", MerchantId);
-        if (!string.IsNullOrWhiteSpace(CustomerId))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "CustomerId", CustomerId);
-        if (!string.IsNullOrWhiteSpace(UserName))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "UserName", UserName);
-        if (!string.IsNullOrWhiteSpace(CardNumber))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "CardNumber", CardNumber);
-        if (!string.IsNullOrWhiteSpace(CardExpireDateYear))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "CardExpireDateYear", CardExpireDateYear);
-        if (!string.IsNullOrWhiteSpace(CardExpireDateMonth))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "CardExpireDateMonth", CardExpireDateMonth);
-        if (!string.IsNullOrWhiteSpace(CardCVV2))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "CardCVV2", CardCVV2);
-        if (!string.IsNullOrWhiteSpace(CardHolderName))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "CardHolderName", CardHolderName);
-        if (CardType.HasValue)
-            strXML.AppendFormat("<{0}>{1}</{0}>", "CardType", CardType.Value.ToString());
-        if (TransactionType.HasValue)
-            strXML.AppendFormat("<{0}>{1}</{0}>", "TransactionType", TransactionType.ToString());
-        if (InstallmentCount.HasValue)
-            strXML.AppendFormat("<{0}>{1}</{0}>", "InstallmentCount", InstallmentCount);
-        strXML.AppendFormat("<{0}>{1}</{0}>", "Amount", Amount);
-        strXML.AppendFormat("<{0}>{1}</{0}>", "DisplayAmount", DisplayAmount);
-        if (CurrencyCode.HasValue)
-            strXML.AppendFormat("<{0}>0{1}</{0}>", "CurrencyCode", (int)Enum.Parse(typeof (Currency), CurrencyCode.ToString()));
-        if (!string.IsNullOrWhiteSpace(MerchantOrderId))
-            strXML.AppendFormat("<{0}>{1}</{0}>", "MerchantOrderId", MerchantOrderId);
-        strXML.AppendFormat("<{0}>{1}</{0}>", "TransactionSecurity", 3);
-        if (AdditionalData != null) {
-            strXML.AppendFormat("<{0}>", "KuveytTurkVPosAdditionalData");
-            strXML.AppendFormat("<{0}>", "AdditionalData");
-            if (!string.IsNullOrWhiteSpace(AdditionalData.Key))
-                strXML.AppendFormat("<{0}>{1}</{0}>", "Key", AdditionalData.Key);
-            if (!string.IsNullOrWhiteSpace(AdditionalData.Data))
-                strXML.AppendFormat("<{0}>{1}</{0}>", "Data", AdditionalData.Data);
-            strXML.AppendFormat("</{0}>", "AdditionalData");
-            strXML.AppendFormat("</{0}>", "KuveytTurkVPosAdditionalData");
+        let xmlStr = '<KuveytTurkVPosMessage>';
+        if (this.apiVersion) {
+            xmlStr += `<APIVersion>${this.apiVersion}</APIVersion>`;
         }
-        strXML.AppendFormat("</{0}>", "KuveytTurkVPosMessage");
-        return strXML.ToString();
+        if (this.okUrl) {
+            xmlStr += `<OkUrl>${this.okUrl}</OkUrl>`;
+        }
+        if (this.failUrl) {
+            xmlStr += `<FailUrl>${this.failUrl}</FailUrl>`;
+        }
+        if (this.hashData) {
+            xmlStr += `<HashData>${this.hashData}</HashData>`;
+        }
+        if (this.merchantId) {
+            xmlStr += `<MerchantId>${this.merchantId}</MerchantId>`;
+        }
+        if (this.customerId) {
+            xmlStr += `<CustomerId>${this.customerId}</CustomerId>`;
+        }
+        if (this.userName) {
+            xmlStr += `<UserName>${this.userName}</UserName>`;
+        }
+        if (this.cardNumber) {
+            xmlStr += `<CardNumber>${this.cardNumber}</CardNumber>`;
+        }
+        if (this.cardExpireDateYear) {
+            xmlStr += `<CardExpireDateYear>${this.cardExpireDateYear}</CardExpireDateYear>`;
+        }
+        if (this.cardExpireDateMonth) {
+            xmlStr += `<CardExpireDateMonth>${this.cardExpireDateMonth}</CardExpireDateMonth>`;
+        }
+        if (this.cardCVV2) {
+            xmlStr += `<CardCVV2>${this.cardCVV2}</CardCVV2>`;
+        }
+        if (this.cardHolderName) {
+            xmlStr += `<CardHolderName>${this.cardHolderName}</CardHolderName>`;
+        }
+        if (this.cardType) {
+            xmlStr += `<CardType>${this.cardType}</CardType>`;
+        }
+        if (this.currencyCode) {
+            xmlStr += `<CurrencyCode>${this.currencyCode}</CurrencyCode>`;
+        }
+        if (this.transactionType) {
+            xmlStr += `<TransactionType>${this.transactionType}</TransactionType>`;
+        }
+        if (this.installmentCount) {
+            xmlStr += `<InstallmentCount>${this.installmentCount}</InstallmentCount>`;
+        }
+        if (this.amount) {
+            xmlStr += `<Amount>${this.amount}</Amount>`;
+        }
+        if (this.displayAmount) {
+            xmlStr += `<DisplayAmount>${this.displayAmount}</DisplayAmount>`;
+        }
+        if (this.merchantOrderId) {
+            xmlStr += `<MerchantOrderId>${this.merchantOrderId}</MerchantOrderId>`;
+        }
+        xmlStr += `<TransactionSecurity>${3}</TransactionSecurity>`;
+        if (this.additionalData) {
+            xmlStr += `<KuveytTurkVPosAdditionalData>
+                <AdditionalData>
+                    <Key>${this.additionalData.key}</Key>
+                    <Data>${ this.additionalData.data} </Data>
+                </AdditionalData>
+            </KuveytTurkVPosAdditionalData>`;
+        }
+        xmlStr += `</KuveytTurkVPosMessage>`;
+        return xmlStr;
     }
     toString() {
         return this.toXML();
     }
+}
+export interface AdditionalData {
+    key: string;
+    data: string;
 }

@@ -24,8 +24,8 @@ export class OnlineIslemlerService {
     //   return tList.map(t => new Tahsilat().deserialize(t));
     // }));
   }
-  odeme(tahsilat: any): Observable<Tahsilat> {
-    return this.http.post<Tahsilat>(`${this.baseUrl}/odeme`, tahsilat);
+  odeme(tahsilat: any): Observable<{ htmlResponse: string }> {
+    return this.http.post<{ htmlResponse: string }>(`${this.baseUrl}/odeme`, tahsilat);
     // .pipe(map(tList => {
     //   return tList.map(t => new Tahsilat().deserialize(t));
     // }));

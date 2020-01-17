@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { OdemeService } from '../odeme.service';
 import { Tahakkuk } from '../models/tahakkuk.model';
 import { Router } from '@angular/router';
 import { OnlineIslemlerService } from '../online-islemler.service';
 import { Tahsilat } from '../models/tahsilat.model';
+import { SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-odeme',
@@ -16,8 +17,11 @@ export class OdemeComponent implements OnInit {
   model: any = {};
   seciliTahakkuklar: Tahakkuk[];
   tahsilat: Tahsilat;
+  sonucUrl: any;
+  @ViewChild('iFrameRef', { static: true }) iFrameRef;
   constructor(private odemeService: OdemeService,
     private onlineIslemlerService: OnlineIslemlerService,
+    protected sanitizer: DomSanitizer,
     private router: Router) { }
 
   ngOnInit() {
@@ -49,6 +53,15 @@ export class OdemeComponent implements OnInit {
   }
   odemeyiTamamla(e) {
     this.onlineIslemlerService.odeme({ tahsilat: this.tahsilat, creditCard: this.model })
-      .subscribe(console.log)
+      .subscribe(d => {
+        this.sonucUrl = this.transform(d.htmlResponse);
+      });
+  }
+  public transform(value: any) {
+    const getBlobURL = (code, type) => {
+      const blob = new Blob([code], { type })
+      return URL.createObjectURL(blob)
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(getBlobURL(value, 'text/html'));
   }
 }
