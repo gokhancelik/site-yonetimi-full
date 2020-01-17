@@ -1,4 +1,4 @@
-import { Controller, Get, Request, UseGuards, Post, Body } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards, Post, Body, HttpService } from '@nestjs/common';
 import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
 import { TahakkukService } from '../tahakkuk/tahakkuk.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -12,7 +12,8 @@ export class OnlineIslemlerController {
      *
      */
     constructor(private service: TahakkukService,
-        private tahsilatService: TahsilatService) {
+        private tahsilatService: TahsilatService,
+        private readonly httpService: HttpService) {
     }
     @UseGuards(AuthGuard('jwt'))
     @Get('odenmemis-aidatlar')
@@ -32,7 +33,7 @@ export class OnlineIslemlerController {
     }
     @UseGuards(AuthGuard('jwt'))
     @Post('odeme')
-    odeme(@Body() model: { tahsilat: Tahsilat, creditCard: any }): any {
+    async odeme(@Body() model: { tahsilat: Tahsilat, creditCard: any }): any {
         //var baseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
         var merchantOrderId = model.tahsilat.id;
         var CustomerId = "400235"; //Müsteri Numarasi
@@ -45,12 +46,12 @@ export class OnlineIslemlerController {
         var payment = {
             Amount: model.tahsilat.tutar,
             CustomerId: CustomerId,
-            CardHolderName: model.creditCard.CardHolderName,
-            CardNumber: model.creditCard.CardNumber,
-            CardType: model.creditCard.BrandName,
-            CardCVV2: model.creditCard.CardCVV2,
-            CardExpireDateMonth: model.creditCard.CardExpireDateMonth,
-            CardExpireDateYear: model.creditCard.CardExpireDateYear,
+            CardHolderName: model.creditCard.cardHolderName,
+            CardNumber: model.creditCard.cardNumber,
+            CardType: model.creditCard.brandName,
+            CardCVV2: model.creditCard.cardCVV2,
+            CardExpireDateMonth: model.creditCard.cardExpireDateMonth,
+            CardExpireDateYear: model.creditCard.cardExpireDateYear,
             CurrencyCode: 'TRL',
             FailUrl: FailUrl,
             MerchantId: MerchantId,
@@ -62,9 +63,14 @@ export class OnlineIslemlerController {
             UserName: UserName,
             InstallmentCount: 0
         };
+        var result = await this.httpService.post(payment.ServiceUrl, payment, {
+            headers: {
+                'Content-Type': 'application/xml',
+            }
+        }).toPromise();
         // var service = new KuveytTurkEnrollmentService();
         // var result = service.Enrollment(payment);
-        return payment;
+        return result;
     }
 
 

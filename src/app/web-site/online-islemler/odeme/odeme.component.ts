@@ -48,7 +48,7 @@ export class OdemeComponent implements OnInit {
       });
   }
   odemeyiTamamla(e) {
-    this.onlineIslemlerService.odeme(this.tahsilat)
+    this.onlineIslemlerService.odeme({ tahsilat: this.tahsilat, creditCard: this.model })
       .subscribe(console.log)
   }
 }
