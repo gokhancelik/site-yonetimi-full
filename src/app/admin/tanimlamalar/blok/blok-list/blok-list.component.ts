@@ -28,6 +28,13 @@ export class BlokListComponent extends BaseListComponent<Blok> implements OnInit
         type: 'required',
         message: 'Ad zorunludur',
       }],
+      cellTemplate: 'detailLink',
+      editorOptions: {
+        customParams: {
+          detailKey: 'id',
+          routerLink: ['/admin', 'tanimlamalar', 'blok', ':id', 'detay']
+        },
+      },
       visible: true,
     },
     {
@@ -44,6 +51,7 @@ export class BlokListComponent extends BaseListComponent<Blok> implements OnInit
       key: 'siteId',
       name: 'Site',
       type: 'select',
+      cellTemplate: 'detailLink',
       validators: [{
         type: 'required',
         message: 'Site zorunludur',
@@ -51,7 +59,10 @@ export class BlokListComponent extends BaseListComponent<Blok> implements OnInit
       editorOptions: {
         itemsAsync: siteService.getList(),
         displayExpr: 'ad',
-        valueExpr: 'id'
+        valueExpr: 'id',
+        customParams: {
+          routerLink: ['/admin', 'tanimlamalar', 'site', ':siteId', 'detay']
+        },
       },
       visible: true,
     }];

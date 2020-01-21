@@ -65,14 +65,19 @@ export class BagimsizBolumListComponent extends BaseListComponent<BagimsizBolum>
       editorOptions: {
         itemsAsync: blokService.getList(),
         displayExpr: 'ad',
-        valueExpr: 'id'
+        valueExpr: 'id',
+        customParams: {
+          detailKey: 'id',
+          routerLink: ['/admin', 'tanimlamalar', 'blok', ':id', 'detay']
+        },
       },
+      cellTemplate: 'detailLink',
       visible: true,
     }];
     this.aidatGrubuService.getList<AidatGrubu>()
       .subscribe(d => {
         this.aidatGruplari = d;
-      })
+      });
   }
   onToolbarPreparing(e) {
     e.toolbarOptions.items.unshift({
