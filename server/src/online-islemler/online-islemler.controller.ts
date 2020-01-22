@@ -34,17 +34,37 @@ export class OnlineIslemlerController {
     tahsilatOlustur(@Body() seciliTahakkuklar: OdenmemisTahakkuk[]): Promise<Tahsilat> {
         return this.tahsilatService.tahsilatOlustur(seciliTahakkuklar);
     }
+    @Post('odeme-basarili')
+    async odemeBasarili(@Body() model: any): Promise<any> {
+        const sonuc: { sonuc?: boolean, hataKodu?: string, hataMesaji?: string } = {};
+        let enrollmentResult = await xml2js.parseStringPromise(decodeURIComponent(model.AuthenticationResponse).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase], });
+        // (err, result: { VPosTransactionResponseContract: VPosTransactionResponseContract }) => {
+        //     enrollmentResult = result.VPosTransactionResponseContract
+        //     sonuc.sonuc = result.VPosTransactionResponseContract.ResponseCode === '00';
+        //     sonuc.hataKodu = result.VPosTransactionResponseContract.ResponseCode;
+        //     sonuc.hataMesaji = result.VPosTransactionResponseContract.ResponseMessage;
+        // });
+        if (sonuc.sonuc) {
+            let paymentReq = enrollmentResult.VPosMessage;
+        }
+        return of(sonuc).toPromise();
+    }
     @Post('odeme-hatali')
     async odemeHatali(@Body() model: any): Promise<any> {
-        const parser = new xml2js.Parser({ explicitArray: false });
         const sonuc: { sonuc?: boolean, hataKodu?: string, hataMesaji?: string } = {};
-        parser.parseString(decodeURIComponent(model.AuthenticationResponse).replace(/\+/g, ' '),
-            (err, result: { VPosTransactionResponseContract: VPosTransactionResponseContract }) => {
-                sonuc.sonuc = false;
-                sonuc.hataKodu = result.VPosTransactionResponseContract.ResponseCode;
-                sonuc.hataMesaji = result.VPosTransactionResponseContract.ResponseMessage;
-            });
+        let enrollmentResult = await xml2js.parseStringPromise(decodeURIComponent(model.AuthenticationResponse).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase] });
+        // parser.parseString(decodeURIComponent(model.AuthenticationResponse).replace(/\+/g, ' '),
+        //     (err, result: { VPosTransactionResponseContract: VPosTransactionResponseContract }) => {
+        //         sonuc.sonuc = false;
+        //         sonuc.hataKodu = result.VPosTransactionResponseContract.ResponseCode;
+        //         sonuc.hataMesaji = result.VPosTransactionResponseContract.ResponseMessage;
+        //     });
         return of(sonuc).toPromise();
+    }
+    private camelCase(str) {
+        return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+            return index == 0 ? word.toLowerCase() : word.toUpperCase();
+        }).replace(/\s+/g, '');
     }
     @UseGuards(AuthGuard('jwt'))
     @Post('odeme')
@@ -59,7 +79,7 @@ export class OnlineIslemlerController {
         const Password = 'api123'; //  api rollü kullanici sifresi
         const gServer = 'https://boatest.kuveytturk.com.tr/boa.virtualpos.services/Home/ThreeDModelPayGate';
         const payment = new KuveytTurkVPosMessage(
-            model.tahsilat.tutar.toLocaleString('tr-TR').replace('.', '').replace(',', ''),
+            model.tahsilat.tutar.toLocaleString('tr-TR', { maximumFractionDigits: 2 }).replace('.', '').replace(',', ''),
             CustomerId,
             model.creditCard.cardHolderName,
             model.creditCard.cardNumber,

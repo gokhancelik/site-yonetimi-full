@@ -64,10 +64,10 @@ export class OdemeComponent implements OnInit {
     this.onlineIslemlerService.odeme({ tahsilat: this.tahsilat, creditCard: this.model })
       .subscribe(d => {
         this.sonucUrl = this.transform(d.htmlResponse);
-        let odemeModal = this.modalService.open(OdemeGatewayComponent);
+        let odemeModal = this.modalService.open(OdemeGatewayComponent, { size: 'xl' });
         odemeModal.componentInstance.data = this.sonucUrl;
-        odemeModal.result.then(() => {
-
+        odemeModal.result.then((res) => {
+          console.log(res)
         });
       });
   }

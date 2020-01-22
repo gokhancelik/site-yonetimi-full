@@ -1,5 +1,3 @@
-<div>
-</div>
 <div class="modal-header">
     <h4 class="modal-title">Ödeme Sayfası</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
@@ -7,7 +5,8 @@
     </button>
 </div>
 <div class="modal-body">
-    <iframe *ngIf="data" style="width: 100px; height: 100px;" [src]="data"></iframe>
+    <iframe *ngIf="data" #payment_iframe name="payment_iframe" id="payment_iframe" style="width: 100%; height: 700px;"
+        (load)="paymentResult(payment_iframe)" [src]="data"></iframe>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Kapat</button>

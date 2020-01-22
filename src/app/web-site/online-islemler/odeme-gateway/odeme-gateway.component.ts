@@ -12,5 +12,15 @@ export class OdemeGatewayComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  paymentResult(e) {
+    const body = e.contentWindow.document.body;
+    if (body) {
+      const pre = body.getElementsByTagName('pre');
+      if (pre && pre.length) {
+        console.log(pre)
+        const result: { resultCode: string, resultDetail: string } = JSON.parse(pre[0].innerHTML);
+        this.activeModal.close(result);
+      }
+    }
+  }
 }

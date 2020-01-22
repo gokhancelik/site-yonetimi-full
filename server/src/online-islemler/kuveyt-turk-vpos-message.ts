@@ -156,12 +156,45 @@ export interface AdditionalData {
     data: string;
 }
 export interface VPosTransactionResponseContract {
+    VPosMessage: VPosMessage;
     IsEnrolled: string;
     IsVirtual: string;
     ResponseCode: string;
     ResponseMessage: string;
     OrderId: string;
     TransactionTime: string;
+    MerchantOrderId: string;
+    HashData: string;
+    MD: string;
     ReferenceId: string;
     BusinessKey: string;
+}
+
+export interface VPosMessage {
+    OrderId: string;
+    OkUrl: string;
+    FailUrl: string;
+    MerchantId: string;
+    SubMerchantId: string;
+    CustomerId: string;
+    UserName: string;
+    HashPassword: string;
+    CardNumber: string;
+    BatchID: string;
+    InstallmentCount: string;
+    Amount: string;
+    CancelAmount: string;
+    MerchantOrderId: string;
+    FECAmount: string;
+    CurrencyCode: string;
+    QeryId: string;
+    DebtId: string;
+    SurchargeAmount: string;
+    SGKDebtAmount: string;
+    TransactionSecurity: string;
+    InstallmentMaturityCommisionFlag: string;
+    PaymentId: string;
+    OrderPOSTransactionId: string;
+    TranDate: string;
+    TransactionUserId: string;
 }
