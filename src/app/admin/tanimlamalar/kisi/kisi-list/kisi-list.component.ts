@@ -16,14 +16,29 @@ export class KisiListComponent extends BaseListComponent<Kisi> implements OnInit
       key: 'id',
       name: 'Id',
       type: 'string',
-      editorOptions: { readOnly: true },
       visible: false,
+      cellTemplate: 'detailLink',
+      editorOptions: {
+        readOnly: true,
+        customParams: {
+          detailKey: 'id',
+          routerLink: ['/admin', 'tanimlamalar', 'kisi', ':id', 'detay']
+        },
+      },
     },
     {
       key: 'tcKimlikNo',
       name: 'TC Kimlik No',
       type: 'string',
       visible: true,
+      cellTemplate: 'detailLink',
+      editorOptions: {
+        readOnly: true,
+        customParams: {
+          detailKey: 'id',
+          routerLink: ['/admin', 'tanimlamalar', 'kisi', ':id', 'detay']
+        },
+      },
     },
     {
       key: 'ad',
@@ -34,6 +49,14 @@ export class KisiListComponent extends BaseListComponent<Kisi> implements OnInit
         message: 'Ad zorunludur',
       }],
       visible: true,
+      cellTemplate: 'detailLink',
+      editorOptions: {
+        readOnly: true,
+        customParams: {
+          detailKey: 'id',
+          routerLink: ['/admin', 'tanimlamalar', 'kisi', ':id', 'detay']
+        },
+      },
     },
     {
       key: 'soyad',
@@ -44,6 +67,14 @@ export class KisiListComponent extends BaseListComponent<Kisi> implements OnInit
         message: 'Soyad zorunludur',
       }],
       visible: true,
+      cellTemplate: 'detailLink',
+      editorOptions: {
+        readOnly: true,
+        customParams: {
+          detailKey: 'id',
+          routerLink: ['/admin', 'tanimlamalar', 'kisi', ':id', 'detay']
+        },
+      },
     },
     {
       key: 'telefon',

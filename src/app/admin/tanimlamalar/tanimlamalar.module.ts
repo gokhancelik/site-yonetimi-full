@@ -20,10 +20,14 @@ import { FaizGrubuComponent } from './faiz-grubu/faiz-grubu.component';
 import { FaizGrubuListComponent } from './faiz-grubu/faiz-grubu-list/faiz-grubu-list.component';
 import { GelirGiderTanimComponent } from './gelir-gider-tanim/gelir-gider-tanim.component';
 import { GelirGiderTanimListComponent } from './gelir-gider-tanim/gelir-gider-tanim-list/gelir-gider-tanim-list.component';
+import { BagimsizBolumDetayComponent } from './bagimsiz-bolum/bagimsiz-bolum-detay/bagimsiz-bolum-detay.component';
+import { BlokDetayComponent } from './blok/blok-detay/blok-detay.component';
+import { KisiDetayComponent } from './kisi/kisi-detay/kisi-detay.component';
+import { SiteDetayComponent } from './site/site-detay/site-detay.component';
 
 
 @NgModule({
-  declarations: [BlokListComponent, SiteListComponent, BlokComponent, SiteComponent, BagimsizBolumComponent, BagimsizBolumListComponent, AidatGrubuComponent, AidatGrubuListComponent, HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent, FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent],
+  declarations: [BlokListComponent, SiteListComponent, BlokComponent, SiteComponent, BagimsizBolumComponent, BagimsizBolumListComponent, AidatGrubuComponent, AidatGrubuListComponent, HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent, FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent, BagimsizBolumDetayComponent, BlokDetayComponent, KisiDetayComponent, SiteDetayComponent],
   imports: [
     CommonModule,
     TanimlamalarRoutingModule,
