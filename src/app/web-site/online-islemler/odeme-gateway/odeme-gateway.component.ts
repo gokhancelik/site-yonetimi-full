@@ -19,7 +19,7 @@ export class OdemeGatewayComponent implements OnInit {
       if (pre && pre.length) {
         console.log(pre)
         const result: { resultCode: string, resultDetail: string } = JSON.parse(pre[0].innerHTML);
-        this.activeModal.close(result);
+        console.log(result)
       }
     }
   }

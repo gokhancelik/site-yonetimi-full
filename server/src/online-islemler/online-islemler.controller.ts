@@ -36,7 +36,6 @@ export class OnlineIslemlerController {
     }
     @Post('odeme-basarili')
     async odemeBasarili(@Body() model: any): Promise<any> {
-        const sonuc: { sonuc?: boolean, hataKodu?: string, hataMesaji?: string } = {};
         let enrollmentResult = await xml2js.parseStringPromise(decodeURIComponent(model.AuthenticationResponse).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase], });
         // (err, result: { VPosTransactionResponseContract: VPosTransactionResponseContract }) => {
         //     enrollmentResult = result.VPosTransactionResponseContract
@@ -44,21 +43,58 @@ export class OnlineIslemlerController {
         //     sonuc.hataKodu = result.VPosTransactionResponseContract.ResponseCode;
         //     sonuc.hataMesaji = result.VPosTransactionResponseContract.ResponseMessage;
         // });
+        const UserName = 'apitest'; //  api rollü kullanici adı
+        const Password = 'api123'; //  api rollü kullanici sifresi
+        let server = 'https://boatest.kuveytturk.com.tr/boa.virtualpos.services/Home/ThreeDModelProvisionGate';
+        let provision = new KuveytTurkVPosMessage(
+            enrollmentResult.vPosMessage.amount,
+            enrollmentResult.vPosMessage.customerId,
+            null,
+            enrollmentResult.vPosMessage.cardNumber,
+            null,
+            null,
+            null,
+            null,
+            enrollmentResult.vPosMessage.currencyCode,
+            enrollmentResult.vPosMessage.okUrl,
+            enrollmentResult.vPosMessage.failUrl,
+            enrollmentResult.vPosMessage.merchantId,
+            enrollmentResult.vPosMessage.merchantOrderId,
+            UserName,
+            Password,
+            server,
+            TransactionType.Sale,
+            0
+        );
+        provision.additionalData = {
+            data: enrollmentResult.mD,
+            key: 'MD'
+        };
+        const sonuc: { sonuc?: boolean, kod?: string, mesaj?: string } = {
+            sonuc: enrollmentResult.responseCode === '00',
+            kod: enrollmentResult.responseCode,
+            mesaj: enrollmentResult.responseMessage,
+        };
         if (sonuc.sonuc) {
-            let paymentReq = enrollmentResult.VPosMessage;
+            return await this.httpService.post(provision.serviceUrl, provision.toXML(), {
+                headers: {
+                    'Content-Type': 'application/xml',
+                }
+            }).pipe(map(d => {
+                return { htmlResponse: d.data };
+            })).pipe(catchError(e => {
+                throw new HttpException(e.response.data, e.response.status);
+            })).toPromise();
         }
-        return of(sonuc).toPromise();
     }
     @Post('odeme-hatali')
     async odemeHatali(@Body() model: any): Promise<any> {
-        const sonuc: { sonuc?: boolean, hataKodu?: string, hataMesaji?: string } = {};
         let enrollmentResult = await xml2js.parseStringPromise(decodeURIComponent(model.AuthenticationResponse).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase] });
-        // parser.parseString(decodeURIComponent(model.AuthenticationResponse).replace(/\+/g, ' '),
-        //     (err, result: { VPosTransactionResponseContract: VPosTransactionResponseContract }) => {
-        //         sonuc.sonuc = false;
-        //         sonuc.hataKodu = result.VPosTransactionResponseContract.ResponseCode;
-        //         sonuc.hataMesaji = result.VPosTransactionResponseContract.ResponseMessage;
-        //     });
+        const sonuc: { sonuc?: boolean, kod?: string, mesaj?: string } = {
+            sonuc: enrollmentResult.responseCode === '00',
+            kod: enrollmentResult.responseCode,
+            mesaj: enrollmentResult.responseMessage,
+        };
         return of(sonuc).toPromise();
     }
     private camelCase(str) {
