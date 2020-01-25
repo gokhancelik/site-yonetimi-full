@@ -9,7 +9,7 @@
             <div class="dx-field">
                 <div class="dx-field-label">Başlangıç Tarihi</div> 
                 <div class="dx-field-value">
-                    <dx-date-box name="baslangicTarihi" required [(ngModel)]="selectedStartDate" type="date">
+                    <dx-date-box name="baslangicTarihi" required [(ngModel)]="bagimsizBolumKisi.baslangicTarihi" type="date">
                         <dx-validator>
                             <dxi-validation-rule type="required" message="Başlangıç Tarihi zorunludur">
                             </dxi-validation-rule>
@@ -20,7 +20,7 @@
             <div class="dx-field">
                 <div class="dx-field-label">Bağımsız Bölümler</div>
                 <div class="dx-field-value">
-                    <dx-select-box name="bagimsizBolumId" required [(ngModel)]="selectedBagimsizBolumId"
+                    <dx-select-box name="bagimsizBolumId" required [(ngModel)]="bagimsizBolumKisi.bagimsizBolumId"
                         [dataSource]="bagimsizBolum" displayExpr="kod" valueExpr="id">
                         <dx-validator>
                             <dxi-validation-rule type="required" message="Bağımsız Bölümzorunludur">

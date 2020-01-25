@@ -25,6 +25,7 @@ export class KisiDetayComponent implements OnInit {
   kisiId: string;
   selectedStartDate: Date;
   selectedBagimsizBolumId: string;
+  bagimsizBolumKisi : BagimsizBolumKisi = new BagimsizBolumKisi();
   ngOnInit() {
       this.kisiId = this.route.snapshot.params.id;
       this.getData();
@@ -133,14 +134,9 @@ export class KisiDetayComponent implements OnInit {
     this.popupVisible = selectedBBs && selectedBBs.length > 0;
   }
   assignBagimsizBolum(){
-    console.log(this.selectedStartDate);
-    console.log(this.selectedBagimsizBolumId);
-    let bagimsizBolumKisi : BagimsizBolumKisi = new BagimsizBolumKisi();
-    bagimsizBolumKisi.kisiId = this.kisiId;
-    bagimsizBolumKisi.baslangicTarihi = this.selectedStartDate;
-    bagimsizBolumKisi.bagimsizBolumId = this.selectedBagimsizBolumId;
-    console.log(bagimsizBolumKisi);
-    this.kisiService.add(bagimsizBolumKisi).subscribe(d => {
+    this.bagimsizBolumKisi.kisiId = this.kisiId;
+    console.log(this.bagimsizBolumKisi);
+    this.kisiService.add(this.bagimsizBolumKisi).subscribe(d => {
       this.popupVisible = false;
       this.getData();
     });
