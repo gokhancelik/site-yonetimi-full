@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Patch } from '@nestjs/common';
 import { BaseService } from './base.service';
 
 export class BaseController<TEntity, TService extends BaseService<TEntity>> {

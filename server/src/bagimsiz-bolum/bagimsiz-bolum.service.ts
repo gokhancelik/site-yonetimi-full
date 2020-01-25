@@ -12,6 +12,7 @@ export class BagimsizBolumService extends BaseService<BagimsizBolum>{
     constructor(repository: BagimsizBolumRepository, @InjectRepository(BagimsizBolumAidatGrubu) private bagimsizBolumAidatGrubuRepository: Repository<BagimsizBolumAidatGrubu>) {
         super(repository);
     }
+    
     async findByBlokId(blokId: string): Promise<BagimsizBolum[]> {
         return (this.repository as BagimsizBolumRepository).findByBlokId(blokId);
     }

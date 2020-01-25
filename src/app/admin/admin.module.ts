@@ -11,7 +11,6 @@ import {
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { HttpClientModule } from '@angular/common/http';
 
-
 @NgModule({
   declarations: [AdminComponent, HeaderComponent],
   imports: [

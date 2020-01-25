@@ -11,7 +11,7 @@ export abstract class BaseListComponent<T> implements OnInit {
         this.settings.allowEdit = true;
         this.settings.allowCreate = true;
         this.settings.allowDelete = true;
-    }
+    }   
 
     ngOnInit() {
         this.dataSource = new CustomStore({

@@ -8,4 +8,5 @@ export class BagimsizBolumRepository extends Repository<BagimsizBolum> {
             .where('bb.blokId = :blokId', { blokId: blokId })
             .getMany();
     }
+
 }
