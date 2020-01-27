@@ -1,15 +1,16 @@
-<data-table [dataSource]="dataSource" (dxGridReady)="gridReady($event)" [title]="'Bağımsız Bölüm Listesi'"
+<!-- <data-table [dataSource]="dataSource" (dxGridReady)="gridReady($event)" [title]="'Bağımsız Bölüm Listesi'"
     [columns]="columns" [editMode]="'popup'" name="bagimsizBolumler" (onRowUpdating)="onRowUpdating($event)"
     (onToolbarPreparing)="onToolbarPreparing($event)">
 </data-table>
 <dx-popup [showTitle]="true" title="Bagımsız Bölüm Atama" [dragEnabled]="false" [closeOnOutsideClick]="true"
     [(visible)]="popupVisible">
     <div *dxTemplate="let data of 'content'">
-        <form #form="ngForm" novalidate>            
+        <form #form="ngForm" novalidate>
             <div class="dx-field">
-                <div class="dx-field-label">Başlangıç Tarihi</div> 
+                <div class="dx-field-label">Başlangıç Tarihi</div>
                 <div class="dx-field-value">
-                    <dx-date-box name="baslangicTarihi" required [(ngModel)]="bagimsizBolumKisi.baslangicTarihi" type="date">
+                    <dx-date-box name="baslangicTarihi" required [(ngModel)]="bagimsizBolumKisi.baslangicTarihi"
+                        type="date">
                         <dx-validator>
                             <dxi-validation-rule type="required" message="Başlangıç Tarihi zorunludur">
                             </dxi-validation-rule>
@@ -34,4 +35,7 @@
             </dx-button>
         </form>
     </div>
-</dx-popup>
+</dx-popup> -->
+
+<div>Detay görünümü gelecek</div>
+<app-bagimsiz-bolum-kisi-list [kisiId]="kisiId"></app-bagimsiz-bolum-kisi-list>

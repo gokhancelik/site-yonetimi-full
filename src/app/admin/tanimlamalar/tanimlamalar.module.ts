@@ -24,10 +24,16 @@ import { BagimsizBolumDetayComponent } from './bagimsiz-bolum/bagimsiz-bolum-det
 import { BlokDetayComponent } from './blok/blok-detay/blok-detay.component';
 import { KisiDetayComponent } from './kisi/kisi-detay/kisi-detay.component';
 import { SiteDetayComponent } from './site/site-detay/site-detay.component';
+import { BagimsizBolumKisiListComponent } from './bagimsiz-bolum-kisi/bagimsiz-bolum-kisi-list/bagimsiz-bolum-kisi-list.component';
 
 
 @NgModule({
-  declarations: [BlokListComponent, SiteListComponent, BlokComponent, SiteComponent, BagimsizBolumComponent, BagimsizBolumListComponent, AidatGrubuComponent, AidatGrubuListComponent, HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent, FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent, BagimsizBolumDetayComponent, BlokDetayComponent, KisiDetayComponent, SiteDetayComponent],
+  declarations: [BlokListComponent, SiteListComponent, BlokComponent, SiteComponent, BagimsizBolumComponent,
+    BagimsizBolumListComponent, AidatGrubuComponent, AidatGrubuListComponent,
+    HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent,
+    FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent,
+    BagimsizBolumDetayComponent, BlokDetayComponent, KisiDetayComponent, SiteDetayComponent,
+    BagimsizBolumKisiListComponent],
   imports: [
     CommonModule,
     TanimlamalarRoutingModule,

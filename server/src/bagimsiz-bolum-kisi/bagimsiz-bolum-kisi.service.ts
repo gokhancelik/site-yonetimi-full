@@ -6,13 +6,20 @@ import { BagimsizBolumRepository } from '../bagimsiz-bolum/bagimsiz-bolum.reposi
 @Injectable()
 export class BagimsizBolumKisiService extends BaseService<BagimsizBolumKisi>{
 
+
     constructor(repository: BagimsizBolumKisiRepository) {
         super(repository);
     }
-    async getByKisiId(kisiId: string) : Promise<BagimsizBolumKisi[]> {
+    async getByKisiId(kisiId: string): Promise<BagimsizBolumKisi[]> {
         return this.repository.createQueryBuilder('bbk')
-                .innerJoinAndSelect('bbk.bagimsizBolum', 'bb')                
-                .where('bbk.kisiId = :kisiId', { kisiId: kisiId })
-                .getMany();
+            .innerJoinAndSelect('bbk.bagimsizBolum', 'bb')
+            .where('bbk.kisiId = :kisiId', { kisiId: kisiId })
+            .getMany();
+    }
+    async getByBagimsizBolumId(bagimsizBolumId: string): Promise<BagimsizBolumKisi[]> {
+        return this.repository.createQueryBuilder('bbk')
+            .innerJoinAndSelect('bbk.bagimsizBolum', 'bb')
+            .where('bbk.bagimsizBolumId = :bagimsizBolumId', { bagimsizBolumId: bagimsizBolumId })
+            .getMany();
     }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-bagimsiz-bolum-detay',
@@ -6,10 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./bagimsiz-bolum-detay.component.scss']
 })
 export class BagimsizBolumDetayComponent implements OnInit {
+  bagimsizBolumId: string;
 
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.bagimsizBolumId = this.route.snapshot.params.id;
   }
 
 }

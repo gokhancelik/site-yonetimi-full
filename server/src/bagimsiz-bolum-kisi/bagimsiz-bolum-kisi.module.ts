@@ -8,6 +8,7 @@ import { DatabaseModule } from '../database/database.module';
 @Module({
   imports: [TypeOrmModule.forFeature([BagimsizBolumKisi]), DatabaseModule],
   controllers: [BagimsizBolumKisiController],
-  providers: [BagimsizBolumKisiService]
+  providers: [BagimsizBolumKisiService],
+  exports: [BagimsizBolumKisiService]
 })
-export class BagimsizBolumKisiModule {}
+export class BagimsizBolumKisiModule { }

@@ -37,6 +37,13 @@ export class BagimsizBolumListComponent extends BaseListComponent<BagimsizBolum>
         message: 'Ad zorunludur',
       }],
       visible: true,
+      cellTemplate: 'detailLink',
+      editorOptions: {
+        customParams: {
+          detailKey: 'id',
+          routerLink: ['/admin', 'tanimlamalar', 'bagimsiz-bolum', ':id', 'detay']
+        },
+      },
     },
     {
       key: 'kod',
@@ -47,6 +54,13 @@ export class BagimsizBolumListComponent extends BaseListComponent<BagimsizBolum>
         message: 'Kod zorunludur',
       }],
       visible: true,
+      cellTemplate: 'detailLink',
+      editorOptions: {
+        customParams: {
+          detailKey: 'id',
+          routerLink: ['/admin', 'tanimlamalar', 'bagimsiz-bolum', ':id', 'detay']
+        },
+      },
     },
     {
       key: 'aciklama',
@@ -67,7 +81,7 @@ export class BagimsizBolumListComponent extends BaseListComponent<BagimsizBolum>
         displayExpr: 'ad',
         valueExpr: 'id',
         customParams: {
-          detailKey: 'id',
+          detailKey: 'blokId',
           routerLink: ['/admin', 'tanimlamalar', 'blok', ':id', 'detay']
         },
       },
