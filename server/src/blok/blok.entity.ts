@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Site } from '../site/site.entity';
 import { BagimsizBolum } from '../bagimsiz-bolum/bagimsiz-bolum.entity';
+import { Borc } from '../borc/borc.entity';
 
 @Entity({ name: 'Blok' })
 export class Blok {
@@ -24,4 +25,7 @@ export class Blok {
 
     @OneToMany(type => BagimsizBolum, bb => bb.blok)
     bagimsizBolums: BagimsizBolum[];
+
+    @OneToMany(type => Borc, bb => bb.blok)
+    borclar: Borc[];
 }
