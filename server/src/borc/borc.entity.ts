@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { Blok } from "../blok/blok.entity";
+import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 
 export enum BorcDurumu {
     Odenmedi,
@@ -30,9 +31,12 @@ export class Borc {
     @Column({ type: 'money', nullable: true })
     odenenTutar?: number;
 
-    @Column({ type: 'money' })
-    faizOrani: number;
-
     @Column({ type: 'int' })
-    durumu: BorcDurumu;
+    durumu: BorcDurumu = BorcDurumu.Odenmedi;
+
+    @Column({type: 'uuid'})
+    islemTipiId!: string;
+    
+    @ManyToOne(type => GelirGiderTanimi)
+    islemTipi!: GelirGiderTanimi;
 }

@@ -15,6 +15,8 @@ import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
 import { Tahsilat } from '../tahsilat/tahsilat.entity';
 import { TahakkukTahsilat } from '../tahsilat/tahakkuk-tahsilat.entity';
 import { TahsilatKalem } from '../tahsilat/tahsilat-kalem.entity';
+import { Borc } from '../borc/borc.entity';
+import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
 
 @Module({
     imports: [
@@ -46,6 +48,7 @@ import { TahsilatKalem } from '../tahsilat/tahsilat-kalem.entity';
             database: 'u8998566_zsity',
             entities: [
                 Site,
+                Borc,
                 Blok,
                 BagimsizBolum,
                 AidatGrubu,
@@ -54,6 +57,7 @@ import { TahsilatKalem } from '../tahsilat/tahsilat-kalem.entity';
                 GelirGiderTanimi,
                 BankaTanim,
                 HesapTanimi,
+                HesapHareketi,
                 Kisi,
                 BagimsizBolumKisi,
                 Tahakkuk,

@@ -11,6 +11,11 @@ const routes: Routes = [{
       path: 'tanimlamalar',
       loadChildren: () => import('./tanimlamalar/tanimlamalar.module')
         .then(m => m.TanimlamalarModule),
+    },
+    {
+      path: 'islemler',
+      loadChildren: () => import('./islemler/islemler.module')
+        .then(m => m.IslemlerModule),
     }
   ]
 }];

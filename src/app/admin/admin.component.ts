@@ -55,6 +55,19 @@ export class AdminComponent implements OnInit {
           icon: 'receipt'
         },
       ]
+    },
+    {
+      title: 'İşlemler',
+      icon: 'network',
+      children: [
+        {
+          title: 'Borc',
+          link: '/admin/islemler/borc/list',
+          icon: {
+            icon: 'try',
+          },
+        }
+      ]
     }
   ];
   constructor(

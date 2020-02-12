@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Tahsilat } from '../tahsilat/tahsilat.entity';
 import { Borc } from '../borc/borc.entity';
-import { GelirGiderTanimi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entity';
+import { HareketTipi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entity';
 
 @Entity({ name: 'HesapHareketi' })
 export class HesapHareketi {
@@ -11,24 +11,30 @@ export class HesapHareketi {
     @Column('datetime2')
     islemTarihi: Date;
 
-    @Column({ type: 'uuid' })
-    tahsilatId: string;
+    @Column({ type: 'uuid', nullable: true })
+    tahsilatId?: string;
 
     @ManyToOne(type => Tahsilat)
-    tahsilat: Tahsilat;
+    tahsilat?: Tahsilat;
 
-    @Column({ type: 'uuid' })
-    borcId: string;
+    @Column({ type: 'uuid', nullable: true })
+    borcId?: string;
 
     @ManyToOne(type => Borc)
-    borc: Borc;
-
-    @Column({ type: 'uuid' })
-    islemTipiId: string;
-
-    @ManyToOne(type => GelirGiderTanimi)
-    islemTipi!: GelirGiderTanimi;
+    borc?: Borc;
     
     @Column({ type: 'money' })
     tutar: number;
+
+    @Column({type: "int"})
+    hareketTipi: HareketTipi;
+
+    constructor(islemTarihi:Date, hareketTipi: HareketTipi, tutar: number, tahsilatId?:string, borcId?:string){
+        this.islemTarihi = islemTarihi;
+        this.tutar = tutar;
+        this.hareketTipi = hareketTipi;
+        this.tahsilatId = tahsilatId;
+        this.borcId = borcId;
+    }
+
 }
