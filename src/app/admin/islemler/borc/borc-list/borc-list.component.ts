@@ -4,6 +4,7 @@ import { Borc } from '../borc.model';
 import { BorcService } from '../borc.service';
 import { BlokService } from 'src/app/admin/tanimlamalar/blok/blok.service';
 import { GelirGiderTanimService } from 'src/app/admin/tanimlamalar/gelir-gider-tanim/gelir-gider-tanim.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-borc-list',
@@ -12,7 +13,7 @@ import { GelirGiderTanimService } from 'src/app/admin/tanimlamalar/gelir-gider-t
 })
 export class BorcListComponent extends BaseListComponent<Borc> implements OnInit {
   columns: any[];
-  borcDurumlari = [{ id: 0, name: 'Odenmedi' }, { id: 1, name: 'Odendi' }, { id: 2, name: 'Icrada' }];
+  borcDurumlari = [{ id: '0', name: 'Odenmedi' }, { id: '1', name: 'Odendi' }, { id: '2', name: 'Icrada' }];
 
   constructor(service: BorcService, blokService: BlokService, gelirGiderTanimService: GelirGiderTanimService) {
     super(service);
@@ -20,7 +21,7 @@ export class BorcListComponent extends BaseListComponent<Borc> implements OnInit
       key: 'id',
       name: 'Id',
       type: 'string',
-      editorOptions: { readOnly: true },
+      editorOptions: { readOnly: true, visible: true },
       visible: false,
     },
     {
@@ -35,6 +36,7 @@ export class BorcListComponent extends BaseListComponent<Borc> implements OnInit
         format: {
           type: 'currency',
         },
+        placeholder: 'Para'
       },
     },
     {
@@ -56,7 +58,7 @@ export class BorcListComponent extends BaseListComponent<Borc> implements OnInit
       name: 'Borç Durumu',
       type: 'select',
       editorOptions: {
-        items: this.borcDurumlari,
+        itemsAsync: of(this.borcDurumlari),
         displayExpr: 'name',
         valueExpr: 'id'
       }

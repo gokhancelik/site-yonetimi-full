@@ -54,7 +54,8 @@
           [visible]="col.visible" [editCellTemplate]="col.editCellTemplate" [editorOptions]="col.editorOptions"
           [cellTemplate]="col.cellTemplate" [format]="col.format" [caption]="col.name" [dataType]="col.type"
           [validationRules]="col.validators">
-          <dxo-lookup *ngIf="col.type==='select'" [dataSource]="col.editorOptions.itemsAsync|async"
+          <dxo-lookup *ngIf="col.type==='select'"
+            [dataSource]="col.editorOptions.items || (col.editorOptions.itemsAsync|async)"
             [displayExpr]="col.editorOptions.displayExpr" [valueExpr]="col.editorOptions.valueExpr">
           </dxo-lookup>
         </dxi-column>
