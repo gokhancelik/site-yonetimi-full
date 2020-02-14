@@ -13,7 +13,6 @@ import { Kisi } from '../kisi/kisi.entity';
 import { BagimsizBolumKisi } from '../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity';
 import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
 import { Tahsilat } from '../tahsilat/tahsilat.entity';
-import { TahakkukTahsilat } from '../tahsilat/tahakkuk-tahsilat.entity';
 import { TahsilatKalem } from '../tahsilat/tahsilat-kalem.entity';
 import { Borc } from '../borc/borc.entity';
 import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
@@ -62,7 +61,6 @@ import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
                 BagimsizBolumKisi,
                 Tahakkuk,
                 Tahsilat,
-                TahakkukTahsilat,
                 TahsilatKalem
             ],
             synchronize: true,

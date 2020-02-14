@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Borc, BorcDurumu } from './Borc.entity';
+import { Borc, BorcDurumu } from './borc.entity';
 import { BaseService } from '../abstract/base.service';
 import { BorcRepository } from './borc.repository';
 import { Transaction } from 'typeorm';
