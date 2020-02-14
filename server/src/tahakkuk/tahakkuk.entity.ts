@@ -1,8 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm";
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { BagimsizBolumKisi } from "../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity";
-import { TahsilatKalem } from "../tahsilat/tahsilat-kalem.entity";
-import { TahakkukTahsilat } from "../tahsilat/tahakkuk-tahsilat.entity";
 export enum AidatDurumu {
     Odenmedi,
     Odendi,
@@ -45,7 +43,4 @@ export class Tahakkuk {
 
     @Column({ type: 'int' })
     durumu: AidatDurumu;
-
-    @OneToMany(type => TahakkukTahsilat, t => t.tahakkuk, { nullable: true })
-    tahakkukTahsilat?: TahakkukTahsilat[];
 }

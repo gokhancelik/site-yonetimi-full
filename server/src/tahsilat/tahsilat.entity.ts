@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm";
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { BagimsizBolumKisi } from "../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity";
-import { TahakkukTahsilat } from "./tahakkuk-tahsilat.entity";
 import { TahsilatKalem } from "./tahsilat-kalem.entity";
 export enum OdemeYontemi {
     HavaleEFT = 0,
@@ -43,9 +42,6 @@ export class Tahsilat {
 
     @Column({ length: 50 })
     bankaSiparisNo: string;
-
-    @OneToMany(type => TahakkukTahsilat, t => t.tahsilat, { nullable: true })
-    tahakkukTahsilat?: TahakkukTahsilat[];
 
     @OneToMany(type => TahsilatKalem, t => t.tahsilat, { nullable: true })
     tahsilatKalems?: TahsilatKalem[];
