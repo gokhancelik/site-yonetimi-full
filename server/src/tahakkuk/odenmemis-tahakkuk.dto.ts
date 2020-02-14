@@ -1,7 +1,6 @@
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { BagimsizBolumKisi } from "../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity";
 import { AidatDurumu } from "./tahakkuk.entity";
-import { TahakkukTahsilat } from "../tahsilat/tahakkuk-tahsilat.entity";
 
 export class OdenmemisTahakkuk {
     id: string;

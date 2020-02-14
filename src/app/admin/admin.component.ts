@@ -66,6 +66,13 @@ export class AdminComponent implements OnInit {
           icon: {
             icon: 'try',
           },
+        },
+        {
+          title: 'Tahakkuk',
+          link: '/admin/islemler/tahakkuk/list',
+          icon: {
+            icon: 'try',
+          },
         }
       ]
     }

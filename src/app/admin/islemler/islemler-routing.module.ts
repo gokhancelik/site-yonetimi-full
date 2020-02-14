@@ -7,6 +7,11 @@ const routes: Routes = [{
   path: 'borc',
   loadChildren: () => import('./borc/borc.module')
     .then(m => m.BorcModule),
+},
+{
+  path: 'tahakkuk',
+  loadChildren: () => import('./tahakkuk/tahakkuk.module')
+    .then(m => m.TahakkukModule),
 }];
 
 

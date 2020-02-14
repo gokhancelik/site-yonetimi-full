@@ -1,7 +1,7 @@
 import { Controller, Put, Body, Param } from '@nestjs/common';
-import { BorcService } from './Borc.service';
-import { Borc } from './Borc.entity';
 import { BaseController } from '../abstract/base.controller';
+import { BorcService } from './borc.service';
+import { Borc } from './borc.entity';
 
 @Controller('Borc')
 export class BorcController extends BaseController<Borc, BorcService> {
