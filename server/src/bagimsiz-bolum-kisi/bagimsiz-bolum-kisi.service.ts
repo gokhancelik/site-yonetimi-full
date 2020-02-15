@@ -10,6 +10,11 @@ export class BagimsizBolumKisiService extends BaseService<BagimsizBolumKisi>{
     constructor(repository: BagimsizBolumKisiRepository) {
         super(repository);
     }
+    async getAllWithKisi(): Promise<BagimsizBolumKisi[]> {
+        return this.repository.createQueryBuilder('bbk')
+            .innerJoinAndSelect('bbk.kisi', 'k')
+            .getMany();
+    }
     async getByKisiId(kisiId: string): Promise<BagimsizBolumKisi[]> {
         return this.repository.createQueryBuilder('bbk')
             .innerJoinAndSelect('bbk.bagimsizBolum', 'bb')

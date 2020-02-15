@@ -1,4 +1,4 @@
-export interface Kisi {
+export class Kisi {
     id: string;
     ad: string;
     soyad: string;

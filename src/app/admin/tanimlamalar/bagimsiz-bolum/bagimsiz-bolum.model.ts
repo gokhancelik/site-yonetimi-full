@@ -1,5 +1,5 @@
 
-export interface BagimsizBolum {
+export class BagimsizBolum {
     id: string;
     ad: string;
     kod: string;

@@ -13,4 +13,9 @@ export class BagimsizBolumKisiController extends BaseController<BagimsizBolumKis
     getByKisiId(@Param('kisiId') kisiId: string): Promise<BagimsizBolumKisi[]> {
         return (this.service as BagimsizBolumKisiService).getByKisiId(kisiId);
     }
+
+    @Get('/withKisi')
+    getAllWithKisi(): Promise<BagimsizBolumKisi[]> {
+        return this.service.getAllWithKisi();
+    }
 }

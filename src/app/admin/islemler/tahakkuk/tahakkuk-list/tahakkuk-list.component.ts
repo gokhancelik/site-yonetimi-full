@@ -5,6 +5,7 @@ import { GelirGiderTanimService } from 'src/app/admin/tanimlamalar/gelir-gider-t
 import { BagimsizBolumKisiService } from 'src/app/admin/tanimlamalar/bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.service';
 import { TahakkukService } from '../tahakkuk-service';
 import { of } from 'rxjs';
+import { KisiService } from 'src/app/admin/tanimlamalar/kisi/kisi.service';
 
 @Component({
   selector: 'app-tahakkuk-list',
@@ -17,7 +18,8 @@ export class TahakkukListComponent extends BaseListComponent<TahakkukModel> impl
 
   constructor(service: TahakkukService, 
     gelirGiderTanimService: GelirGiderTanimService
-    , bagimsizBolumKisiService: BagimsizBolumKisiService) {
+    , bagimsizBolumKisiService: BagimsizBolumKisiService,
+    kisiService: KisiService) {
     super(service);
     this.columns = [{
       key: 'id',
@@ -93,8 +95,13 @@ export class TahakkukListComponent extends BaseListComponent<TahakkukModel> impl
         message: 'Bağımsız Bölüm Kişi zorunludur',
       }],
       editorOptions: {
-        itemsAsync: bagimsizBolumKisiService.getList(),
-        displayExpr: 'id',
+        itemsAsync: bagimsizBolumKisiService.getAllWithKisi(),
+        displayExpr: (item) => {  
+          if (item)  
+            return item.kisi.ad +  ' ' + item.kisi.soyad;  
+          else  
+              return "";  
+        },  
         valueExpr: 'id',
         // customParams: {
         //   detailKey: 'bagimsizBolumId',
