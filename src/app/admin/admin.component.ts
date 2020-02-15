@@ -75,12 +75,19 @@ export class AdminComponent implements OnInit {
           },
         },
         {
+          title: 'Tahsilat',
+          link: '/admin/islemler/tahsilat/list',
+          icon: {
+            icon: 'try',
+          },
+        },
+        {
           title: 'Hesap Hareketi',
           link: '/admin/islemler/hesap-hareketi/list',
           icon: {
             icon: 'try',
           },
-        }
+        },
       ]
     }
   ];

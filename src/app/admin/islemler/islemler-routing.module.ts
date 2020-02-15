@@ -17,8 +17,12 @@ const routes: Routes = [{
   path: 'hesap-hareketi',
   loadChildren: () => import('./hesap-hareketi/hesap-hareketi.module')
     .then(m => m.HesapHareketiModule),
+},
+{
+  path:'tahsilat',
+  loadChildren:() => import('./tahsilat/tahsilat.module')
+  .then(m=>m.TahsilatModule)
 }];
-
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
