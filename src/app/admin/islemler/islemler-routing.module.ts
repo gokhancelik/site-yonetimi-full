@@ -12,6 +12,11 @@ const routes: Routes = [{
   path: 'tahakkuk',
   loadChildren: () => import('./tahakkuk/tahakkuk.module')
     .then(m => m.TahakkukModule),
+},
+{
+  path: 'hesap-hareketi',
+  loadChildren: () => import('./hesap-hareketi/hesap-hareketi.module')
+    .then(m => m.HesapHareketiModule),
 }];
 
 

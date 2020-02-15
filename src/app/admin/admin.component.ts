@@ -73,6 +73,13 @@ export class AdminComponent implements OnInit {
           icon: {
             icon: 'try',
           },
+        },
+        {
+          title: 'Hesap Hareketi',
+          link: '/admin/islemler/hesap-hareketi/list',
+          icon: {
+            icon: 'try',
+          },
         }
       ]
     }
