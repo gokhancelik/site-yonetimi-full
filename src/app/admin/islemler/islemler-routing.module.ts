@@ -12,7 +12,13 @@ const routes: Routes = [{
   path: 'tahakkuk',
   loadChildren: () => import('./tahakkuk/tahakkuk.module')
     .then(m => m.TahakkukModule),
-}];
+},
+{
+  path:'tahsilat',
+  loadChildren:() => import('./tahsilat/tahsilat.module')
+  .then(m=>m.TahsilatModule),
+}
+];
 
 
 @NgModule({
