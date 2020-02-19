@@ -13,6 +13,20 @@ export class TahakkukService extends BaseService<Tahakkuk> {
     constructor(repository: TahakkukRepository) {
         super(repository);
     }
+    async aidatTahakkuklariOlustur(){
+        //bagimsiz bolumleri cek;
+        //her bğr bagimsiz bolum icin aidat grubunu,
+        //aidat grubunun mktarini ve vade tarihini kullnarak tahakkuk entity olustur
+        //kaydet
+
+    }
+    async borctanTahakkukOlustur(borcId){
+        //borcu cek
+        //borcun blogunun bagimsiz bolumleri cek;
+        //herbir bagimsizbolume tutari paylastirarak tahakkuk olustur.
+        //vade tarihini borcun vade tarihiyle set et.
+        //kaydet 
+    }
     async getOdenmemisAidatlar(userId): Promise<OdenmemisTahakkuk[]> {
         let today = new Date();
         let gelecekAy = new Date(today.getFullYear(), today.getMonth() + 1, 1);
