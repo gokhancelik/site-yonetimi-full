@@ -42,6 +42,13 @@ export class TahsilatListComponent extends BaseListComponent<TahsilatModel> impl
       name: 'Açıklama',
       type: 'string',
       visible: true,
+      cellTemplate: 'detailLink',
+      editorOptions:{
+        customParams: {
+          detailKey: 'id',
+          routerLink: ['/admin', 'islemler', 'tahsilat', ':id', 'detay']
+        }
+      }
     },
     {
       key: 'tutar',
@@ -96,5 +103,4 @@ export class TahsilatListComponent extends BaseListComponent<TahsilatModel> impl
     },
   ];
   }
-
 }

@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm";
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { BagimsizBolumKisi } from "../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity";
-import { TahsilatKalem } from "./tahsilat-kalem.entity";
+import { TahsilatKalem } from "../tahsilat-kalem/tahsilat-kalem.entity";
 export enum OdemeYontemi {
     HavaleEFT = 0,
     KrediKarti = 1,

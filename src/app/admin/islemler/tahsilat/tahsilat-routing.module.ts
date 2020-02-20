@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TahsilatComponent } from './tahsilat.component';
 import { TahsilatListComponent } from './tahsilat-list/tahsilat-list.component';
+import { TahsilatDetayComponent } from './tahsilat-detay/tahsilat-detay.component';
 
 
 const routes: Routes = [
@@ -15,7 +16,7 @@ const routes: Routes = [
       },
       {
         path: ':id/detay',
-        component: null
+        component: TahsilatDetayComponent
       }
     ]
   }];

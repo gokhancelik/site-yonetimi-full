@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, OneToOne, ManyToMany } from "typeorm";
-import { Tahsilat } from "./tahsilat.entity";
+import { Tahsilat } from "../tahsilat/tahsilat.entity";
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { Tahakkuk } from "../tahakkuk/tahakkuk.entity";
 

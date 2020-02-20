@@ -1,6 +1,9 @@
 <data-table [dataSource]="dataSource" (dxGridReady)="gridReady($event)" [title]="'Bağımsız Bölüm Listesi'"
     [columns]="columns" [editMode]="'row'" name="bagimsizBolumler" (onRowUpdating)="onRowUpdating($event)"
-    (onToolbarPreparing)="onToolbarPreparing($event)">
+    [allowUpdating]="!isDetay"
+    [allowAdding]="!isDetay"
+    [allowDeleting]="!isDetay"
+     (onToolbarPreparing)="onToolbarPreparing($event)">
 </data-table>
 <dx-popup [showTitle]="true" title="Aidat Grubu Atama" [dragEnabled]="false" [closeOnOutsideClick]="true"
     [(visible)]="popupVisible">
@@ -29,19 +32,6 @@
                     </dx-select-box>
                 </div>
             </div>
-            <!-- <dx-form [(formData)]="bbAidatGrubu" [showColonAfterLabel]="true" [labelLocation]="'left'"
-                [minColWidth]="300" [colCount]="1">
-                <dxi-item dataField="aidatGrubuId" label="Aidat Grubu" editorType="dxSelectBox"
-                    [editorOptions]="{ items: aidatGruplari, value: '', width: '100%', displayExpr:'ad', valueExpr:'id' }">
-                </dxi-item>
-                <dxi-item dataField="baslangicTarihi" label="Başlangıç Tarihi" editorType="dxDateBox"
-                    [editorOptions]="{ width: '100%'}"></dxi-item>
-                <dxi-item itemType="button" horizontalAlignment="left"
-                    [buttonOptions]="{text: 'Kaydet',type: 'success', useSubmitBehavior: true}">
-                </dxi-item>
-                 <dxi-item *ngIf="!readOnly" itemType="button" horizontalAlignment="left" [buttonOptions]="iptalButtonOptions">
-  </dxi-item> -->
-            <!--</dx-form> -->
             <dx-button [disabled]="form.invalid" stylingMode="contained" text="Kaydet" type="success" [width]="120"
                 (onClick)="assignAidatGrubu($event,form)">
             </dx-button>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { BagimsizBolum } from '../bagimsiz-bolum.model';
 import { BaseListComponent } from '../../../base-list.component';
 import { BlokService } from '../../blok/blok.service';
@@ -6,6 +6,8 @@ import { BagimsizBolumService } from '../bagimsiz-bolum.service';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { AidatGrubuService } from '../../aidat-grubu/aidat-grubu.service';
 import { AidatGrubu } from '../../aidat-grubu/aidat-grubu.model';
+import CustomStore from 'devextreme/data/custom_store';
+import { of } from 'rxjs/internal/observable/of';
 
 @Component({
   selector: 'app-bagimsiz-bolum-list',
@@ -15,12 +17,14 @@ import { AidatGrubu } from '../../aidat-grubu/aidat-grubu.model';
 export class BagimsizBolumListComponent extends BaseListComponent<BagimsizBolum> implements OnInit {
   columns: any[];
   popupVisible = false;
+  isDetay = false;
   bbAidatGrubu: any = {};
+  @Input() blokId: string;
   grid: DxDataGridComponent;
   aidatGruplari: AidatGrubu[];
-  constructor(service: BagimsizBolumService, blokService: BlokService,
+  constructor(private serviceBagimsizBolum: BagimsizBolumService, blokService: BlokService,
     private aidatGrubuService: AidatGrubuService) {
-    super(service);
+    super(serviceBagimsizBolum);
     this.columns = [{
       key: 'id',
       name: 'Id',
@@ -101,6 +105,7 @@ export class BagimsizBolumListComponent extends BaseListComponent<BagimsizBolum>
         icon: 'upload',
         hint: 'Aidat Grubu Ata',
         onClick: this.assignAidatGrubuOpenModal.bind(this),
+        visible: !this.isDetay
       },
     });
   }
@@ -121,5 +126,33 @@ export class BagimsizBolumListComponent extends BaseListComponent<BagimsizBolum>
           this.popupVisible = false;
         });
     }
+  } 
+  ngOnInit() {
+    this.dataSource = new CustomStore({
+      key: 'id',
+      loadMode: 'raw',
+      load: () => {
+        if (this.blokId) {
+          this.isDetay = true;
+          return this.serviceBagimsizBolum.findByBlokId(this.blokId).toPromise();
+        }
+        else{
+          return this.service.getList().toPromise();
+        }
+      },
+      insert: (values) => {
+        return this.service.add(values).toPromise();
+      },
+      update: (key, values) => {
+        return this.service.update(key, values).toPromise();
+      },
+      remove: (key) => {
+        return this.service.delete(key).toPromise();
+      },
+    });
+  }
+  onInitNewRow(e) {
+    (e.data as BagimsizBolum).blokId = this.blokId;
   }
 }
+

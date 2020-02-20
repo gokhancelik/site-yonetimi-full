@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-blok-detay',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BlokDetayComponent implements OnInit {
 
-  constructor() { }
+  blokId: string;
+  constructor(private route : ActivatedRoute) { }
 
   ngOnInit() {
+    this.blokId = this.route.snapshot.params.id;
   }
 
 }

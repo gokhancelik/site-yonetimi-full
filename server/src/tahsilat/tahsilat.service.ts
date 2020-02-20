@@ -3,7 +3,7 @@ import { BaseService } from '../abstract/base.service';
 import { Tahsilat, TahsilatDurumu } from './tahsilat.entity';
 import { TahsilatRepository } from './tahsilat.repository';
 import { OdenmemisTahakkuk } from '../tahakkuk/odenmemis-tahakkuk.dto';
-import { TahsilatKalem } from './tahsilat-kalem.entity';
+import { TahsilatKalem } from '../tahsilat-kalem/tahsilat-kalem.entity';
 import { GelirGiderTanimi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entity';
 import { GelirGiderTanimiService } from '../gelir-gider-tanimi/gelir-gider-tanimi.service';
 import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
