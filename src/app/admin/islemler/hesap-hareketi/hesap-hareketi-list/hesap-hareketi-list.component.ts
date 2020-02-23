@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { HareketTipi } from '../../../tanimlamalar/gelir-gider-tanim/gelir-gider-tanim.model';
 import { isNgTemplate } from '@angular/compiler';
 import CustomStore from 'devextreme/data/custom_store';
+import { HesapTanimiService } from 'src/app/admin/tanimlamalar/hesap-tanimi/hesap-tanimi.service';
 
 @Component({
   selector: 'app-hesap-hareketi-list',
@@ -17,7 +18,7 @@ export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi>
   columns: any[];
   hareketTipi = [{ id: '1', name: 'Gelir' }, { id: '2', name: 'Gider' }, { id: '3', name: 'GelirGider' }];
 
-  constructor(service: HesapHareketleriService, borcService: BorcService) {
+  constructor(service: HesapHareketleriService, borcService: BorcService, private hesapTanimiService: HesapTanimiService) {
     super(service);
     this.columns = [{
       key: 'id',
@@ -32,9 +33,7 @@ export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi>
       type: 'number',
       visible: true,
       editorOptions: {
-        displayExpr: (item) => {
-          return (item.HareketTipi === HareketTipi.Gelir ?  '+ ' : '- ') + item.Tutar;
-        },
+        displayExpr: 'tutar',
         placeholder: 'Para'
       },
     },
@@ -62,16 +61,31 @@ export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi>
       },
     },
     {
+      key: 'hesapTanimiId',
+      name: 'Hesap',
+      type: 'select',
+      editorOptions: {
+        itemsAsync: hesapTanimiService.getList(),
+        displayExpr: 'ad',
+        valueExpr: 'id'  
+        },  
+      },
+    {
       key: 'aciklama',
       name: 'Açıklama',
-      type: 'string',
+      type: 'select',
       editorOptions: {
-        displayExpr: (item) => {
-          //return item.borc != null ? item.borc.aciklama : (item.tahsilat != null ? item.tahsilat.aciklama : "");
-          return "aciklama";
+        itemsAsync: service.getListWithInnerModel(),
+        displayExpr: (item) => {  
+          if (item)  
+            return item.borc ? item.borc.aciklama : (item.tahsilat ? item.tahsilat.aciklama : "");  
+          else  
+              return "";  
+        }, 
+        valueExpr: 'aciklama'  
         },
-      },
-    }
+        visible: true, 
+    }, 
   ];
   }
   ngOnInit() {
@@ -79,7 +93,7 @@ export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi>
         key: 'id',
         loadMode: 'raw',
         load: () => {
-            return (this.service as HesapHareketleriService).getListWithInnerModel().toPromise();
+          return  (this.service as HesapHareketleriService).getListWithInnerModel().toPromise();
         },
         insert: (values) => {
             console.log(values)

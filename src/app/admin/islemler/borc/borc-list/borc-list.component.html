@@ -1,3 +1,52 @@
-<data-table [dataSource]="dataSource" [title]="'Borc Listesi'" [columns]="columns" [editMode]="'popup'"
-    name="borclar" (onRowUpdating)="onRowUpdating($event)">
+<data-table [dataSource]="dataSource" (dxGridReady)="gridReady($event)" [title]="'Borc Listesi'"
+    [columns]="columns" [editMode]="'row'" name="borclar" (onRowUpdating)="onRowUpdating($event)"
+     (onToolbarPreparing)="onToolbarPreparing($event)">
 </data-table>
+
+<dx-popup [showTitle]="true" title="Öde" [dragEnabled]="false" [closeOnOutsideClick]="true"
+    [(visible)]="popupVisible">
+    <div *dxTemplate="let data of 'content'">
+        <form #form="ngForm" novalidate>
+            <div class="dx-field">
+                <div class="dx-field-label">İşlem Tarihi</div>
+                <div class="dx-field-value">
+                    <dx-date-box name="islemTarihi" required [(ngModel)]="hesapHareketi.islemTarihi" type="date">
+                        <dx-validator>
+                            <dxi-validation-rule type="required" message="İşlem Tarihi zorunludur.">
+                            </dxi-validation-rule>
+                        </dx-validator>
+                    </dx-date-box>
+                </div>
+            </div>
+
+            <div class="dx-field">
+                <div class="dx-field-label">Tutar</div>
+                <div class="dx-field-value">
+                    <dx-text-box name="tutar" required [(ngModel)]="hesapHareketi.tutar" type="number">
+                        <dx-validator>
+                            <dxi-validation-rule type="required" message="Ödeme yapılacak tutar zorunludur.">
+                            </dxi-validation-rule>
+                        </dx-validator>
+                    </dx-text-box>
+                </div>
+            </div>
+
+
+            <div class="dx-field">
+                <div class="dx-field-label">Hesaplar</div>
+                <div class="dx-field-value">
+                    <dx-select-box name="hesaptanimId" required [(ngModel)]="hesapHareketi.hesapTanimiId"
+                        [dataSource]="hesapTanimlari" displayExpr="ad" valueExpr="id">
+                        <dx-validator>
+                            <dxi-validation-rule type="required" message="Ödeme yapılan hesap seçimi zorunludur.">
+                            </dxi-validation-rule>
+                        </dx-validator>
+                    </dx-select-box>
+                </div>
+            </div>
+            <dx-button [disabled]="form.invalid" stylingMode="contained" text="Kaydet" type="success" [width]="120"
+                (onClick)="hesapHareketiValidator($event,form)">
+            </dx-button>
+        </form>
+    </div>
+</dx-popup>

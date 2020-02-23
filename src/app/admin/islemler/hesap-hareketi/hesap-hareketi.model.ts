@@ -14,5 +14,4 @@ export class HesapHareketi {
     hareketTipi: HareketTipi;
     hesapTanimiId: string;
     borc?: Borc;
-    //tahsilat: Tahsilat:
 }
