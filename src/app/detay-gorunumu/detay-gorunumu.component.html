@@ -1,0 +1,15 @@
+<dx-form [(formData)]="model" [readOnly]="readOnly" [showColonAfterLabel]="true" [labelLocation]="'left'"
+  [minColWidth]="300" [colCount]="1">
+  <ng-container *ngFor="let group of colDefs | groupBy:'groupKey'">
+    <dxi-item itemType="group" [caption]="group.key!=='undefined'?group.key:''" [colCount]="'auto'">
+      <ng-container *ngFor="let col of group.value">
+        <dxi-item #dynamicitems [dataField]="col.key" [label]="{text:col.name}" [colSpan]="col.colSpan"
+          [visible]="col.visible" [validationRules]="col.validators" [editorType]="getEditorType(col.type)"
+          [editorOptions]="col.editorOptions">
+        </dxi-item>
+      </ng-container>
+    </dxi-item>
+  </ng-container>
+  <dxi-item *ngIf="!readOnly" itemType="button" horizontalAlignment="left" [buttonOptions]="buttonOptions">
+  </dxi-item>
+</dx-form>

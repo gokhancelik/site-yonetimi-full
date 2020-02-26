@@ -1,16 +1,18 @@
 
 import CustomStore from 'devextreme/data/custom_store';
-import { OnInit } from '@angular/core';
+import { OnInit, Injector } from '@angular/core';
 import { BaseCrudService } from './base-crud.service';
 import { map } from 'rxjs/operators';
-export abstract class BaseListComponent<T> implements OnInit {
+export abstract class BaseListComponent<T extends { colDefs(injector?: Injector): any[] }> implements OnInit {
     settings: any = {};
     public hiddenColumns: Array<string> = new Array<string>('id');
     dataSource: CustomStore;
-    constructor(protected service: BaseCrudService) {
+    columns: any;
+    constructor(protected service: BaseCrudService, injector: Injector, type: new () => T) {
         this.settings.allowEdit = true;
         this.settings.allowCreate = true;
         this.settings.allowDelete = true;
+        this.columns =  new type().colDefs(injector);
     }
     ngOnInit() {
         this.dataSource = new CustomStore({

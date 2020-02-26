@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { BaseListComponent } from '../../../base-list.component';
 import { AidatGrubu } from '../aidat-grubu.model';
 import { AidatGrubuService } from '../aidat-grubu.service';
@@ -10,44 +10,7 @@ import { AidatGrubuService } from '../aidat-grubu.service';
 })
 export class AidatGrubuListComponent extends BaseListComponent<AidatGrubu> implements OnInit {
   columns: any[];
-  constructor(service: AidatGrubuService) {
-    super(service);
-    this.columns = [{
-      key: 'id',
-      name: 'Id',
-      type: 'string',
-      editorOptions: { readOnly: true },
-      visible: false,
-    },
-    {
-      key: 'ad',
-      name: 'Ad',
-      type: 'string',
-      validators: [{
-        type: 'required',
-        message: 'Ad zorunludur',
-      }],
-      visible: true,
-    },
-    {
-      key: 'aciklama',
-      name: 'Açıklama',
-      type: 'string',
-      visible: true,
-    },
-    {
-      key: 'tutar',
-      name: 'Tutar',
-      type: 'number',
-      visible: true,
-      format: {
-        type: 'currency',
-      },
-      editorOptions: {
-        format: {
-          type: 'currency',
-        },
-      },
-    }];
+  constructor(service: AidatGrubuService, injector: Injector) {
+    super(service, injector, AidatGrubu);
   }
 }

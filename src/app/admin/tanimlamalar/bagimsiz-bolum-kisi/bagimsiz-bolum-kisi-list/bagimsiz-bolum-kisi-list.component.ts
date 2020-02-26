@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Injector } from '@angular/core';
 import { BagimsizBolumKisi } from '../bagimsiz-bolum-kisi.model';
 import { BaseListComponent } from '../../../../admin/base-list.component';
 import { BagimsizBolumKisiService } from '../bagimsiz-bolum-kisi.service';
@@ -18,80 +18,13 @@ export class BagimsizBolumKisiListComponent extends BaseListComponent<BagimsizBo
   bbAidatGrubu: any = {};
   @Input() bagimsizBolumId: string;
   @Input() kisiId: string;
+  title: string;
   constructor(service: BagimsizBolumKisiService,
     private bagimsizBolumService: BagimsizBolumService,
-    private kisiService: KisiService) {
-    super(service);
-    this.columns = [{
-      key: 'id',
-      name: 'Id',
-      type: 'string',
-      editorOptions: { readOnly: true },
-      visible: false,
-    },
-    {
-      key: 'bagimsizBolumId',
-      name: 'Bağımsız Bölüm',
-      type: 'select',
-      validators: [{
-        type: 'required',
-        message: 'Bağımsız Bölüm zorunludur',
-      }],
-      editorOptions: {
-        itemsAsync: bagimsizBolumService.getList(),
-        displayExpr: 'kod',
-        valueExpr: 'id',
-        customParams: {
-          detailKey: 'bagimsizBolumId',
-          routerLink: ['/admin', 'tanimlamalar', 'bagimsiz-bolum', ':bagimsizBolumId', 'detay']
-        },
-      },
-      cellTemplate: 'detailLink',
-      visible: true,
-    },
-    {
-      key: 'kisiId',
-      name: 'Kişi',
-      type: 'select',
-      validators: [{
-        type: 'required',
-        message: 'Kişi zorunludur',
-      }],
-      editorOptions: {
-        itemsAsync: kisiService.getList(),
-        displayExpr: 'ad',
-        valueExpr: 'id',
-        customParams: {
-          detailKey: 'kisiId',
-          routerLink: ['/admin', 'tanimlamalar', 'kisi', ':kisiId', 'detay']
-        },
-      },
-      cellTemplate: 'detailLink',
-      visible: true,
-    },
-    {
-      key: 'baslangicTarihi',
-      name: 'Başlangıç Tarihi',
-      type: 'date',
-      format: 'dd.MM.yyyy',
-      validators: [{
-        type: 'required',
-        message: 'Başlangıç Tarihi zorunludur',
-      }],
-      editorOptions: {
-        type: 'date',
-      },
-    },
-    {
-      key: 'bitisTarihi',
-      name: 'Bitiş Tarihi',
-      type: 'date',
-      format: 'dd.MM.yyyy',
-      editorOptions: {
-        type: 'date',
-      },
-    },
-    ];
+    private kisiService: KisiService,
+    injector: Injector) {
+    super(service, injector, BagimsizBolumKisi);
+  
   }
   ngOnInit() {
     this.dataSource = new CustomStore({
@@ -99,8 +32,10 @@ export class BagimsizBolumKisiListComponent extends BaseListComponent<BagimsizBo
       loadMode: 'raw',
       load: () => {
         if (this.bagimsizBolumId) {
+          this.title = "Kişi Listesi";
           return this.bagimsizBolumService.getKisis(this.bagimsizBolumId).toPromise();
         } else if (this.kisiId) {
+          this.title = "Bağımsız Bölüm Listesi";
           return this.kisiService.getBagimsizBolums(this.kisiId).toPromise();
         }
         return of([]).toPromise();

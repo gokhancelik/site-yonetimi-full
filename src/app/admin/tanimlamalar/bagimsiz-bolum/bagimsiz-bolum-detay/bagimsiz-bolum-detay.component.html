@@ -1,4 +1,25 @@
-<p>Bagimsiz Bolum Bilgileri Listenecek!/p>
-<app-bagimsiz-bolum-kisi-list [bagimsizBolumId]="bagimsizBolumId"></app-bagimsiz-bolum-kisi-list>
-
->
+<nb-card *ngIf="model">
+    <nb-card-header>
+        <div class="row">
+            <div class="col-6">
+                <span>{{model?.ad}}</span>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <detay-gorunumu [colDefs]="columns" [model]="model" [readOnly]="true"></detay-gorunumu>
+    </nb-card-body>
+</nb-card>
+<nb-card>
+    <nb-card-header></nb-card-header>
+    <nb-card-body>
+        <ngb-tabset>
+            <ngb-tab title="Kişiler">
+                <ng-template ngbTabContent>
+                    <app-bagimsiz-bolum-kisi-list [bagimsizBolumId]="id">
+                    </app-bagimsiz-bolum-kisi-list>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
+    </nb-card-body>
+</nb-card>

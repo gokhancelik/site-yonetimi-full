@@ -7,6 +7,9 @@ import { BorcComponent } from './borc.component';
 import { DataTableModule } from 'src/app/data-table/data-table.module';
 import { DxPopupModule, DxDateBoxModule, DxSelectBoxModule, DxButtonModule, DxValidatorModule, DxTextBoxModule } from 'devextreme-angular';
 import { FormsModule } from '@angular/forms';
+import { DetayGorunumuModule } from '../../../detay-gorunumu/detay-gorunumu.module';
+import { NbCardModule } from '@nebular/theme';
+import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -21,7 +24,10 @@ import { FormsModule } from '@angular/forms';
     DxButtonModule,
     DxValidatorModule,
     FormsModule,
-    DxTextBoxModule
+    DxTextBoxModule,
+    DetayGorunumuModule,
+    NbCardModule,
+    NgbTabsetModule
   ]
 })
 export class BorcModule { }

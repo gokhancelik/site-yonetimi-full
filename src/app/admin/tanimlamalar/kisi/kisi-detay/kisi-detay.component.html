@@ -1,41 +1,24 @@
-<!-- <data-table [dataSource]="dataSource" (dxGridReady)="gridReady($event)" [title]="'Bağımsız Bölüm Listesi'"
-    [columns]="columns" [editMode]="'popup'" name="bagimsizBolumler" (onRowUpdating)="onRowUpdating($event)"
-    (onToolbarPreparing)="onToolbarPreparing($event)">
-</data-table>
-<dx-popup [showTitle]="true" title="Bagımsız Bölüm Atama" [dragEnabled]="false" [closeOnOutsideClick]="true"
-    [(visible)]="popupVisible">
-    <div *dxTemplate="let data of 'content'">
-        <form #form="ngForm" novalidate>
-            <div class="dx-field">
-                <div class="dx-field-label">Başlangıç Tarihi</div>
-                <div class="dx-field-value">
-                    <dx-date-box name="baslangicTarihi" required [(ngModel)]="bagimsizBolumKisi.baslangicTarihi"
-                        type="date">
-                        <dx-validator>
-                            <dxi-validation-rule type="required" message="Başlangıç Tarihi zorunludur">
-                            </dxi-validation-rule>
-                        </dx-validator>
-                    </dx-date-box>
-                </div>
+<nb-card *ngIf="model">
+    <nb-card-header>
+        <div class="row">
+            <div class="col-6">
+                <span>{{model?.ad}} {{model?.soyad}}</span>
             </div>
-            <div class="dx-field">
-                <div class="dx-field-label">Bağımsız Bölümler</div>
-                <div class="dx-field-value">
-                    <dx-select-box name="bagimsizBolumId" required [(ngModel)]="bagimsizBolumKisi.bagimsizBolumId"
-                        [dataSource]="bagimsizBolum" displayExpr="kod" valueExpr="id">
-                        <dx-validator>
-                            <dxi-validation-rule type="required" message="Bağımsız Bölümzorunludur">
-                            </dxi-validation-rule>
-                        </dx-validator>
-                    </dx-select-box>
-                </div>
-            </div>
-            <dx-button [disabled]="form.invalid" stylingMode="contained" text="Kaydet" type="success" [width]="120"
-                (onClick)="assignBagimsizBolum()">
-            </dx-button>
-        </form>
-    </div>
-</dx-popup> -->
-
-<div>Detay görünümü gelecek</div>
-<app-bagimsiz-bolum-kisi-list [kisiId]="kisiId"></app-bagimsiz-bolum-kisi-list>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <detay-gorunumu [colDefs]="columns" [model]="model" [readOnly]="true"></detay-gorunumu>
+    </nb-card-body>
+</nb-card>
+<nb-card>
+    <nb-card-header></nb-card-header>
+    <nb-card-body>
+        <ngb-tabset>
+            <ngb-tab title="Kişiler">
+                <ng-template ngbTabContent>
+                    <app-bagimsiz-bolum-kisi-list [kisiId]="id"></app-bagimsiz-bolum-kisi-list>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
+    </nb-card-body>
+</nb-card>

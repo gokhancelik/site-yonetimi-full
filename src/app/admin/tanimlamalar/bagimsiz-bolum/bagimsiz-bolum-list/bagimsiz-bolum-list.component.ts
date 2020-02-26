@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Injector } from '@angular/core';
 import { BagimsizBolum } from '../bagimsiz-bolum.model';
 import { BaseListComponent } from '../../../base-list.component';
 import { BlokService } from '../../blok/blok.service';
@@ -22,76 +22,9 @@ export class BagimsizBolumListComponent extends BaseListComponent<BagimsizBolum>
   @Input() blokId: string;
   grid: DxDataGridComponent;
   aidatGruplari: AidatGrubu[];
-  constructor(private serviceBagimsizBolum: BagimsizBolumService, blokService: BlokService,
+  constructor(private serviceBagimsizBolum: BagimsizBolumService, injector: Injector,
     private aidatGrubuService: AidatGrubuService) {
-    super(serviceBagimsizBolum);
-    this.columns = [{
-      key: 'id',
-      name: 'Id',
-      type: 'string',
-      editorOptions: { readOnly: true },
-      visible: false,
-    },
-    {
-      key: 'ad',
-      name: 'Ad',
-      type: 'string',
-      validators: [{
-        type: 'required',
-        message: 'Ad zorunludur',
-      }],
-      visible: true,
-      cellTemplate: 'detailLink',
-      editorOptions: {
-        customParams: {
-          detailKey: 'id',
-          routerLink: ['/admin', 'tanimlamalar', 'bagimsiz-bolum', ':id', 'detay']
-        },
-      },
-    },
-    {
-      key: 'kod',
-      name: 'Kod',
-      type: 'string',
-      validators: [{
-        type: 'required',
-        message: 'Kod zorunludur',
-      }],
-      visible: true,
-      cellTemplate: 'detailLink',
-      editorOptions: {
-        customParams: {
-          detailKey: 'id',
-          routerLink: ['/admin', 'tanimlamalar', 'bagimsiz-bolum', ':id', 'detay']
-        },
-      },
-    },
-    {
-      key: 'aciklama',
-      name: 'Açıklama',
-      type: 'string',
-      visible: true,
-    },
-    {
-      key: 'blokId',
-      name: 'Blok',
-      type: 'select',
-      validators: [{
-        type: 'required',
-        message: 'Blok zorunludur',
-      }],
-      editorOptions: {
-        itemsAsync: blokService.getList(),
-        displayExpr: 'ad',
-        valueExpr: 'id',
-        customParams: {
-          detailKey: 'blokId',
-          routerLink: ['/admin', 'tanimlamalar', 'blok', ':id', 'detay']
-        },
-      },
-      cellTemplate: 'detailLink',
-      visible: true,
-    }];
+    super(serviceBagimsizBolum, injector, BagimsizBolum);
     this.aidatGrubuService.getList<AidatGrubu>()
       .subscribe(d => {
         this.aidatGruplari = d;
@@ -126,7 +59,7 @@ export class BagimsizBolumListComponent extends BaseListComponent<BagimsizBolum>
           this.popupVisible = false;
         });
     }
-  } 
+  }
   ngOnInit() {
     this.dataSource = new CustomStore({
       key: 'id',
@@ -136,7 +69,7 @@ export class BagimsizBolumListComponent extends BaseListComponent<BagimsizBolum>
           this.isDetay = true;
           return this.serviceBagimsizBolum.findByBlokId(this.blokId).toPromise();
         }
-        else{
+        else {
           return this.service.getList().toPromise();
         }
       },

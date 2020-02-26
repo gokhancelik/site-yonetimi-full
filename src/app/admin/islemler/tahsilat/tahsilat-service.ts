@@ -6,7 +6,6 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class TahsilatService extends BaseCrudService {
-
   constructor(http: HttpClient) {
     super(http, 'tahsilat');
   }

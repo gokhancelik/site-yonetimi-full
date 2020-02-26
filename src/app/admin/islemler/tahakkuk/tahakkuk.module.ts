@@ -5,6 +5,9 @@ import { TahakkukRoutingModule } from './tahakkuk-routing.module';
 import { TahakkukComponent } from './tahakkuk.component';
 import { TahakkukListComponent } from './tahakkuk-list/tahakkuk-list.component';
 import { DataTableModule } from 'src/app/data-table/data-table.module';
+import { DetayGorunumuModule } from '../../../detay-gorunumu/detay-gorunumu.module';
+import { NbCardModule } from '@nebular/theme';
+import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -12,7 +15,10 @@ import { DataTableModule } from 'src/app/data-table/data-table.module';
   imports: [
     CommonModule,
     TahakkukRoutingModule, 
-    DataTableModule
+    DataTableModule,
+    DetayGorunumuModule,
+    NbCardModule,
+    NgbTabsetModule
   ]
 })
 export class TahakkukModule { }

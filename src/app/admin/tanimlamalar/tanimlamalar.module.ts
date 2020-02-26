@@ -25,6 +25,9 @@ import { BlokDetayComponent } from './blok/blok-detay/blok-detay.component';
 import { KisiDetayComponent } from './kisi/kisi-detay/kisi-detay.component';
 import { SiteDetayComponent } from './site/site-detay/site-detay.component';
 import { BagimsizBolumKisiListComponent } from './bagimsiz-bolum-kisi/bagimsiz-bolum-kisi-list/bagimsiz-bolum-kisi-list.component';
+import { DetayGorunumuModule } from '../../detay-gorunumu/detay-gorunumu.module';
+import { NbCardModule, NbTabsetModule } from '@nebular/theme';
+import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -44,7 +47,10 @@ import { BagimsizBolumKisiListComponent } from './bagimsiz-bolum-kisi/bagimsiz-b
     DxSelectBoxModule,
     DxButtonModule,
     DxValidatorModule,
-    FormsModule
+    FormsModule,
+    DetayGorunumuModule,
+    NbCardModule,
+    NgbTabsetModule
   ]
 })
 export class TanimlamalarModule { }

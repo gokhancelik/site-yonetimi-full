@@ -4,6 +4,10 @@ import { BaseService } from './base.service';
 export class BaseController<TEntity, TService extends BaseService<TEntity>> {
     constructor(protected service: TService) {
     }
+    @Get(':id')
+    findById(@Param('id') id: any): Promise<TEntity> {
+        return this.service.findById(id);
+    }
     @Get()
     findAll(): Promise<TEntity[]> {
         return this.service.findAll();
