@@ -8,10 +8,11 @@ import { DataTableModule } from 'src/app/data-table/data-table.module';
 import { DetayGorunumuModule } from '../../../detay-gorunumu/detay-gorunumu.module';
 import { NbCardModule } from '@nebular/theme';
 import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
+import { HesapHareketiYukleComponent } from './hesap-hareketi-yukle/hesap-hareketi-yukle.component';
 
 
 @NgModule({
-  declarations: [HesapHareketiComponent, HesapHareketiListComponent],
+  declarations: [HesapHareketiComponent, HesapHareketiListComponent, HesapHareketiYukleComponent],
   imports: [
     CommonModule,
     HesapHareketiRoutingModule,

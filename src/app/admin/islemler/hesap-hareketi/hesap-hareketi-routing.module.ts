@@ -16,6 +16,10 @@ const routes: Routes = [
       {
         path: ':id/detay',
         component: null
+      },
+      {
+        path: 'hesap-hareketi-yukle',
+        component: null
       }
     ]
   }];

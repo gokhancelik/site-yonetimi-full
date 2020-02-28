@@ -3,6 +3,7 @@ import { HesapHareketleriService } from '../hesap-hareketi.service';
 import { HesapHareketi } from '../hesap-hareketi.model';
 import { BaseListComponent } from 'src/app/admin/base-list.component';
 import CustomStore from 'devextreme/data/custom_store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-hesap-hareketi-list',
@@ -11,7 +12,7 @@ import CustomStore from 'devextreme/data/custom_store';
 })
 export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi> implements OnInit {
   constructor(service: HesapHareketleriService,
-    injector: Injector) {
+    private injector: Injector) {
     super(service, injector, HesapHareketi);
   }
   ngOnInit() {
@@ -31,6 +32,18 @@ export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi>
       },
       remove: (key) => {
         return this.service.delete(key).toPromise();
+      },
+    });
+  }
+  onToolbarPreparing(e) {
+    e.toolbarOptions.items.unshift({
+      location: 'after',
+      widget: 'dxButton',
+      options: {
+        icon: 'upload',
+        hint: 'Hesap Hareketi Yükle',
+        onClick: () => this.injector.get(Router).navigate(['/admin', 'islemler', 'hesap-hareketi', 'hesap-hareketi-yukle']),
+        visible: true
       },
     });
   }
