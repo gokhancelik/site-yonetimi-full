@@ -9,7 +9,7 @@ export class BorcController extends BaseController<Borc, BorcService> {
         super(service);
     }
     @Put(':id/ode')
-    ode(@Param('id') id: string, @Body() params: { tutar: number, odemeTarihi: Date }) {
-        return (this.service as BorcService).ode(id, params.tutar, params.odemeTarihi);
+    ode(@Param('id') id: string, @Body() params: { tutar: number, odemeTarihi: Date, hesapId: string }): Promise<Borc> {
+        return (this.service as BorcService).ode(id, params.tutar, params.odemeTarihi, params.hesapId);
     }
 }

@@ -9,7 +9,7 @@ export class TahsilatKalemService extends BaseService<TahsilatKalem>{
 
     constructor(repository: TahsilatKalemRepository) {
         super(repository);
-     }
+    }
 
     async getByTahsilatId(tahsilatId: string): Promise<TahsilatKalem[]> {
         return (this.repository as TahsilatKalemRepository).getByTahsilatId(tahsilatId);

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BaseCrudService } from '../../base-crud.service';
 import { HttpClient } from '@angular/common/http';
+import { TahsilatKalemModel } from './tahsilat-kalem-model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,5 +10,8 @@ import { HttpClient } from '@angular/common/http';
 export class TahsilatService extends BaseCrudService {
   constructor(http: HttpClient) {
     super(http, 'tahsilat');
+  }
+  getTahsilatKalems(id: string): Observable<TahsilatKalemModel[]> {
+    return this.http.get<TahsilatKalemModel[]>(`${this.baseUrl}${this.path}/${id}/tahsilatKalems`);
   }
 }

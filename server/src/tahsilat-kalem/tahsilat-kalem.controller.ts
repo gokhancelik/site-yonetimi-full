@@ -8,8 +8,5 @@ export class TahsilatKalemController extends BaseController<TahsilatKalem, Tahsi
     constructor(service: TahsilatKalemService) {
         super(service);
     }
-    @Get(':tahsilatId/tahsilatKalems')
-    getByTahsilatId(@Param('tahsilatId') tahsilatId: string): Promise<TahsilatKalem[]> {
-        return (this.service as TahsilatKalemService).getByTahsilatId(tahsilatId);
-    }
+    
 }

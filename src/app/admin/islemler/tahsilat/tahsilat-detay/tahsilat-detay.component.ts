@@ -12,53 +12,6 @@ export class TahsilatDetayComponent extends BaseDetailComponent<TahsilatModel, T
   constructor(injector: Injector) {
 
     super(TahsilatService, injector, TahsilatModel);
-    // this.columns = [{
-    //   key: 'id',
-    //   name: 'Id',
-    //   type: 'string',
-    //   editorOptions: { readOnly: true },
-    //   visible: false,
-    // },
-    // {
-    //   key: 'tahsilatId',
-    //   name: 'Tahsilat',
-    //   type: 'select',
-    //   editorOptions: {
-    //     itemsAsync: tahsilatService.getList(),
-    //     displayExpr: 'durumu',
-    //     valueExpr: 'id',
-    //   },
-    //   visible: true,
-    // },
-    // {
-    //   key: 'odemeTipiId',
-    //   name: 'Ödeme Tipi',
-    //   type: 'select',
-    //   editorOptions: {
-    //     itemsAsync: gelirgiderService.getList(),
-    //     displayExpr: 'kod',
-    //     valueExpr: 'id',
-    //   },
-    //   visible: true,
-    // },
-    // {
-    //   key: 'tahakkukId',
-    //   name: 'Tahakkuk',
-    //   type: 'string',
-    //   editorOptions: {
-    //     itemsAsync: tahakkukService.getList(),
-    //     displayExpr: 'durumu',
-    //     valueExpr: 'id',
-    //   },
-    //   visible: true
-    // },
-    // {
-    //   key: 'tutar',
-    //   name: 'Tutar',
-    //   type: 'number',
-    //   visible: true
-    // },
-    // ];
   }
 
   //  ngOnInit() {

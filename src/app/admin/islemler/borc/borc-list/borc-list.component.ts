@@ -21,8 +21,8 @@ export class BorcListComponent extends BaseListComponent<Borc> implements OnInit
   columns: any[];
   hesaptanimi: any = {};
   hesapTanimlari: HesapTanimi[];
-  selectedRowData: Borc;
-  hesapHareketi: HesapHareketi = new HesapHareketi();
+  selectedBorc: Borc;
+  hesapHareketi: { tutar?: number, odemeTarihi?: Date, hesapId?: string } = {};
   grid: DxDataGridComponent;
   borcId: string;
   popupVisible = false;
@@ -59,39 +59,33 @@ export class BorcListComponent extends BaseListComponent<Borc> implements OnInit
   }
 
   createHesapHareketiOpenModal(e) {
-    let selectedBBs = this.grid.selectedRowKeys;
-    this.selectedRowData = this.grid.instance.getSelectedRowsData()[0];
-    this.popupVisible = selectedBBs && selectedBBs.length > 0 && this.selectedRowData && !(this.selectedRowData.durumu === BorcDurumu.Odendi);
+    console.log(this.grid.instance)
+    this.selectedBorc = this.grid.instance.getSelectedRowsData()[0];
+    this.popupVisible = this.selectedBorc && !(this.selectedBorc.durumu === BorcDurumu.Odendi);
   }
-  hesapHareketiValidator(e, form) {
-    let selectedBBs = this.grid.selectedRowKeys;
-    this.selectedRowData = this.grid.instance.getSelectedRowsData()[0];
+  ode(e) {
+    (this.service as BorcService).ode(this.selectedBorc.id, this.hesapHareketi)
+      .subscribe(d => {
+        this.popupVisible = false;
+      })
+    // let selectedBBs = this.grid.selectedRowKeys;
+    // this.selectedRowData = this.grid.instance.getSelectedRowsData()[0];
 
-    const odenenTutar = this.selectedRowData.odenenTutar ? this.selectedRowData.odenenTutar : 0;
-    const toplamTutar = this.selectedRowData.tutar;
-    const islemTutarı = Number(this.hesapHareketi.tutar);
+    // const odenenTutar = this.selectedRowData.odenenTutar ? this.selectedRowData.odenenTutar : 0;
+    // const toplamTutar = this.selectedRowData.tutar;
+    // const islemTutarı = Number(this.hesapHareketi.tutar);
 
-    if (islemTutarı + odenenTutar > toplamTutar) {
-      return false;
-    }
-    else if (islemTutarı + odenenTutar === toplamTutar) {
-      this.selectedRowData.odenenTutar = toplamTutar;
-      this.selectedRowData.durumu = BorcDurumu.Odendi;
-    }
-    else {
-      this.selectedRowData.odenenTutar += islemTutarı;
-    }
-    this.createHesapHareketi(this.hesapHareketi, this.selectedRowData.id);
-    this.updateBorc(this.selectedRowData);
-  }
-
-  createHesapHareketi(hesapHareketi: HesapHareketi, borcId: string) {
-    this.hesapHareketi.borcId = borcId;
-    this.hesapHareketi.tutar = -this.hesapHareketi.tutar;
-    this.hesapHareketi.hareketTipi = HareketTipi.Gider;
-    this.hesapHareketiService.add(this.hesapHareketi).subscribe(d => { this.popupVisible = false; });
-  }
-  updateBorc(borc: Borc) {
-    (this.service as BorcService).update(borc.id, borc).toPromise();
+    // if (islemTutarı + odenenTutar > toplamTutar) {
+    //   return false;
+    // }
+    // else if (islemTutarı + odenenTutar === toplamTutar) {
+    //   this.selectedRowData.odenenTutar = toplamTutar;
+    //   this.selectedRowData.durumu = BorcDurumu.Odendi;
+    // }
+    // else {
+    //   this.selectedRowData.odenenTutar += islemTutarı;
+    // }
+    // this.createHesapHareketi(this.hesapHareketi, this.selectedRowData.id);
+    // this.updateBorc(this.selectedRowData);
   }
 }

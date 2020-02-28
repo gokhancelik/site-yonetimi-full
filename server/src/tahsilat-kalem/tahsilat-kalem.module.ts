@@ -9,7 +9,7 @@ import { GelirGiderTanimi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entit
 import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TahsilatKalem, TahsilatKalemRepository, GelirGiderTanimi, Tahakkuk]), DatabaseModule, TahsilatKalemService],
+  imports: [TypeOrmModule.forFeature([GelirGiderTanimi, Tahakkuk, TahsilatKalem, TahsilatKalemRepository]), DatabaseModule],
   controllers: [TahsilatKalemController],
   providers: [TahsilatKalemService],
   exports: [TahsilatKalemService]

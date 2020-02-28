@@ -58,34 +58,34 @@ export class AdminComponent implements OnInit {
     },
     {
       title: 'İşlemler',
-      icon: 'network',
+      icon: 'book',
       children: [
         {
           title: 'Borc',
           link: '/admin/islemler/borc/list',
           icon: {
-            icon: 'try',
+            icon: 'file-invoice',
           },
         },
         {
           title: 'Tahakkuk',
           link: '/admin/islemler/tahakkuk/list',
           icon: {
-            icon: 'try',
+            icon: 'money-check',
           },
         },
         {
           title: 'Tahsilat',
           link: '/admin/islemler/tahsilat/list',
           icon: {
-            icon: 'try',
+            icon: 'credit-card',
           },
         },
         {
           title: 'Hesap Hareketi',
           link: '/admin/islemler/hesap-hareketi/list',
           icon: {
-            icon: 'try',
+            icon: 'exchange-alt',
           },
         },
       ]

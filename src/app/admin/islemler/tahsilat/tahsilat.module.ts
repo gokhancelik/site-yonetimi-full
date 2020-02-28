@@ -9,9 +9,10 @@ import { TahsilatDetayComponent } from './tahsilat-detay/tahsilat-detay.componen
 import { DetayGorunumuModule } from '../../../detay-gorunumu/detay-gorunumu.module';
 import { NbCardModule } from '@nebular/theme';
 import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
+import { TahsilatKalemListComponent } from './tahsilat-kalem-list/tahsilat-kalem-list.component';
 
 @NgModule({
-  declarations: [TahsilatComponent, TahsilatListComponent, TahsilatDetayComponent],
+  declarations: [TahsilatComponent, TahsilatListComponent, TahsilatDetayComponent, TahsilatKalemListComponent],
   imports: [
     CommonModule,
     TahsilatRoutingModule,
