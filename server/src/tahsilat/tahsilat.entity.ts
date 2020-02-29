@@ -22,11 +22,14 @@ export class Tahsilat {
     @Column('date')
     odemeTarihi: Date;
 
-    @Column({ type: 'text', nullable: true })
-    aciklama: string;
+    @Column({ type: 'nvarchar', nullable: true, length: 'MAX' })
+    aciklama: string = '';
 
     @Column({ type: 'money' })
     tutar: number;
+
+    @Column({ type: 'money', nullable: true })
+    kullanilmamisTutar: number = 0;
 
     @Column({ type: 'uuid' })
     bagimsizBolumKisiId: string;
@@ -40,7 +43,7 @@ export class Tahsilat {
     @Column({ type: 'int' })
     odemeYontemi: OdemeYontemi;
 
-    @Column({ length: 50 })
+    @Column({ length: 50, nullable: true })
     bankaSiparisNo: string;
 
     @OneToMany(type => TahsilatKalem, t => t.tahsilat, { nullable: true })

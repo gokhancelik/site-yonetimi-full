@@ -40,7 +40,7 @@ export class GelirGiderTanimi {
         {
             key: 'aciklama',
             name: 'Açıklama',
-            type: 'string',
+            type: 'textarea',
             visible: true,
         },
         {

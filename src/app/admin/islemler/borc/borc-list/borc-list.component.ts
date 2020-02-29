@@ -46,7 +46,7 @@ export class BorcListComponent extends BaseListComponent<Borc> implements OnInit
       location: 'after',
       widget: 'dxButton',
       options: {
-        icon: 'upload',
+        icon: 'fa fa-credit-card',
         hint: 'Öde',
         onClick: this.createHesapHareketiOpenModal.bind(this),
         visible: true
@@ -67,6 +67,7 @@ export class BorcListComponent extends BaseListComponent<Borc> implements OnInit
     (this.service as BorcService).ode(this.selectedBorc.id, this.hesapHareketi)
       .subscribe(d => {
         this.popupVisible = false;
+        this.grid.instance.refresh();
       })
     // let selectedBBs = this.grid.selectedRowKeys;
     // this.selectedRowData = this.grid.instance.getSelectedRowsData()[0];

@@ -63,7 +63,29 @@ export class TahakkukListComponent implements OnInit {
     {
       key: 'aciklama',
       name: 'Açıklama',
-      type: 'string',
+      type: 'textarea',
+    },
+    {
+      key: 'tutar',
+      name: 'Tutar',
+      totalSummaryType: 'sum',
+      type: 'number',
+      visible: true,
+      format: {
+        type: 'currency',
+        precision: 2
+      }
+    },
+    {
+      key: 'odenenTutar',
+      name: 'Ödenen Tutar',
+      totalSummaryType: 'sum',
+      type: 'number',
+      visible: true,
+      format: {
+        type: 'currency',
+        precision: 2
+      }
     },
     {
       key: 'faiz',
@@ -77,8 +99,8 @@ export class TahakkukListComponent implements OnInit {
       }
     },
     {
-      key: 'kalanTutar',
-      name: 'Kalan Tutar',
+      key: 'odenecekTutar',
+      name: 'Ödenecek Tutar',
       totalSummaryType: 'sum',
       type: 'number',
       visible: true,

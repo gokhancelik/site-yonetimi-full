@@ -14,7 +14,7 @@ export class Blok {
     @Column({ length: 50, nullable: true })
     kod: string;
 
-    @Column({ type: 'text', nullable: true })
+    @Column({ type: 'nvarchar', nullable: true, length: 'MAX' })
     aciklama: string;
 
     @ManyToOne(type => Site, site => site.bloks)

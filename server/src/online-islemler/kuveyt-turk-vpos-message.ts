@@ -140,7 +140,7 @@ export class KuveytTurkVPosMessage {
             xmlStr += `<KuveytTurkVPosAdditionalData>
                 <AdditionalData>
                     <Key>${this.additionalData.key}</Key>
-                    <Data>${ this.additionalData.data} </Data>
+                    <Data>${this.additionalData.data}</Data>
                 </AdditionalData>
             </KuveytTurkVPosAdditionalData>`;
         }

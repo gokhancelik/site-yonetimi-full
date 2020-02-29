@@ -34,7 +34,7 @@ export class Blok {
         {
             key: 'aciklama',
             name: 'Açıklama',
-            type: 'string',
+            type: 'textarea',
             validators: [{
                 type: 'required',
                 message: 'Ad zorunludur',

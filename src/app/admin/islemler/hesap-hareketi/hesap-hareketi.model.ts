@@ -72,7 +72,7 @@ export class HesapHareketi {
         {
             key: 'aciklama',
             name: 'Açıklama',
-            type: 'select',
+            type: 'textarea',
             editorOptions: {
                 itemsAsync: injector.get(HesapHareketleriService).getListWithInnerModel(),
                 displayExpr: (item) => {

@@ -53,7 +53,7 @@ export class BagimsizBolum {
         {
             key: 'aciklama',
             name: 'Açıklama',
-            type: 'string',
+            type: 'textarea',
             visible: true,
         },
         {

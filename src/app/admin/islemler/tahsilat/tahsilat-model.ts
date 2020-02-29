@@ -42,7 +42,7 @@ export class TahsilatModel {
         {
             key: 'aciklama',
             name: 'Açıklama',
-            type: 'string',
+            type: 'textarea',
             visible: true,
             cellTemplate: 'detailLink',
             editorOptions: {

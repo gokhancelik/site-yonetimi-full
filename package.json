@@ -41,6 +41,7 @@
     "@nguniversal/module-map-ngfactory-loader": "^8.0.0",
     "@types/xml2js": "^0.4.5",
     "bootstrap": "^4.4.1",
+    "class-transformer": "^0.2.3",
     "devextreme": "latest",
     "devextreme-angular": "latest",
     "devextreme-schematics": "^1.0.12",

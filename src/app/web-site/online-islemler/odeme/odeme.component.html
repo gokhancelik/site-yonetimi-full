@@ -50,6 +50,7 @@
                             </dx-select-box>
                         </div>
                     </div>
+
                     <div class="dx-field">
                         <div class="dx-field-label">CVV Kodu</div>
                         <div class="dx-field-value">
@@ -61,6 +62,18 @@
                             </dx-text-box>
                         </div>
                     </div>
+                    <div class="dx-field">
+                        <div class="dx-field-label">Kart Tipi</div>
+                        <div class="dx-field-value">
+                            <dx-select-box name="brandName" required [(ngModel)]="model.brandName"
+                                [dataSource]="brandNames" displayExpr="name" valueExpr="id">
+                                <dx-validator>
+                                    <dxi-validation-rule type="required" message="Kart Tipi zorunludur">
+                                    </dxi-validation-rule>
+                                </dx-validator>
+                            </dx-select-box>
+                        </div>
+                    </div>
                     <dx-button [disabled]="form.invalid" stylingMode="contained" text="Ödemeyi Tamamla" type="success"
                         (onClick)="odemeyiTamamla($event)">
                     </dx-button>
@@ -68,7 +81,7 @@
             </div>
         </div>
     </div>
-    <div class="col" *ngIf="tahsilat">
+    <div class="col" *ngIf="seciliTahakkuklar">
         <div class="card">
             <h5 class="card-header">Ödeme Bilgileri</h5>
             <div class="card-body">
@@ -87,23 +100,37 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of tahsilat.tahsilatKalems">
-                            <td>
-                                {{row.tahakkuk?.vadeTarihi|date}}
-                            </td>
-                            <td>
-                                {{row.odemeTipi?.ad}}
-                            </td>
-                            <td class="text-right">
-                                {{row.tutar| currency : 'TRY'}}
-                            </td>
-                        </tr>
+                        <ng-container *ngFor="let tahakkuk of seciliTahakkuklar">
+                            <tr>
+                                <td>
+                                    {{tahakkuk.vadeTarihi|date}}
+                                </td>
+                                <td>
+                                    {{tahakkuk.odemeTipi.ad}}
+                                </td>
+                                <td class="text-right">
+                                    {{(tahakkuk.odenecekTutar - tahakkuk.faiz)| currency : 'TRY'}}
+                                </td>
+                            </tr>
+                            <tr *ngIf="tahakkuk.faiz">
+                                <td>
+                                    {{tahakkuk.vadeTarihi|date}}
+                                </td>
+                                <td>
+                                    {{tahakkuk.odemeTipi.ad}} Faiz
+                                </td>
+                                <td class="text-right">
+                                    {{tahakkuk.faiz| currency : 'TRY'}}
+                                </td>
+                            </tr>
+                        </ng-container>
+
                     </tbody>
                     <tfoot>
                         <tr>
                             <td colspan="2"><b> Toplam:</b></td>
                             <td class="text-right"><b>
-                                    {{ tahsilat.tutar|currency: 'TRY'}}</b>
+                                    {{ tutar|currency: 'TRY'}}</b>
                             </td>
                         </tr>
                     </tfoot>
@@ -111,5 +138,5 @@
             </div>
         </div>
     </div>
-   
+
 </div>

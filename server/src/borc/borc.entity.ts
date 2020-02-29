@@ -22,7 +22,7 @@ export class Borc {
     @Column('datetime2')
     vadeTarihi: Date;
 
-    @Column({ type: 'text', nullable: true })
+    @Column({ type: 'nvarchar', nullable: true, length: 'MAX' })
     aciklama: string;
 
     @Column({ type: 'money' })

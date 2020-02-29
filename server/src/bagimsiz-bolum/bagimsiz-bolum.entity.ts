@@ -4,7 +4,7 @@ import { BagimsizBolumAidatGrubu } from '../aidat-grubu/bagimsiz-bolum-aidat-gru
 import { Kisi } from '../kisi/kisi.entity';
 import { BagimsizBolumKisi } from '../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity';
 
-@Entity({name:'BagimsizBolum'})
+@Entity({ name: 'BagimsizBolum' })
 export class BagimsizBolum {
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -15,7 +15,7 @@ export class BagimsizBolum {
     @Column({ length: 50 })
     kod: string;
 
-    @Column({ type: 'text', nullable: true })
+    @Column({ type: 'nvarchar', nullable: true, length: 'MAX' })
     aciklama: string;
 
     @ManyToOne(type => Blok, blok => blok.bagimsizBolums)

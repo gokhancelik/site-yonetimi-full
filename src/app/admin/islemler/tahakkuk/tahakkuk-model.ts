@@ -70,7 +70,7 @@ export class TahakkukModel {
         {
             key: 'aciklama',
             name: 'Açıklama',
-            type: 'string',
+            type: 'textarea',
             visible: true,
         },
         {

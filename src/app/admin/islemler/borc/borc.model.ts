@@ -39,7 +39,6 @@ export class Borc {
                 format: {
                     type: 'currency',
                 },
-                placeholder: 'Para'
             },
         },
         {
@@ -69,7 +68,7 @@ export class Borc {
         {
             key: 'aciklama',
             name: 'Açıklama',
-            type: 'string',
+            type: 'textarea',
             visible: true,
         },
         {

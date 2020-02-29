@@ -18,23 +18,12 @@ export class TahsilatKalemModel {
             visible: false,
         },
         {
-            key: 'tahsilatId',
-            name: 'Tahsilat',
-            type: 'select',
-            editorOptions: {
-                itemsAsync: injector.get(TahsilatService).getList(),
-                displayExpr: 'durumu',
-                valueExpr: 'id',
-            },
-            visible: true,
-        },
-        {
             key: 'odemeTipiId',
             name: 'Ödeme Tipi',
             type: 'select',
             editorOptions: {
                 itemsAsync: injector.get(GelirGiderTanimService).getList(),
-                displayExpr: 'kod',
+                displayExpr: 'ad',
                 valueExpr: 'id',
             },
             visible: true,
@@ -43,10 +32,12 @@ export class TahsilatKalemModel {
             key: 'tahakkukId',
             name: 'Tahakkuk',
             type: 'string',
+            cellTemplate: 'detailLink',
             editorOptions: {
-                itemsAsync: injector.get(TahakkukService).getList(),
-                displayExpr: 'durumu',
-                valueExpr: 'id',
+                customParams: {
+                    detailKey: 'tahakkukId',
+                    routerLink: ['/admin', 'islemler', 'tahakkuk', ':tahakkukId', 'detay']
+                }
             },
             visible: true
         },
@@ -54,6 +45,14 @@ export class TahsilatKalemModel {
             key: 'tutar',
             name: 'Tutar',
             type: 'number',
+            format: {
+                type: 'currency',
+            },
+            editorOptions: {
+                format: {
+                    type: 'currency',
+                },
+            },
             visible: true
         },
         ];

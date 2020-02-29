@@ -1,4 +1,5 @@
 import { GelirGiderTanimi } from './gelir-gider-tanimi.model';
+import { BagimsizBolumKisi } from '../../../admin/tanimlamalar/bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.model';
 
 export enum AidatDurumu {
     Odenmedi,
@@ -6,8 +7,6 @@ export enum AidatDurumu {
     Icrada
 }
 export interface Tahakkuk {
-    id: string;
-    vadeTarihi: Date;
     sonTahsilatTarihi: Date;
     aciklama: string;
     tutar: number;
@@ -19,4 +18,10 @@ export interface Tahakkuk {
     kalanTutar: number;
     faiz: number;
     odemeTipi: GelirGiderTanimi;
+    id: string;
+    vadeTarihi: Date;
+    odemeTarihi?: Date;
+    bagimsizBolumKisi: BagimsizBolumKisi;
+    odenecekTutar: number;
+    bankaKomisyonu: number;
 }

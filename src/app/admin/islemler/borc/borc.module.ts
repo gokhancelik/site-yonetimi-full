@@ -23,8 +23,8 @@ import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
     DxSelectBoxModule,
     DxButtonModule,
     DxValidatorModule,
-    FormsModule,
     DxTextBoxModule,
+    FormsModule,
     DetayGorunumuModule,
     NbCardModule,
     NgbTabsetModule

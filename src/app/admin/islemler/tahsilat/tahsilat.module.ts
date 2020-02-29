@@ -10,6 +10,7 @@ import { DetayGorunumuModule } from '../../../detay-gorunumu/detay-gorunumu.modu
 import { NbCardModule } from '@nebular/theme';
 import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
 import { TahsilatKalemListComponent } from './tahsilat-kalem-list/tahsilat-kalem-list.component';
+import { DxPopupModule, DxDateBoxModule, DxSelectBoxModule, DxButtonModule, DxValidatorModule, DxTextBoxModule } from 'devextreme-angular';
 
 @NgModule({
   declarations: [TahsilatComponent, TahsilatListComponent, TahsilatDetayComponent, TahsilatKalemListComponent],
@@ -19,7 +20,13 @@ import { TahsilatKalemListComponent } from './tahsilat-kalem-list/tahsilat-kalem
     DataTableModule,
     DetayGorunumuModule,
     NbCardModule,
-    NgbTabsetModule
+    NgbTabsetModule,
+    DxPopupModule,
+    DxDateBoxModule,
+    DxSelectBoxModule,
+    DxButtonModule,
+    DxValidatorModule,
+    DxTextBoxModule,
   ]
 })
 export class TahsilatModule { }

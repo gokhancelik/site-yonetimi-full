@@ -26,7 +26,7 @@ export class AidatGrubu {
           {
             key: 'aciklama',
             name: 'Açıklama',
-            type: 'string',
+            type: 'textarea',
             visible: true,
           },
           {
