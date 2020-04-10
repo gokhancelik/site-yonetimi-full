@@ -18,10 +18,10 @@ export class OdemeComponent implements OnInit {
   yillar: any[];
   model: any = {
     cardHolderName: 'Gökhan Çelik',
-    cardNumber: '4025894025894022',
-    cardExpireDateMonth: '12',
+    cardNumber: '4033602562020327',
+    cardExpireDateMonth: '01',
     cardExpireDateYear: 2030,
-    cardCVV2: '000'
+    cardCVV2: '861'
   };
   seciliTahakkuklar: Tahakkuk[];
   sonucUrl: any;
@@ -46,7 +46,7 @@ export class OdemeComponent implements OnInit {
     this.tutar = this.seciliTahakkuklar.map(m => m.odenecekTutar).reduce((p, c) => p + c, 0)
     this.aylar = Array.from(Array(12).keys()).map(x => {
       const y = x + 1;
-      const id = y > 9 ? y : `0${y}`;
+      const id = y > 9 ? y.toString() : `0${y}`;
       return {
         id,
         ad: id

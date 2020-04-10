@@ -131,17 +131,17 @@ export class TahakkukService extends BaseService<Tahakkuk> {
             var tahsilatKalem = await this.faizKalemiOlustur(tahsilatKalem, tahakkuk);
             result.push(tahsilatKalem);
         }
-        if (tahakkuk.bankaKomisyonu > 0) {
-            var tahsilatKalem = await this.bankaKomisyonuKalemiOlustur(tahsilatKalem, tahakkuk);
-            result.push(tahsilatKalem);
-        }
+        // if (tahakkuk.bankaKomisyonu > 0) {
+        //     var tahsilatKalem = await this.bankaKomisyonuKalemiOlustur(tahsilatKalem, tahakkuk);
+        //     result.push(tahsilatKalem);
+        // }
         return { tahsilatKalems: result, kalanTutar: yatirilanTutar - kullanilanTutar };
     }
 
     private async bankaKomisyonuKalemiOlustur(tahsilatKalem: TahsilatKalem, tahakkuk: Tahakkuk) {
         var tahsilatKalem = new TahsilatKalem();
         tahsilatKalem.tahakkukId = tahakkuk.id;
-        tahsilatKalem.tutar = tahakkuk.bankaKomisyonu;
+        tahsilatKalem.tutar = 0;
         tahsilatKalem.tahakkuk = tahakkuk;
         let gelirTanimi = await this.gelirGiderTanimiService.getByKod(GelirGiderTanimi.BankaKomisyonu);
         tahsilatKalem.odemeTipiId = gelirTanimi.id;
