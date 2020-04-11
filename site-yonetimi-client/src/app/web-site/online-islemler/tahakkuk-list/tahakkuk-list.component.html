@@ -1,0 +1,9 @@
+<div class="row">
+    <div class="col">
+        <data-table [dataSource]="dataSource" (dxGridReady)="onGridReady($event)" [title]="'Tahakkuklar'"
+            [columns]="columns" [allowAdding]="false" [allowDeleting]="false" [allowUpdating]="false"
+            name="odenmemisTahakkuklar">
+        </data-table>
+    <button class="btn btn-success" (click)="odemeYap()">Ödeme Yap</button>
+</div>
+</div>

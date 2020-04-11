@@ -1,0 +1,112 @@
+<!-- <data-table [settings]="settings" (edit)="edit($event)" (create)="create()" (refresh)="refresh($event)" (delete)="delete($event)" [data]="data">
+</data-table> -->
+<nb-card>
+  <nb-card-header>
+    {{title || name}}
+  </nb-card-header>
+  <nb-card-body>
+    <dx-data-grid *ngIf="isBrowser" id="{{name}}GridContainer" [wordWrapEnabled]="true"
+      (onInitialized)="onInitialized.emit($event)" (onEditorPreparing)="onEditorPreparing.emit($event)"
+      (onToolbarPreparing)="onToolbarPreparing.emit($event)" (onEditingStart)="onEditingStart.emit($event)"
+      [errorRowEnabled]="false" [dataSource]="dataSource" (onRowUpdating)="onRowUpdating.next($event)"
+      (onInitNewRow)="onInitNewRow.next($event)" [allowColumnReordering]="true" [showColumnLines]="true"
+      [showRowLines]="true" [showBorders]="true" [rowAlternationEnabled]="true" [allowColumnResizing]="true"
+      [columnAutoWidth]="true">
+      <dxo-group-panel [visible]="true"></dxo-group-panel>
+      <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+      <dxo-summary>
+        <dxi-total-item [column]="col.key" *ngFor="let col of totalSummaryColumns" [valueFormat]="col.format"
+          [summaryType]="col.totalSummaryType">
+        </dxi-total-item>
+      </dxo-summary>
+      <dxo-selection [selectAllMode]="'allPages'" [showCheckBoxesMode]="'always'" mode="multiple"></dxo-selection>
+      <dxo-export [enabled]="true" [fileName]="name" [allowExportSelectedData]="true"></dxo-export>
+      <dxo-paging [enabled]="true"></dxo-paging>
+      <dxo-state-storing [enabled]="true" type="localStorage" storageKey="{{name}}Grid"></dxo-state-storing>
+      <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[5, 10, 15, 20]">
+      </dxo-pager>
+      <dxo-editing [mode]="editMode" [allowAdding]="allowAdding" [allowUpdating]="allowUpdating"
+        [allowDeleting]="allowDeleting" [useIcons]="true">
+      </dxo-editing>
+
+      <dxo-header-filter [visible]="true">
+      </dxo-header-filter>
+      <dxo-filter-panel [visible]="true">
+      </dxo-filter-panel>
+      <dxo-filter-row [visible]="true">
+      </dxo-filter-row>
+      <dxo-search-panel [visible]="true" [width]="240" placeholder="Ara"></dxo-search-panel>
+      <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+      <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+      <dxi-column type="buttons" *ngIf="allowAdding || allowDeleting || allowUpdating || (buttons && buttons.length)"
+        [width]="110">
+        <dxi-button name="edit"></dxi-button>
+        <dxi-button name="delete"></dxi-button>
+        <ng-container *ngIf="buttons">
+          <dxi-button *ngFor="let button of buttons" [hint]="button.hint" [icon]="button.icon" [onClick]="button.click"
+            [visible]="button.visible" [text]="button.text" [cssClass]="button.cssClass">
+          </dxi-button>
+        </ng-container>
+        <!-- <dxi-button hint="reddet" icon="fa fa-ban" style="color: red" [onClick]="reddet"></dxi-button> -->
+      </dxi-column>
+      <ng-container *ngFor="let col of columns">
+        <dxi-column [fixed]="col.fixed" [formItem]="col.formItem" [encodeHtml]="false" [dataField]="col.key"
+          [visible]="col.visible" [editCellTemplate]="col.editCellTemplate" [editorOptions]="col.editorOptions"
+          [cellTemplate]="col.cellTemplate" [format]="col.format" [caption]="col.name" [dataType]="col.type"
+          [validationRules]="col.validators">
+          <dxo-lookup *ngIf="col.type==='select'"
+            [dataSource]="col.editorOptions.items || (col.editorOptions.itemsAsync|async)"
+            [displayExpr]="col.editorOptions.displayExpr" [valueExpr]="col.editorOptions.valueExpr">
+          </dxo-lookup>
+        </dxi-column>
+        <div *dxTemplate="let cellInfo of 'htmlEditCellTemplate'">
+          <dx-html-editor [height]="500" [(value)]="cellInfo.value" (onValueChanged)="cellInfo.setValue($event.value)">
+            <dxo-toolbar>
+              <dxi-item formatName="undo"></dxi-item>
+              <dxi-item formatName="redo"></dxi-item>
+              <dxi-item formatName="separator"></dxi-item>
+              <dxi-item formatName="size" [formatValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']">
+              </dxi-item>
+              <dxi-item formatName="font"
+                [formatValues]="['Arial', 'Courier New', 'Georgia', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Verdana']">
+              </dxi-item>
+              <dxi-item formatName="separator"></dxi-item>
+              <dxi-item formatName="bold"></dxi-item>
+              <dxi-item formatName="italic"></dxi-item>
+              <dxi-item formatName="strike"></dxi-item>
+              <dxi-item formatName="underline"></dxi-item>
+              <dxi-item formatName="separator"></dxi-item>
+              <dxi-item formatName="alignLeft"></dxi-item>
+              <dxi-item formatName="alignCenter"></dxi-item>
+              <dxi-item formatName="alignRight"></dxi-item>
+              <dxi-item formatName="alignJustify"></dxi-item>
+              <dxi-item formatName="separator"></dxi-item>
+              <dxi-item formatName="header" [formatValues]="[false, 1, 2, 3, 4, 5]"></dxi-item>
+              <dxi-item formatName="separator"></dxi-item>
+              <dxi-item formatName="orderedList"></dxi-item>
+              <dxi-item formatName="bulletList"></dxi-item>
+              <dxi-item formatName="separator"></dxi-item>
+              <dxi-item formatName="color"></dxi-item>
+              <dxi-item formatName="background"></dxi-item>
+              <dxi-item formatName="separator"></dxi-item>
+              <dxi-item formatName="link"></dxi-item>
+              <dxi-item formatName="image"></dxi-item>
+              <dxi-item formatName="separator"></dxi-item>
+              <dxi-item formatName="clear"></dxi-item>
+              <dxi-item formatName="codeBlock"></dxi-item>
+              <dxi-item formatName="blockquote"></dxi-item>
+            </dxo-toolbar>
+            <dxo-media-resizing [enabled]=true>
+            </dxo-media-resizing>
+          </dx-html-editor>
+        </div>
+        <div *dxTemplate="let data of 'detailLink'">
+          <detail-link [routerLink]="data.column.editorOptions.customParams.routerLink"
+            [detailKey]="data.column.editorOptions && data.column.editorOptions.customParams && data.column.editorOptions.customParams.detailKey ? data.column.editorOptions.customParams.detailKey : col.key"
+            [data]="data" [value]="data.text">
+          </detail-link>
+        </div>
+      </ng-container>
+    </dx-data-grid>
+  </nb-card-body>
+</nb-card>

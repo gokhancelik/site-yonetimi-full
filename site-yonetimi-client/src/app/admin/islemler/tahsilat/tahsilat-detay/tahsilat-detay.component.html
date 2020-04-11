@@ -1,0 +1,26 @@
+<nb-card *ngIf="model">
+    <nb-card-header>
+        <div class="row">
+            <div class="col-6">
+                <span>{{model?.id}}</span>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <detay-gorunumu [colDefs]="columns" [model]="model" [readOnly]="true"></detay-gorunumu>
+    </nb-card-body>
+</nb-card>
+<nb-card>
+    <app-tahsilat-kalem-list [tahsilatId]="id"></app-tahsilat-kalem-list>
+    <nb-card-header></nb-card-header>
+    <nb-card-body>
+        <ngb-tabset>
+            <ngb-tab title="Tahsilat Kalemleri">
+            </ngb-tab>
+        </ngb-tabset>
+    </nb-card-body>
+</nb-card>
+<!-- <data-table [dataSource]="dataSource" [title]="'Tahsilat Kalem Listesi'" [columns]="columns" [editMode]="'popup'"
+        
+    name="tahsilatKalem" (onRowUpdating)="onRowUpdating($event)">
+</data-table> -->
