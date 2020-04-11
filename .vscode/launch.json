@@ -18,7 +18,7 @@
             "request": "launch",
             "name": "Debug Nest Framework",
             "args": [
-                "${workspaceFolder}/server/main.ts"
+                "${workspaceFolder}/site-yonetimi-server/main.ts"
             ],
             "runtimeArgs": [
                 "--nolazy",
@@ -26,7 +26,7 @@
                 "ts-node/register"
             ],
             "sourceMaps": true,
-            "cwd": "${workspaceRoot}/server",
+            "cwd": "${workspaceRoot}/site-yonetimi-server",
             "protocol": "inspector"
         }
     ]
