@@ -16,6 +16,7 @@ import { Tahsilat } from '../tahsilat/tahsilat.entity';
 import { TahsilatKalem } from '../tahsilat-kalem/tahsilat-kalem.entity';
 import { Borc } from '../borc/borc.entity';
 import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
+import { SanalPos } from 'src/sanal-pos/sanal-pos.entity';
 
 @Module({
     imports: [
@@ -40,6 +41,9 @@ import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
             // username: 'sa',
             // password: 'qwe123**',
             // database: 'zsity',
+            options: {
+                encrypt: false
+            },
             host: '94.73.148.5',
             port: 1433,
             username: 'u8998566_uZSitY',
@@ -61,7 +65,8 @@ import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
                 BagimsizBolumKisi,
                 Tahakkuk,
                 Tahsilat,
-                TahsilatKalem
+                TahsilatKalem,
+                SanalPos
             ],
             synchronize: true,
         })

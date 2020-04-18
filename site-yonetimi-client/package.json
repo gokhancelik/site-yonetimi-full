@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "generate": "swagger-angular-generator -s src/api/scheme.json -d src/api/generated"
   },
   "private": true,
   "dependencies": {
@@ -31,6 +32,7 @@
     "devextreme-schematics": "^1.1.13",
     "eva-icons": "^1.1.2",
     "rxjs": "~6.5.4",
+    "swagger-angular-generator": "^4.2.1",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },

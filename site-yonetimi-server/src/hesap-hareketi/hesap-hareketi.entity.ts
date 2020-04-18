@@ -3,12 +3,10 @@ import { Tahsilat } from '../tahsilat/tahsilat.entity';
 import { Borc } from '../borc/borc.entity';
 import { HareketTipi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entity';
 import { HesapTanimi } from '../hesap-tanimi/hesap-tanimi.entity';
+import { BaseEntity } from '../abstract/base.entity';
 
 @Entity({ name: 'HesapHareketi' })
-export class HesapHareketi {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
+export class HesapHareketi extends BaseEntity {
     @Column('datetime2')
     islemTarihi: Date;
 
@@ -23,11 +21,11 @@ export class HesapHareketi {
 
     @ManyToOne(type => Borc)
     borc?: Borc;
-    
+
     @Column({ type: 'money' })
     tutar: number;
 
-    @Column({type: "int"})
+    @Column({ type: "int" })
     hareketTipi: HareketTipi;
 
     @Column({ type: 'uuid', nullable: false })
@@ -37,8 +35,9 @@ export class HesapHareketi {
     @ManyToOne(type => HesapTanimi)
     hesapTanimi!: HesapTanimi;
 
-    
-    constructor(islemTarihi:Date, hareketTipi: HareketTipi, tutar: number, hesapTanimiId: string, tahsilatId?:string, borcId?:string){
+
+    constructor(islemTarihi: Date, hareketTipi: HareketTipi, tutar: number, hesapTanimiId: string, tahsilatId?: string, borcId?: string) {
+        super();
         this.islemTarihi = islemTarihi;
         this.tutar = tutar;
         this.hareketTipi = hareketTipi;

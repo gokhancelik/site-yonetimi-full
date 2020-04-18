@@ -2,16 +2,14 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { BagimsizBolumKisi } from "../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity";
 import { Expose } from "class-transformer";
+import { BaseEntity } from "../abstract/base.entity";
 export enum AidatDurumu {
     Odenmedi,
     Odendi,
     Icrada
 }
 @Entity({ name: 'Tahakkuk' })
-export class Tahakkuk {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
+export class Tahakkuk extends BaseEntity {
     @Column('datetime2')
     vadeTarihi: Date;
 

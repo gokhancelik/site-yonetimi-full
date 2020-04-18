@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common'
 import { BlokService } from './blok.service';
 import { Blok } from './blok.entity';
 import { BaseController } from '../abstract/base.controller';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Blok')
 @Controller('blok')
 export class BlokController extends BaseController<Blok, BlokService> {
     constructor(service: BlokService) {

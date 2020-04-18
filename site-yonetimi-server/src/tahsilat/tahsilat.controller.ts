@@ -4,7 +4,9 @@ import { Tahsilat } from './tahsilat.entity';
 import { TahsilatService } from './tahsilat.service';
 import { TahsilatKalem } from '../tahsilat-kalem/tahsilat-kalem.entity';
 import { TahsilatKalemService } from '../tahsilat-kalem/tahsilat-kalem.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Tahsilat')
 @Controller('tahsilat')
 export class TahsilatController extends BaseController<Tahsilat, TahsilatService> {
     constructor(service: TahsilatService,

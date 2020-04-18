@@ -4,7 +4,9 @@ import { BaseController } from '../abstract/base.controller';
 import { BagimsizBolumService } from './bagimsiz-bolum.service';
 import { BagimsizBolumKisi } from '../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity';
 import { BagimsizBolumKisiService } from '../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Bağımsız Bölüm')
 @Controller('bagimsiz-bolum')
 export class BagimsizBolumController extends BaseController<BagimsizBolum, BagimsizBolumService> {
     constructor(service: BagimsizBolumService, private bbkService: BagimsizBolumKisiService) {

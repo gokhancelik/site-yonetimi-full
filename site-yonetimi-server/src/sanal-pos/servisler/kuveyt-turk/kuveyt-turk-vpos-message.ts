@@ -1,4 +1,5 @@
 import * as crypto from 'crypto';
+import { TransactionType } from './transaction-type-enum';
 export enum BrandName {
     Troy = 400,
     AmericanExpress = 300,
@@ -12,25 +13,7 @@ export enum Currency {
     EUR = '0978',
     JPY = '0392',
 }
-export enum TransactionType {
-    Sale = 'Sale',
-    Auth = 'Auth',
-    Vft = 'Vft',
-    Point = 'Point',
-    Cancel = 'Cancel',
-    Refund = 'Refund',
-    Capture = 'Capture',
-    Reversal = 'Reversal',
-    CampaignSearch = 'CampaignSearch',
-    CardTest = 'CardTest',
-    BatchClosedSuccessSearch = 'BatchClosedSuccessSearch',
-    SurchargeSearch = 'SurchargeSearch',
-    VFTSale = 'VFTSale',
-    VFTSearch = 'VFTSearch',
-    PointSearch = 'PointSearch',
-    PointSale = 'PointSale',
-    Credit = 'Credit',
-}
+
 
 export class KuveytTurkVPosMessage {
 
@@ -156,18 +139,18 @@ export interface AdditionalData {
     data: string;
 }
 export interface VPosTransactionResponseContract {
-    VPosMessage: VPosMessage;
-    IsEnrolled: string;
-    IsVirtual: string;
-    ResponseCode: string;
-    ResponseMessage: string;
-    OrderId: string;
-    TransactionTime: string;
-    MerchantOrderId: string;
-    HashData: string;
-    MD: string;
-    ReferenceId: string;
-    BusinessKey: string;
+    vPosMessage: VPosMessage;
+    isEnrolled: string;
+    isVirtual: string;
+    responseCode: string;
+    responseMessage: string;
+    orderId: string;
+    transactionTime: string;
+    merchantOrderId: string;
+    hashData: string;
+    mD: string;
+    referenceId: string;
+    businessKey: string;
 }
 
 export interface VPosMessage {

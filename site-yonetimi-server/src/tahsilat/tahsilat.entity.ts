@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "ty
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { BagimsizBolumKisi } from "../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity";
 import { TahsilatKalem } from "../tahsilat-kalem/tahsilat-kalem.entity";
+import { BaseEntity } from "../abstract/base.entity";
 export enum OdemeYontemi {
     HavaleEFT = 0,
     KrediKarti = 1,
@@ -15,10 +16,7 @@ export enum TahsilatDurumu {
     Iptal = 3
 }
 @Entity({ name: 'Tahsilat' })
-export class Tahsilat {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
+export class Tahsilat extends BaseEntity {
     @Column('date')
     odemeTarihi: Date;
 

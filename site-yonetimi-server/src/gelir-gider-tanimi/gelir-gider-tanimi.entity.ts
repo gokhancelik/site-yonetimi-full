@@ -1,14 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { BaseEntity } from '../abstract/base.entity';
 export enum HareketTipi {
     Gelir = 1,
     Gider = 2,
     GelirGider = 3
 }
 @Entity({ name: 'GelirGiderTanimi' })
-export class GelirGiderTanimi {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
+export class GelirGiderTanimi extends BaseEntity {
     @Column({ length: 50 })
     ad: string;
 

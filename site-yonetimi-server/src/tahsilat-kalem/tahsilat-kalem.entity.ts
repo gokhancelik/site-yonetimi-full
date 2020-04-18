@@ -2,12 +2,10 @@ import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, OneToOne, ManyToMany
 import { Tahsilat } from "../tahsilat/tahsilat.entity";
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { Tahakkuk } from "../tahakkuk/tahakkuk.entity";
+import { BaseEntity } from "../abstract/base.entity";
 
 @Entity({ name: 'TahsilatKalem' })
-export class TahsilatKalem {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
+export class TahsilatKalem extends BaseEntity {
     @Column({ type: 'money' })
     tutar: number;
 
