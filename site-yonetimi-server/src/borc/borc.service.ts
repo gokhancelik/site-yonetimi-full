@@ -16,7 +16,7 @@ export class BorcService extends BaseService<Borc> {
     }
     async ode(id: string, tutar: number, odemeTarihi: Date, hesapId: string): Promise<Borc> {
         const borc = await this.findById(id);
-        const hesapHareketi = new HesapHareketi(odemeTarihi, HareketTipi.Gider, -Number(tutar), hesapId, null, id);
+        const hesapHareketi = new HesapHareketi(odemeTarihi, -Number(tutar), hesapId, null, id);
         if (!borc.odenenTutar) {
             borc.odenenTutar = 0;
         }

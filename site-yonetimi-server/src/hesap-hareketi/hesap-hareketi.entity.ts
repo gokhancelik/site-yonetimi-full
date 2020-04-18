@@ -27,9 +27,6 @@ export class HesapHareketi {
     @Column({ type: 'money' })
     tutar: number;
 
-    @Column({type: "int"})
-    hareketTipi: HareketTipi;
-
     @Column({ type: 'uuid', nullable: false })
     hesapTanimiId!: string;
 
@@ -38,10 +35,9 @@ export class HesapHareketi {
     hesapTanimi!: HesapTanimi;
 
     
-    constructor(islemTarihi:Date, hareketTipi: HareketTipi, tutar: number, hesapTanimiId: string, tahsilatId?:string, borcId?:string){
+    constructor(islemTarihi:Date, tutar: number, hesapTanimiId: string, tahsilatId?:string, borcId?:string){
         this.islemTarihi = islemTarihi;
         this.tutar = tutar;
-        this.hareketTipi = hareketTipi;
         this.tahsilatId = tahsilatId;
         this.borcId = borcId;
         this.hesapTanimiId = hesapTanimiId;

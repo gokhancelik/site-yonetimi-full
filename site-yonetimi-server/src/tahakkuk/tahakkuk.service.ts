@@ -73,7 +73,7 @@ export class TahakkukService extends BaseService<Tahakkuk> {
             tahsilat.odemeTarihi = odemeTarihi;
             tahsilat.tutar = tutar;
             tahsilat.odemeYontemi = odemeYontemi;
-            let hesapHareketi = new HesapHareketi(odemeTarihi, HareketTipi.Gelir, tutar, hesapId, tahsilat.id, null);
+            let hesapHareketi = new HesapHareketi(odemeTarihi, tutar, hesapId, tahsilat.id, null);
             await manager.save(hesapHareketi);
             tutar += kullanilmamisToplam;
             for (const eskiTahsilat of bakiyeKalanTahsilatlar) {
