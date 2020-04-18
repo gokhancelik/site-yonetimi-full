@@ -2,12 +2,10 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'ty
 import { Site } from '../site/site.entity';
 import { BagimsizBolum } from '../bagimsiz-bolum/bagimsiz-bolum.entity';
 import { Borc } from '../borc/borc.entity';
+import { BaseEntity } from '../abstract/base.entity';
 
 @Entity({ name: 'Blok' })
-export class Blok {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
+export class Blok extends BaseEntity {
     @Column({ length: 500 })
     ad: string;
 

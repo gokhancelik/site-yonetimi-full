@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Directive, ElementRef } from '@angular/core';
 import { OdemeService } from '../odeme.service';
 import { Tahakkuk } from '../models/tahakkuk.model';
 import { Router } from '@angular/router';
@@ -27,6 +27,7 @@ export class OdemeComponent implements OnInit {
   sonucUrl: any;
   tutar: number;
   brandNames: { name: string; id: number; }[];
+  sonucHtml: SafeHtml;
   get odenecekTutar() {
     return this.seciliTahakkuklar.map(t => t.odenecekTutar)
   }
@@ -75,6 +76,24 @@ export class OdemeComponent implements OnInit {
     this.onlineIslemlerService.odeme({ tutar: this.tutar, creditCard: this.model })
       .subscribe(d => {
         this.sonucUrl = this.transform(d.htmlResponse);
+        this.sonucHtml = this.transformHtml(d.htmlResponse);
+        // var myWindow = window.open("", "newWindow", "width=500,height=700");
+        document.write(d.htmlResponse);
+        let form = <HTMLFormElement>document.getElementsByTagName('form')[0];
+        form.submit();
+        // myWindow.focus();
+        // myWindow.opener = window;
+        // myWindow.onclose = (e) => {
+        //   (console.log(e))
+        // }
+        // myWindow.onunload = () => {
+        //   console.log(myWindow);
+        // }
+        // var popupTick = setInterval(function () {
+        //   if (myWindow.closed) {
+        //     clearInterval(popupTick);
+        //   }
+        // }, 500);
         let odemeModal = this.modalService.open(OdemeGatewayComponent, { size: 'xl' });
         odemeModal.componentInstance.data = this.sonucUrl;
         odemeModal.result.then((res) => {
@@ -88,5 +107,34 @@ export class OdemeComponent implements OnInit {
       return URL.createObjectURL(blob)
     }
     return this.sanitizer.bypassSecurityTrustResourceUrl(getBlobURL(value, 'text/html'));
+  }
+  public transformHtml(value: any) {
+    return this.sanitizer.bypassSecurityTrustHtml(value);
+  }
+}
+
+@Directive({ selector: '[runScripts]' })
+export class RunScriptsDirective implements OnInit {
+  constructor(private elementRef: ElementRef) { }
+  ngOnInit(): void {
+    setTimeout(() => { // wait for DOM rendering
+      this.reinsertScripts();
+    });
+  }
+  reinsertScripts(): void {
+    const scripts = <HTMLScriptElement[]>this.elementRef.nativeElement.getElementsByTagName('script');
+    const scriptsInitialLength = scripts.length;
+    for (let i = 0; i < scriptsInitialLength; i++) {
+      const script = scripts[i];
+      const scriptCopy = <HTMLScriptElement>document.createElement('script');
+      scriptCopy.type = script.type ? script.type : 'text/javascript';
+      if (script.innerHTML) {
+        scriptCopy.innerHTML = script.innerHTML;
+      } else if (script.src) {
+        scriptCopy.src = script.src;
+      }
+      scriptCopy.async = false;
+      script.parentNode.replaceChild(scriptCopy, script);
+    }
   }
 }

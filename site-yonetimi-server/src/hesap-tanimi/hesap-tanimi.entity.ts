@@ -1,14 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { BankaTanim } from '../banka-tanim/banka-tanim.entity';
+import { BaseEntity } from '../abstract/base.entity';
 export enum HesapTipi {
     Kasa = 100,
     Banka = 102
 }
 @Entity({ name: 'HesapTanimi' })
-export class HesapTanimi {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
+export class HesapTanimi extends BaseEntity {
     @Column({ length: 50 })
     ad: string;
 

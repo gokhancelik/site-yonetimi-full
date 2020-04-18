@@ -1,16 +1,14 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { BagimsizBolum } from '../bagimsiz-bolum/bagimsiz-bolum.entity';
 import { AidatGrubu } from './aidat-grubu.entity';
+import { BaseEntity } from '../abstract/base.entity';
 export enum AidatGrubuAtandigiYer {
     Site = 1,
     Blok = 2,
     BagimsizBolum = 3
 }
 @Entity({ name: 'BagimsizBolumAidatGrubu' })
-export class BagimsizBolumAidatGrubu {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
-
+export class BagimsizBolumAidatGrubu extends BaseEntity {
     @Column({ type: 'uniqueidentifier', nullable: false })
     bagimsizBolumId!: string;
 

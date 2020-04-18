@@ -1,14 +1,13 @@
-import { Controller, Get, Request, UseGuards, Post, Body, HttpService, HttpException, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards, Post, Body, HttpService, HttpException, ClassSerializerInterceptor, UseInterceptors, Res } from '@nestjs/common';
 import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
 import { TahakkukService } from '../tahakkuk/tahakkuk.service';
 import { AuthGuard } from '@nestjs/passport';
 import { TahsilatService } from '../tahsilat/tahsilat.service';
 import { Tahsilat } from '../tahsilat/tahsilat.entity';
-import { KuveytTurkVPosMessage, Currency, TransactionType, BrandName, VPosTransactionResponseContract } from './kuveyt-turk-vpos-message';
-import { map, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-import * as xml2js from 'xml2js';
-import { KuveytTurkSanalPosService } from './kuveyt-turk-sanal-pos.service';
+import { KuveytTurkSanalPosService } from '../sanal-pos/servisler/kuveyt-turk/kuveyt-turk-sanal-pos.service';
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('Online İşlemler')
 @Controller('online-islemler')
 export class OnlineIslemlerController {
     /**
@@ -36,8 +35,11 @@ export class OnlineIslemlerController {
     //     return this.service.krediKartiTahsilatiOlustur(seciliTahakkuklar);
     // }
     @Post('odeme-basarili')
-    async odemeBasarili(@Body() model: any): Promise<any> {
-        return this.kuveytTurkSanalPosService.provision(model);
+    async odemeBasarili(@Body() model: any, @Res() res): Promise<any> {
+
+        let provisionResult = await this.kuveytTurkSanalPosService.provision(model);
+        let success = provisionResult.responseCode === '00';
+        res.redirect('http://localhost:4200/online-islemler');
     }
     @Post('odeme-hatali')
     async odemeHatali(@Body() model: any): Promise<any> {

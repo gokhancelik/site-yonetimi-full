@@ -2,7 +2,9 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { BaseController } from '../abstract/base.controller';
 import { BagimsizBolumKisi } from './bagimsiz-bolum-kisi.entity';
 import { BagimsizBolumKisiService } from './bagimsiz-bolum-kisi.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Bağımsız Bölüm Kişi')
 @Controller('bagimsiz-bolum-kisi')
 export class BagimsizBolumKisiController extends BaseController<BagimsizBolumKisi, BagimsizBolumKisiService> {
     constructor(service: BagimsizBolumKisiService) {

@@ -1,11 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { BagimsizBolumKisi } from "../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity";
+import { BaseEntity } from "../abstract/base.entity";
 
 @Entity({ name: 'Kisi' })
-export class Kisi {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
+export class Kisi extends BaseEntity {
     @Column({ length: 50 })
     ad: string;
 

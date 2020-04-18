@@ -9,6 +9,19 @@ import { NbMenuItem, NbIconLibraries } from '@nebular/theme';
 export class AdminComponent implements OnInit {
   menu: NbMenuItem[] = [
     {
+      title: 'Sistem Ayarları',
+      icon: 'cog',
+      children: [
+        {
+          title: 'Sanal Pos',
+          link: '/admin/sistem-ayarlari/sanal-pos/list',
+          icon: {
+            icon: '',
+          },
+        }
+      ]
+    },
+    {
       title: 'Tanımlamalar',
       icon: 'cog',
       children: [

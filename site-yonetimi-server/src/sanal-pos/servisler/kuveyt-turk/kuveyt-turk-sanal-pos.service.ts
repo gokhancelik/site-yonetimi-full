@@ -1,8 +1,9 @@
 import { Injectable, HttpException, HttpService } from '@nestjs/common';
-import { BrandName, KuveytTurkVPosMessage, Currency, TransactionType } from './kuveyt-turk-vpos-message';
+import { BrandName, KuveytTurkVPosMessage, Currency, VPosTransactionResponseContract } from './kuveyt-turk-vpos-message';
 import { map, catchError } from 'rxjs/operators';
 import * as xml2js from 'xml2js';
 import { of } from 'rxjs';
+import { TransactionType } from './transaction-type-enum';
 
 @Injectable()
 export class KuveytTurkSanalPosService {
@@ -26,14 +27,8 @@ export class KuveytTurkSanalPosService {
             return index == 0 ? word.toLowerCase() : word.toUpperCase();
         }).replace(/\s+/g, '');
     }
-    async provision(model: any): Promise<any> {
+    async provision(model: any): Promise<VPosTransactionResponseContract> {
         let enrollmentResult = await xml2js.parseStringPromise(decodeURIComponent(model.AuthenticationResponse).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase], });
-        // (err, result: { VPosTransactionResponseContract: VPosTransactionResponseContract }) => {
-        //     enrollmentResult = result.VPosTransactionResponseContract
-        //     sonuc.sonuc = result.VPosTransactionResponseContract.ResponseCode === '00';
-        //     sonuc.hataKodu = result.VPosTransactionResponseContract.ResponseCode;
-        //     sonuc.hataMesaji = result.VPosTransactionResponseContract.ResponseMessage;
-        // });
         const UserName = 'apitest'; //  api rollü kullanici adı
         const Password = 'api123'; //  api rollü kullanici sifresi
         const CustomerId = '400235'; // Müsteri Numarasi
@@ -73,7 +68,9 @@ export class KuveytTurkSanalPosService {
                     'Content-Type': 'application/xml',
                 }
             }).pipe(map(d => {
-                return { htmlResponse: d.data };
+                let paymentResult: VPosTransactionResponseContract = xml2js.parseStringPromise(decodeURIComponent(d.data).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase] });
+                return paymentResult;
+
             })).pipe(catchError(e => {
                 throw new HttpException(e.response.data, e.response.status);
             })).toPromise();

@@ -1,0 +1,27 @@
+import {
+    PrimaryGeneratedColumn, Column,
+    CreateDateColumn, UpdateDateColumn,
+} from "typeorm";
+
+export abstract class BaseEntity {
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
+    @CreateDateColumn({ type: 'datetime' })
+    olusturmaTarihi?: Date;
+    @Column({ length: 100 })
+    olusturan: string;
+    @UpdateDateColumn({ type: 'datetime' })
+    guncellemeTarihi?: Date;
+    @Column({ length: 100 })
+    guncelleyen: string;
+    // @Column({ type: 'boolean', default: false })
+    // silindiMi: boolean;
+    // @Column({ type: 'datetime', nullable: true })
+    // silinmeTarihi?: Date;
+    // @Column({ length: 100, nullable: true })
+    // silen: string;
+    // @BeforeRemove()
+    // private beforeRemove() {
+    //     this.silinmeTarihi = new Date();
+    // }
+}

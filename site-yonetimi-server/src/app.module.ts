@@ -18,9 +18,11 @@ import { TahakkukModule } from './tahakkuk/tahakkuk.module';
 import { TahsilatModule } from './tahsilat/tahsilat.module';
 import { AuthModule } from './auth/auth.module';
 import { OnlineIslemlerModule } from './online-islemler/online-islemler.module';
-
+import { SanalPosModule } from './sanal-pos/sanal-pos.module';
+import { TerminusModule } from '@nestjs/terminus';
+import { HealthController } from './health/health.controller';
 @Module({
-  imports: [ DatabaseModule,
+  imports: [DatabaseModule,
     SiteModule,
     BlokModule,
     BorcModule,
@@ -36,8 +38,10 @@ import { OnlineIslemlerModule } from './online-islemler/online-islemler.module';
     TahakkukModule,
     TahsilatModule,
     AuthModule,
-    OnlineIslemlerModule],
-  controllers: [AppController],
+    OnlineIslemlerModule,
+    SanalPosModule,
+    TerminusModule],
+  controllers: [AppController, HealthController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

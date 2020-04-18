@@ -1,12 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { BagimsizBolum } from "../bagimsiz-bolum/bagimsiz-bolum.entity";
 import { Kisi } from "../kisi/kisi.entity";
+import { BaseEntity } from "../abstract/base.entity";
 
 @Entity({ name: 'BagimsizBolumKisi' })
-export class BagimsizBolumKisi {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
-
+export class BagimsizBolumKisi extends BaseEntity {
     @Column({ type: 'uniqueidentifier', nullable: false })
     bagimsizBolumId!: string;
 

@@ -5,7 +5,7 @@ export class BaseController<TEntity, TService extends BaseService<TEntity>> {
     constructor(protected service: TService) {
     }
     @Get(':id')
-    findById(@Param('id') id: any): Promise<TEntity> {
+    findById(@Param('id') id: string): Promise<TEntity> {
         return this.service.findById(id);
     }
     @Get()
@@ -17,11 +17,11 @@ export class BaseController<TEntity, TService extends BaseService<TEntity>> {
         return this.service.create(entity);
     }
     @Put(':id')
-    update(@Param('id') id: any, @Body() entity: TEntity) {
+    update(@Param('id') id: string, @Body() entity: TEntity) {
         return this.service.update(id, entity);
     }
     @Delete(':id')
-    delete(@Param('id') id: any) {
+    delete(@Param('id') id: string) {
         return this.service.delete(id);
     }
 }

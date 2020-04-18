@@ -16,6 +16,11 @@ const routes: Routes = [{
       path: 'islemler',
       loadChildren: () => import('./islemler/islemler.module')
         .then(m => m.IslemlerModule),
+    },
+    {
+      path: 'sistem-ayarlari',
+      loadChildren: () => import('./sistem-ayarlari/sistem-ayarlari.module')
+        .then(m => m.SistemAyarlariModule),
     }
   ]
 }];
