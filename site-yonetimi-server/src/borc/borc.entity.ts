@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { Blok } from "../blok/blok.entity";
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { BaseEntity } from "../abstract/base.entity";
+import { Mesken } from "../mesken/mesken.entity";
 
 export enum BorcDurumu {
     Odenmedi,
@@ -12,10 +12,10 @@ export enum BorcDurumu {
 @Entity({ name: 'Borc' })
 export class Borc extends BaseEntity {
     @Column({ type: 'uuid' })
-    blokId: string;
+    meskenId: string;
 
-    @ManyToOne(type => Blok, blok => blok.borclar)
-    blok: Blok;
+    @ManyToOne(type => Mesken, m => m.borclar)
+    mesken: Mesken;
 
     @Column('datetime2')
     vadeTarihi: Date;

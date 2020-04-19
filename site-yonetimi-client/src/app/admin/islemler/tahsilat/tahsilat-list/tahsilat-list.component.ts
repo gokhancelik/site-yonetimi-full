@@ -2,7 +2,6 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { BaseListComponent } from 'src/app/admin/base-list.component';
 import { TahsilatModel } from '../tahsilat-model';
 import { TahsilatService } from '../tahsilat-service';
-import { BagimsizBolumKisiService } from 'src/app/admin/tanimlamalar/bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.service';
 
 @Component({
   selector: 'app-tahsilat-list',

@@ -9,11 +9,13 @@ export abstract class BaseEntity {
     @CreateDateColumn({ type: 'datetime' })
     olusturmaTarihi?: Date;
     @Column({ length: 100 })
-    olusturan: string;
+    olusturan: string = 'anonymous';
     @UpdateDateColumn({ type: 'datetime' })
-    guncellemeTarihi?: Date;
+    guncellemeTarihi: Date;
     @Column({ length: 100 })
-    guncelleyen: string;
+    guncelleyen: string = 'anonymous';
+    @Column({ length: 100, nullable: true })
+    aktarimId: string;
     // @Column({ type: 'boolean', default: false })
     // silindiMi: boolean;
     // @Column({ type: 'datetime', nullable: true })

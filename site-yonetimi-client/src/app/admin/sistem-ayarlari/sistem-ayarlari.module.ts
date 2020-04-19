@@ -10,10 +10,12 @@ import { FormsModule } from '@angular/forms';
 import { DetayGorunumuModule } from '../../detay-gorunumu/detay-gorunumu.module';
 import { NbCardModule } from '@nebular/theme';
 import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
+import { MeskenTipiListComponent } from './mesken-tipi/mesken-tipi-list/mesken-tipi-list.component';
+import { MeskenTipiComponent } from './mesken-tipi/mesken-tipi.component';
 
 
 @NgModule({
-  declarations: [SanalPosListComponent, SanalPosComponent],
+  declarations: [SanalPosListComponent, SanalPosComponent, MeskenTipiListComponent, MeskenTipiComponent],
   imports: [
     CommonModule,
     DataTableModule,

@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { BankaTanim } from '../banka-tanim/banka-tanim.entity';
 import { BaseEntity } from '../abstract/base.entity';
+import { Mesken } from '../mesken/mesken.entity';
 export enum HesapTipi {
     Kasa = 100,
     Banka = 102
@@ -15,6 +16,12 @@ export class HesapTanimi extends BaseEntity {
 
     @Column({ type: 'int', nullable: false })
     hesapTipi!: HesapTipi;
+
+    @ManyToOne(type => Mesken, { nullable: true })
+    mesken?: Mesken;
+
+    @Column({ type: 'uuid', nullable: true })
+    meskenId?: string;
 
     @ManyToOne(type => BankaTanim, { nullable: true })
     banka?: BankaTanim;

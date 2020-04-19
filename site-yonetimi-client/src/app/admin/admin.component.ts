@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NbMenuItem, NbIconLibraries } from '@nebular/theme';
+import { MeskenTipiService } from './sistem-ayarlari/mesken-tipi/mesken-tipi.service';
 
 @Component({
   selector: 'app-admin',
@@ -7,6 +8,10 @@ import { NbMenuItem, NbIconLibraries } from '@nebular/theme';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
+  /**
+   *
+   */
+
   menu: NbMenuItem[] = [
     {
       title: 'Sistem Ayarları',
@@ -25,21 +30,22 @@ export class AdminComponent implements OnInit {
       title: 'Tanımlamalar',
       icon: 'cog',
       children: [
+
         {
           title: 'Site',
-          link: '/admin/tanimlamalar/site/list',
+          link: '/admin/tanimlamalar/mesken/site/list',
           icon: {
             icon: 'city',
           },
         },
         {
           title: 'Blok',
-          link: '/admin/tanimlamalar/blok/list',
+          link: '/admin/tanimlamalar/mesken/blok/list',
           icon: 'building'
         },
         {
           title: 'Bağımsız Bölüm',
-          link: '/admin/tanimlamalar/bagimsiz-bolum/list',
+          link: '/admin/tanimlamalar/mesken/bagimsiz-bolum/list',
           icon: 'home'
         },
         {
@@ -105,13 +111,13 @@ export class AdminComponent implements OnInit {
     }
   ];
   constructor(
+    private meskenTipiService: MeskenTipiService,
     private iconLibraries: NbIconLibraries) {
 
     this.iconLibraries.registerFontPack('font-awesome', { packClass: 'fa', iconClassPrefix: 'fa' });
     this.iconLibraries.registerFontPack('font-awesome-5', { packClass: 'fas', iconClassPrefix: 'fa' });
     this.iconLibraries.setDefaultPack('font-awesome-5');
   }
-
   ngOnInit() {
   }
 

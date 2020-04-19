@@ -14,7 +14,6 @@ export class HesapHareketi {
     tahsilatId?: string;
     borcId?: string;
     tutar: number;
-    hareketTipi: HareketTipi;
     hesapTanimiId: string;
     borc?: Borc;
     colDefs(injector: Injector) {
@@ -34,16 +33,6 @@ export class HesapHareketi {
                 displayExpr: 'tutar',
                 placeholder: 'Para'
             },
-        },
-        {
-            key: 'hareketTipi',
-            name: 'Hareket Tipi',
-            type: 'select',
-            editorOptions: {
-                itemsAsync: of([{ id: '1', name: 'Gelir' }, { id: '2', name: 'Gider' }, { id: '3', name: 'GelirGider' }]),
-                displayExpr: 'name',
-                valueExpr: 'id'
-            }
         },
         {
             key: 'islemTarihi',

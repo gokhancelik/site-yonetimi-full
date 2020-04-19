@@ -9,9 +9,9 @@ export class KisiService extends BaseService<Kisi>{
     }
     async findOneByUserName(username: string): Promise<Kisi> {
         return this.repository.createQueryBuilder('kisi')
-            .innerJoin('kisi.bagimsizBolumKisis', 'bbk')
-            .innerJoin('bbk.bagimsizBolum', 'bb')
-            .where('bb.kod = :bbKod', { bbKod: username })
+            .innerJoin('kisi.meskenKisis', 'mk')
+            .innerJoin('mk.mesken', 'm')
+            .where('m.kod = :mKod', { mKod: username })
             .getOne();
     }
 

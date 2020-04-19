@@ -1,38 +1,24 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Site } from '../site/site.entity';
-import { Blok } from '../blok/blok.entity';
-import { BagimsizBolum } from '../bagimsiz-bolum/bagimsiz-bolum.entity';
 import { AidatGrubu } from '../aidat-grubu/aidat-grubu.entity';
 import { FaizGrubu } from '../faiz-grubu/faiz-grubu.entity';
-import { BagimsizBolumAidatGrubu } from '../aidat-grubu/bagimsiz-bolum-aidat-grubu.entity';
 import { GelirGiderTanimi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entity';
 import { BankaTanim } from '../banka-tanim/banka-tanim.entity';
 import { HesapTanimi } from '../hesap-tanimi/hesap-tanimi.entity';
 import { Kisi } from '../kisi/kisi.entity';
-import { BagimsizBolumKisi } from '../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity';
 import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
 import { Tahsilat } from '../tahsilat/tahsilat.entity';
 import { TahsilatKalem } from '../tahsilat-kalem/tahsilat-kalem.entity';
 import { Borc } from '../borc/borc.entity';
 import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
 import { SanalPos } from 'src/sanal-pos/sanal-pos.entity';
+import { MeskenKisi } from '../mesken-kisi/mesken-kisi.entity';
+import { Mesken } from '../mesken/mesken.entity';
+import { MeskenAidatGrubu } from '../aidat-grubu/mesken-aidat-grubu.entity';
+import { MeskenTipi } from '../mesken-tipi/mesken-tipi.entity';
 
 @Module({
     imports: [
-        // TypeOrmModule.forRoot({
-        //     type: 'mssql',
-        //     host: 'localhost',
-        //     port: 7010,
-        //     username: 'sa',
-        //     password: 'qwe123**',
-        //     database: 'zsity',
-        //     entities: [
-        //         Site,
-        //         Blok
-        //     ],
-        //     synchronize: true,
-        // }),
         TypeOrmModule.forRoot({
             type: 'mssql',
 
@@ -50,23 +36,22 @@ import { SanalPos } from 'src/sanal-pos/sanal-pos.entity';
             password: '4g3QRqNxMAAgTp3',
             database: 'u8998566_zsity',
             entities: [
-                Site,
                 Borc,
-                Blok,
-                BagimsizBolum,
                 AidatGrubu,
                 FaizGrubu,
-                BagimsizBolumAidatGrubu,
                 GelirGiderTanimi,
                 BankaTanim,
                 HesapTanimi,
                 HesapHareketi,
                 Kisi,
-                BagimsizBolumKisi,
+                Mesken,
+                MeskenKisi,
+                MeskenAidatGrubu,
                 Tahakkuk,
                 Tahsilat,
                 TahsilatKalem,
-                SanalPos
+                SanalPos,
+                MeskenTipi
             ],
             synchronize: true,
         })

@@ -33,7 +33,7 @@ export class TahakkukService extends BaseService<Tahakkuk> {
     async borctanTahakkukOlustur(borcId) {
         //borcu cek
         //borcun blogunun bagimsiz bolumleri cek;
-        //herbir bagimsizbolume tutari paylastirarak tahakkuk olustur.
+        //herbir meskene tutari paylastirarak tahakkuk olustur.
         //vade tarihini borcun vade tarihiyle set et.
         //kaydet 
     }
@@ -41,9 +41,9 @@ export class TahakkukService extends BaseService<Tahakkuk> {
         let today = new Date();
         let gelecekAy = new Date(today.getFullYear(), today.getMonth() + 1, 1);
         var aidatlar$ = this.repository.createQueryBuilder('tahakkuk')
-            .innerJoinAndSelect('tahakkuk.bagimsizBolumKisi', 'bagimsizBolumKisi')
+            .innerJoinAndSelect('tahakkuk.meskenKisi', 'meskenKisi')
             .innerJoinAndSelect('tahakkuk.odemeTipi', 'odemeTipi')
-            .where('bagimsizBolumKisi.kisiId = :userId', { userId })
+            .where('meskenKisi.kisiId = :userId', { userId })
             .andWhere('tahakkuk.durumu = 0 AND tahakkuk.vadeTarihi <= :tarih', { tarih: gelecekAy })
             .orderBy('tahakkuk.vadeTarihi')
             .getMany();
@@ -61,14 +61,14 @@ export class TahakkukService extends BaseService<Tahakkuk> {
             if (!selectedTahakkuks || !selectedTahakkuks.length) {
                 return Promise.all(selectedTahakkuks);
             }
-            let bagimsizBolumKisiId = selectedTahakkuks[0].bagimsizBolumKisiId;
+            let meskenKisiId = selectedTahakkuks[0].meskenKisiId;
             let bakiyeKalanTahsilatlar = await manager.createQueryBuilder(Tahsilat, 'tah')
-                .where('tah.bagimsizBolumKisiId = :bagimsizBolumKisiId', { bagimsizBolumKisiId })
+                .where('tah.meskenKisiId = :meskenKisiId', { meskenKisiId })
                 .andWhere('tah.kullanilmamisTutar > 0').getMany();
             let kullanilmamisToplam = bakiyeKalanTahsilatlar.map(m => m.kullanilmamisTutar).reduce((p, c) => p + c, 0);
             let tahsilat = new Tahsilat();
             tahsilat.durumu = TahsilatDurumu.Onaylandi;
-            tahsilat.bagimsizBolumKisiId = bagimsizBolumKisiId
+            tahsilat.meskenKisiId = meskenKisiId
             tahsilat.tahsilatKalems = new Array<TahsilatKalem>();
             tahsilat.odemeTarihi = odemeTarihi;
             tahsilat.tutar = tutar;

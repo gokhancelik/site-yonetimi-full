@@ -1,7 +1,7 @@
 import { Injector } from '@angular/core';
-import { BlokService } from '../../tanimlamalar/blok/blok.service';
 import { GelirGiderTanimService } from '../../tanimlamalar/gelir-gider-tanim/gelir-gider-tanim.service';
 import { of } from 'rxjs';
+import { MeskenService } from '../../tanimlamalar/mesken/mesken.service';
 
 export enum BorcDurumu {
     Odenmedi,
@@ -11,7 +11,7 @@ export enum BorcDurumu {
 
 export class Borc {
     id: string;
-    blokId: string;
+    meskenId: string;
     vadeTarihi: Date;
     aciklama: string;
     tutar: number;
@@ -85,20 +85,20 @@ export class Borc {
             },
         },
         {
-            key: 'blokId',
-            name: 'Blok',
+            key: 'meskenId',
+            name: 'Mesken',
             type: 'select',
             validators: [{
                 type: 'required',
-                message: 'Blok zorunludur',
+                message: 'Mesken zorunludur',
             }],
             editorOptions: {
-                itemsAsync: injector.get(BlokService).getList(),
+                itemsAsync: injector.get(MeskenService).getList(),
                 displayExpr: 'ad',
                 valueExpr: 'id',
                 customParams: {
-                    detailKey: 'blokId',
-                    routerLink: ['/admin', 'tanimlamalar', 'blok', ':blokId', 'detay']
+                    detailKey: 'meskenId',
+                    routerLink: ['/admin', 'tanimlamalar', 'mesken', ':meskenId', 'detay']
                 },
             },
             cellTemplate: 'detailLink',

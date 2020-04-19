@@ -18,7 +18,7 @@ export interface Tahsilat {
     odemeTarihi: Date;
     aciklama: string;
     tutar: number;
-    bagimsizBolumKisiId: string;
+    meskenKisiId: string;
     durumu: TahsilatDurumu;
     odemeYontemi: OdemeYontemi;
     bankaSiparisNo: string;

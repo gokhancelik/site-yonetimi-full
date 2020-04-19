@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { Injector } from '@angular/core';
-import { BagimsizBolumKisiService } from '../../tanimlamalar/bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.service';
+import { MeskenKisiService } from '../../tanimlamalar/mesken-kisi/mesken-kisi.service';
 
 export enum OdemeYontemi {
     HavaleEFT = 0,
@@ -20,7 +20,7 @@ export class TahsilatModel {
     odemeTarihi: Date;
     aciklama: string;
     tutar: number;
-    bagimsizBolumKisiId: string;
+    meskenKisiId: string;
     durumu: TahsilatDurumu;
     odemeYontemi: OdemeYontemi;
     bankaSiparisNo: string;
@@ -88,11 +88,11 @@ export class TahsilatModel {
             visible: true,
         },
         {
-            key: 'bagimsizBolumKisiId',
+            key: 'meskenKisiId',
             name: 'Bağımsız Bölüm Kişi',
             type: 'select',
             editorOptions: {
-                itemsAsync: injector.get(BagimsizBolumKisiService).getAllWithKisi(),
+                itemsAsync: injector.get(MeskenKisiService).getAllWithKisi(),
                 displayExpr: (item) => {
                     if (item)
                         return item.kisi.ad + ' ' + item.kisi.soyad;

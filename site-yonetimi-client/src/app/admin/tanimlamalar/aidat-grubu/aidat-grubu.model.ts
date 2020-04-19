@@ -4,7 +4,6 @@ export class AidatGrubu {
     ad: string;
     aciklama: string;
     tutar: number;
-    // bagimsizBolumAidatGrubus!: BagimsizBolumAidatGrubu[];
     colDefs() {
         return  [{
             key: 'id',

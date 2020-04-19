@@ -1,8 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm";
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
-import { BagimsizBolumKisi } from "../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity";
 import { TahsilatKalem } from "../tahsilat-kalem/tahsilat-kalem.entity";
 import { BaseEntity } from "../abstract/base.entity";
+import { MeskenKisi } from "../mesken-kisi/mesken-kisi.entity";
+import { Expose } from "class-transformer";
 export enum OdemeYontemi {
     HavaleEFT = 0,
     KrediKarti = 1,
@@ -27,13 +28,13 @@ export class Tahsilat extends BaseEntity {
     tutar: number;
 
     @Column({ type: 'money', nullable: true })
-    kullanilmamisTutar: number = 0;
+    kullanilanTutar: number = 0;
 
     @Column({ type: 'uuid' })
-    bagimsizBolumKisiId: string;
+    meskenKisiId: string;
 
-    @ManyToOne(type => BagimsizBolumKisi)
-    bagimsizBolumKisi!: BagimsizBolumKisi;
+    @ManyToOne(type => MeskenKisi)
+    meskenKisi!: MeskenKisi;
 
     @Column({ type: 'int' })
     durumu: TahsilatDurumu;
@@ -46,4 +47,9 @@ export class Tahsilat extends BaseEntity {
 
     @OneToMany(type => TahsilatKalem, t => t.tahsilat, { nullable: true })
     tahsilatKalems?: TahsilatKalem[];
+    
+    @Expose()
+    public get kullanilabilirMiktar(): number {
+        return this.tutar - this.kullanilanTutar;
+    }
 }

@@ -1,3 +1,3 @@
-<a [routerLink]="routerLink" routerLinkActive="active">
+<a *ngIf="data && data.data && data.data[this.detailKey]" [routerLink]="routerLink" routerLinkActive="active">
     {{value}}
 </a>

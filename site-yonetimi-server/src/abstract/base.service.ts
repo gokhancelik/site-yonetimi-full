@@ -1,6 +1,4 @@
 import { DeleteResult, Repository, ObjectLiteral } from "typeorm";
-import { BaseEntity } from "./base.entity";
-type NoParameterCtor<T> = { new(): T }
 export abstract class BaseService<TEntity> {
     constructor(public repository: Repository<TEntity>) {
 

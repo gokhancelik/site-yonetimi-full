@@ -1,7 +1,7 @@
 import { Injector } from '@angular/core';
 import { of } from 'rxjs';
-import { BagimsizBolumKisiService } from '../../tanimlamalar/bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.service';
 import { GelirGiderTanimService } from '../../tanimlamalar/gelir-gider-tanim/gelir-gider-tanim.service';
+import { MeskenKisiService } from '../../tanimlamalar/mesken-kisi/mesken-kisi.service';
 
 export enum AidatDurumu {
     Odenmedi,
@@ -18,7 +18,7 @@ export class TahakkukModel {
     sonTahsilatTarihi?: Date;
     faizOrani: number;
     odemeTipiId: string;
-    bagimsizBolumKisiId: string;
+    meskenKisiId: string;
     durumu: AidatDurumu;
     colDefs(injector: Injector) {
         return [{
@@ -87,15 +87,15 @@ export class TahakkukModel {
             },
         },
         {
-            key: 'bagimsizBolumKisiId',
-            name: 'Bağımsız Bölüm Kişi',
+            key: 'meskenKisiId',
+            name: 'Mesken Kişi',
             type: 'select',
             validators: [{
                 type: 'required',
                 message: 'Bağımsız Bölüm Kişi zorunludur',
             }],
             editorOptions: {
-                itemsAsync: injector.get(BagimsizBolumKisiService).getAllWithKisi(),
+                itemsAsync: injector.get(MeskenKisiService).getAllWithKisi(),
                 displayExpr: (item) => {
                     if (item)
                         return item.kisi.ad + ' ' + item.kisi.soyad;
@@ -103,12 +103,7 @@ export class TahakkukModel {
                         return "";
                 },
                 valueExpr: 'id',
-                // customParams: {
-                //   detailKey: 'bagimsizBolumId',
-                //   routerLink: ['/admin', 'tanimlamalar', 'bagimsiz-bolum', ':bagimsizBolumId', 'detay']
-                // },
             },
-            //cellTemplate: 'detailLink',
             visible: true,
         },
         {

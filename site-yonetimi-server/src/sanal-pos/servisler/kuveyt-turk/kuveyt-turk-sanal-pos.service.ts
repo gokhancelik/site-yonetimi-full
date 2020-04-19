@@ -68,7 +68,7 @@ export class KuveytTurkSanalPosService {
                     'Content-Type': 'application/xml',
                 }
             }).pipe(map(d => {
-                let paymentResult: VPosTransactionResponseContract = xml2js.parseStringPromise(decodeURIComponent(d.data).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase] });
+                const paymentResult = xml2js.parseStringPromise(decodeURIComponent(d.data).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase] });
                 return paymentResult;
 
             })).pipe(catchError(e => {

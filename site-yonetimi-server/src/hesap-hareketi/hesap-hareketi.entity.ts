@@ -30,6 +30,10 @@ export class HesapHareketi extends BaseEntity {
 
     @ManyToOne(type => HesapTanimi)
     hesapTanimi!: HesapTanimi;
+
+    @Column({ nullable: true })
+    aciklama: string;
+
     constructor(islemTarihi:Date, tutar: number, hesapTanimiId: string, tahsilatId?:string, borcId?:string){
         super();
         this.islemTarihi = islemTarihi;

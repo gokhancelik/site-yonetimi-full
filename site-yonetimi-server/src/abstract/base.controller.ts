@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Request } from '@nestjs/common';
 import { BaseService } from './base.service';
+import { BaseEntity } from './base.entity';
 
-export class BaseController<TEntity, TService extends BaseService<TEntity>> {
+export class BaseController<TEntity extends BaseEntity, TService extends BaseService<TEntity>> {
     constructor(protected service: TService) {
     }
     @Get(':id')
@@ -13,11 +14,14 @@ export class BaseController<TEntity, TService extends BaseService<TEntity>> {
         return this.service.findAll();
     }
     @Post()
-    create(@Body() entity: TEntity): Promise<TEntity> {
+    create(@Body() entity: TEntity, @Request() request): Promise<TEntity> {
+        entity.olusturan = request.user ? request.user.id : 'anonymous';
+        entity.guncelleyen = request.user ? request.user.id : 'anonymous';
         return this.service.create(entity);
     }
     @Put(':id')
-    update(@Param('id') id: string, @Body() entity: TEntity) {
+    update(@Param('id') id: string, @Body() entity: TEntity, @Request() request) {
+        entity.guncelleyen = request.user ? request.user.id : 'anonymous';
         return this.service.update(id, entity);
     }
     @Delete(':id')

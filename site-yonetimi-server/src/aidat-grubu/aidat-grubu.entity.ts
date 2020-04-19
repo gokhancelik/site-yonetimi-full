@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { BagimsizBolumAidatGrubu } from './bagimsiz-bolum-aidat-grubu.entity';
 import { BaseEntity } from '../abstract/base.entity';
+import { MeskenAidatGrubu } from './mesken-aidat-grubu.entity';
 
 @Entity({ name: 'AidatGrubu' })
 export class AidatGrubu extends BaseEntity {
@@ -14,6 +14,6 @@ export class AidatGrubu extends BaseEntity {
     @Column({ type: 'money', nullable: false })
     tutar: number;
 
-    @OneToMany(type => BagimsizBolumAidatGrubu, bbag => bbag.aidatGrubu)
-    bagimsizBolumAidatGrubus!: BagimsizBolumAidatGrubu[];
+    @OneToMany(type => MeskenAidatGrubu, mag => mag.aidatGrubu)
+    meskenAidatGrubus!: MeskenAidatGrubu[];
 }

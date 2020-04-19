@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { BagimsizBolumKisi } from "../bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.entity";
 import { BaseEntity } from "../abstract/base.entity";
+import { MeskenKisi } from "../mesken-kisi/mesken-kisi.entity";
 
 @Entity({ name: 'Kisi' })
 export class Kisi extends BaseEntity {
@@ -28,6 +28,6 @@ export class Kisi extends BaseEntity {
     @Column({ length: 100, nullable: true })
     sifre: string;
 
-    @OneToMany(type => BagimsizBolumKisi, bbag => bbag.kisi)
-    bagimsizBolumKisis!: BagimsizBolumKisi[];
+    @OneToMany(type => MeskenKisi, mk => mk.kisi)
+    meskenKisis!: MeskenKisi[];
 }

@@ -2,12 +2,9 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { BaseListComponent } from 'src/app/admin/base-list.component';
 import { Borc, BorcDurumu } from '../borc.model';
 import { BorcService } from '../borc.service';
-import { BlokService } from 'src/app/admin/tanimlamalar/blok/blok.service';
-import { GelirGiderTanimService } from 'src/app/admin/tanimlamalar/gelir-gider-tanim/gelir-gider-tanim.service';
 import { HesapTanimi } from 'src/app/admin/tanimlamalar/hesap-tanimi/hesap-tanimi.model';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { HesapTanimiService } from 'src/app/admin/tanimlamalar/hesap-tanimi/hesap-tanimi.service';
-import { HesapHareketleriService } from '../../hesap-hareketi/hesap-hareketi.service';
 
 @Component({
   selector: 'app-borc-list',
@@ -25,10 +22,7 @@ export class BorcListComponent extends BaseListComponent<Borc> implements OnInit
   popupVisible = false;
 
   constructor(service: BorcService,
-    blokService: BlokService,
-    gelirGiderTanimService: GelirGiderTanimService,
     private hesapTanimiService: HesapTanimiService,
-    private hesapHareketiService: HesapHareketleriService,
     injector: Injector) {
     super(service, injector, Borc);
 

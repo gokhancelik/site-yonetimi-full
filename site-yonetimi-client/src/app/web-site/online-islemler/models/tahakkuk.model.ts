@@ -1,5 +1,5 @@
 import { GelirGiderTanimi } from './gelir-gider-tanimi.model';
-import { BagimsizBolumKisi } from '../../../admin/tanimlamalar/bagimsiz-bolum-kisi/bagimsiz-bolum-kisi.model';
+import { MeskenKisi } from '../../../admin/tanimlamalar/mesken-kisi/mesken-kisi.model';
 
 export enum AidatDurumu {
     Odenmedi,
@@ -13,7 +13,7 @@ export interface Tahakkuk {
     odenenTutar: number;
     faizOrani: number;
     odemeTipiId: string;
-    bagimsizBolumKisiId: string;
+    meskenKisiId: string;
     durumu: AidatDurumu;
     kalanTutar: number;
     faiz: number;
@@ -21,7 +21,7 @@ export interface Tahakkuk {
     id: string;
     vadeTarihi: Date;
     odemeTarihi?: Date;
-    bagimsizBolumKisi: BagimsizBolumKisi;
+    meskenKisi: MeskenKisi;
     odenecekTutar: number;
     bankaKomisyonu: number;
 }
