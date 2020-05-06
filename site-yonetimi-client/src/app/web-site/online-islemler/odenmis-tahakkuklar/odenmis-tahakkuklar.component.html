@@ -1,0 +1,16 @@
+<div class="row my-2">
+    <div class="col">
+        <div class="alert alert-info">
+            Ödenmiş aidatlarınız listelenmektedir.
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col">
+        <data-table [dataSource]="dataSource" [groupPanel]="false" [filterRow]="false" [columnChooser]="false"
+            [searchPanel]="false" [filterPanel]="false" [headerFilter]="false" [title]="'Tahsilatlar'"
+            [columns]="columns" [allowAdding]="false" [allowDeleting]="false" [allowUpdating]="false"
+            name="odenmisTahakkuklar">
+        </data-table>
+    </div>
+</div>

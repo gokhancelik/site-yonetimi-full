@@ -9,6 +9,7 @@ import { Tahsilat } from './models/tahsilat.model';
   providedIn: 'root'
 })
 export class OnlineIslemlerService {
+  
   baseUrl: string;
 
 
@@ -17,6 +18,12 @@ export class OnlineIslemlerService {
   }
   getOdenmemisAidatlar(): Observable<Tahakkuk[]> {
     return this.http.get<Tahakkuk[]>(`${this.baseUrl}/odenmemis-aidatlar`);
+  }
+  getOdenmisAidatlar(): Observable<Tahakkuk[]> {
+    return this.http.get<Tahakkuk[]>(`${this.baseUrl}/odenmis-aidatlar`);
+  }
+  getTahsilatlar(): Observable<Tahsilat[]> {
+    return this.http.get<Tahsilat[]>(`${this.baseUrl}/tahsilatlar`);
   }
   tahsilatOlustur(tahakkukList: Tahakkuk[]): Observable<Tahsilat> {
     return this.http.post<Tahsilat>(`${this.baseUrl}/tahsilat-olustur`, tahakkukList);

@@ -26,6 +26,12 @@ export class OnlineIslemlerController {
     getOdenmemisAidatlar(@Request() request): Promise<Tahakkuk[]> {
         return this.service.getOdenmemisAidatlar(request.user.userId);
     }
+    @UseInterceptors(ClassSerializerInterceptor)
+    @UseGuards(AuthGuard('jwt'))
+    @Get('odenmis-aidatlar')
+    getOdenmisAidatlar(@Request() request): Promise<Tahakkuk[]> {
+        return this.service.getOdenmisAidatlar(request.user.userId);
+    }
     @UseGuards(AuthGuard('jwt'))
     @Get('tahsilatlar')
     getTahsilatlar(@Request() request): Promise<Tahsilat[]> {
@@ -56,40 +62,89 @@ export class OnlineIslemlerController {
         return this.kuveytTurkSanalPosService.enrollment(model.tutar, model.creditCard);
     }
 
-    @UseGuards(AuthGuard('jwt'))
-    @Get('odemeleri-dagit')
+    // @UseGuards(AuthGuard('jwt'))
+    @Post('odemeleri-dagit')
     async odemeleriDagit(): Promise<any> {
         let tahsilatList = await this.tahsilatService.getDagitilacakTahsilatlar();
-        for (let i = 0; i < tahsilatList.length; i++) {
-            const tahsilat = tahsilatList[i];
-            let tahsilatKalemList = await this.tahsilatKalemService.getByTahsilatId(tahsilat.id);
+        // let tahsilatList2 = tahsilatList.filter(p => p.meskenKisiId === '2EFFC39A-3882-EA11-80EE-887EF3F77D6E')
+        for (const tahsilat of tahsilatList) {
+            //tahsilat kalemlerini getir
+            //tahsilat kalemiyle ilişkili olabilecek tahakkuklari getir
+            // eskiden başlayarak öde 
+            if (!tahsilat.kullanilanTutar) {
+                tahsilat.kullanilanTutar = 0;
+            }
+            let tahakkuklar = await this.service.getOdenmemisAidatlar(tahsilat.meskenKisi.kisiId);
+            for (const tk of tahsilat.tahsilatKalems) {
+                if (tahsilat.kullanilabilirMiktar === 0) {
+                    break;
+                }
+                let odemeTipis = [];
+                if (tk.odemeTipi.kod === 'FZ') {
+                    odemeTipis.push('01', '02', '03');
+                } else {
+                    odemeTipis.push(tk.odemeTipi.kod);
+                }
+                let iliskiliOlabilecekTahakkuklar = tahakkuklar.filter(tah => odemeTipis.includes(tah.odemeTipi.kod));
+                for (const tahakkuk of iliskiliOlabilecekTahakkuklar) {
+                    if (tahakkuk.odenecekTutar <= 0) {
+                        tahakkuk.durumu = AidatDurumu.Odendi;
+                        await this.service.update(tahakkuk.id, tahakkuk);
+                        continue;
+                    }
+                    tahakkuk.odemeTarihi = tahsilat.odemeTarihi;
+                    if (tahsilat.kullanilabilirMiktar > 0) {
+                        let odenecekTutar = 0;
+                        if (tahakkuk.odenecekTutar > tahsilat.kullanilabilirMiktar) {
+                            odenecekTutar = tahsilat.kullanilabilirMiktar;
+                        }
+                        else {
+                            odenecekTutar = tahakkuk.odenecekTutar;
+                        }
+                        if (tahsilat.odemeYontemi === OdemeYontemi.KrediKarti) {
+                            odenecekTutar = odenecekTutar * 1.0168;
+                        }
+                        tahakkuk.odenenFaiz += tahakkuk.hesaplananFaiz;
+                        tahakkuk.odenenTutar += odenecekTutar;
+                        tahakkuk.sonTahsilatTarihi = tahsilat.odemeTarihi;
+                        tahsilat.kullanilanTutar += odenecekTutar;
+                        tk.tahakkukId = tahakkuk.id;
+                        if (tahakkuk.odenecekTutar <= 0) {
+                            tahakkuk.durumu = AidatDurumu.Odendi;
+                        }
+                        await this.tahsilatService.update(tahsilat.id, tahsilat);
+                        await this.tahsilatKalemService.update(tk.id, tk);
+                        await this.service.update(tahakkuk.id, tahakkuk);
+                    } else {
+                        break;
+                    }
+                }
+            }
             if (tahsilat.kullanilabilirMiktar === 0) {
                 tahsilat.durumu = TahsilatDurumu.Onaylandi;
                 await this.tahsilatService.update(tahsilat.id, tahsilat);
-                continue;
             }
-            let tahakkuklar = await this.service.getOdenmemisAidatlar(tahsilat.meskenKisi.kisiId);
-            for (let j = 0; j < tahakkuklar.length; j++) {
-                const tahakkuk = tahakkuklar[j];
-                if (!tahakkuk.tutar) {
-                    tahakkuk.durumu = AidatDurumu.Odendi;
-                    await this.service.update(tahakkuk.id, tahakkuk);
-                    continue;
-                }
-                if (tahsilat.kullanilabilirMiktar > 0) {
-                    if (tahsilat.kullanilabilirMiktar > tahakkuk.odenecekTutar) {
-                        let karsilananMiktar = tahakkuk.odenecekTutar;
-                        tahakkuk.odenenTutar += karsilananMiktar;
-                        tahsilat.kullanilanTutar += karsilananMiktar;
-                    }
-                } else {
-                    tahakkuk.odenenTutar += tahsilat.kullanilabilirMiktar;
-                    tahsilat.kullanilanTutar += tahsilat.kullanilabilirMiktar;
-                }
-                tahakkuk.sonTahsilatTarihi = tahsilat.odemeTarihi;
-                await this.tahsilatService.update(tahsilat.id, tahsilat);
-                await this.service.update(tahakkuk.id, tahakkuk);
-            }
+            // for (let j = 0; j < tahakkuklar.length; j++) {
+            //     const tahakkuk = tahakkuklar[j];
+            //     if (!tahakkuk.tutar) {
+            //         tahakkuk.durumu = AidatDurumu.Odendi;
+            //         await this.service.update(tahakkuk.id, tahakkuk);
+            //         continue;
+            //     }
+            //     if (tahsilat.kullanilabilirMiktar > 0) {
+            //         if (tahsilat.kullanilabilirMiktar > tahakkuk.odenecekTutar) {
+            //             let karsilananMiktar = tahakkuk.odenecekTutar;
+            //             tahakkuk.odenenTutar += karsilananMiktar;
+            //             tahsilat.kullanilanTutar += karsilananMiktar;
+            //         }
+            //     } else {
+            //         tahakkuk.odenenTutar += tahsilat.kullanilabilirMiktar;
+            //         tahsilat.kullanilanTutar += tahsilat.kullanilabilirMiktar;
+            //     }
+            //     tahakkuk.sonTahsilatTarihi = tahsilat.odemeTarihi;
+            //     await this.tahsilatService.update(tahsilat.id, tahsilat);
+            //     await this.service.update(tahakkuk.id, tahakkuk);
+            // }
         }
     }
 }

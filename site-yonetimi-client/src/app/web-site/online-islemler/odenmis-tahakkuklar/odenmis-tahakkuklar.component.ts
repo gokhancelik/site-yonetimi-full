@@ -1,35 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { OnlineIslemlerService } from '../online-islemler.service';
-import { Tahakkuk } from '../models/tahakkuk.model';
-import { BaseListComponent } from '../../../admin/base-list.component';
 import CustomStore from 'devextreme/data/custom_store';
 import { GelirGiderTanimService } from '../../../admin/tanimlamalar/gelir-gider-tanim/gelir-gider-tanim.service';
-import { DxDataGridComponent } from 'devextreme-angular';
-import { OdemeService } from '../odeme.service';
-import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-tahakkuk-list',
-  templateUrl: './tahakkuk-list.component.html',
-  styleUrls: ['./tahakkuk-list.component.scss']
+  selector: 'app-odenmis-tahakkuklar',
+  templateUrl: './odenmis-tahakkuklar.component.html',
+  styleUrls: ['./odenmis-tahakkuklar.component.scss']
 })
-export class TahakkukListComponent implements OnInit {
-  columns: any[];
+export class OdenmisTahakkuklarComponent implements OnInit {
   dataSource: CustomStore;
-  seciliTahakkuklar: Tahakkuk[];
-  grid: DxDataGridComponent;
-  ngOnInit(): void {
-  }
+  columns: any[];
+
   constructor(private service: OnlineIslemlerService,
-    private router: Router,
-    private odemeService: OdemeService,
-    gelirGiderTanimiService: GelirGiderTanimService
-  ) {
+    private gelirGiderTanimiService: GelirGiderTanimService) { }
+
+  ngOnInit(): void {
     this.dataSource = new CustomStore({
       key: 'id',
       loadMode: 'raw',
       load: () => {
-        return this.service.getOdenmemisAidatlar().toPromise();
+        return this.service.getOdenmisAidatlar().toPromise();
       },
     });
     this.columns = [{
@@ -49,7 +40,7 @@ export class TahakkukListComponent implements OnInit {
       name: 'Ödeme Tipi',
       type: 'select',
       editorOptions: {
-        itemsAsync: gelirGiderTanimiService.getList(),
+        itemsAsync: this.gelirGiderTanimiService.getList(),
         displayExpr: 'ad',
         valueExpr: 'id'
       },
@@ -72,19 +63,8 @@ export class TahakkukListComponent implements OnInit {
       }
     },
     {
-      key: 'faiz',
-      name: 'Faiz',
-      totalSummaryType: 'sum',
-      type: 'number',
-      visible: true,
-      format: {
-        type: 'currency',
-        precision: 2
-      }
-    },
-    {
-      key: 'odenecekTutar',
-      name: 'Ödenecek Tutar',
+      key: 'odenenTutar',
+      name: 'Ödenen Tutar',
       totalSummaryType: 'sum',
       type: 'number',
       visible: true,
@@ -95,13 +75,5 @@ export class TahakkukListComponent implements OnInit {
     }
     ];
   }
-  onGridReady(e: DxDataGridComponent) {
-    e.onSelectionChanged.subscribe(d => {
-    });
-    this.grid = e;
-  }
-  odemeYap() {
-    this.odemeService.seciliTahakkuklar = this.grid.instance.getSelectedRowsData();
-    this.router.navigate(['online-islemler', 'odeme'])
-  }
+
 }

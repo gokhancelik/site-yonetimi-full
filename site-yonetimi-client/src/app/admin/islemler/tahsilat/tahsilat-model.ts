@@ -59,6 +59,7 @@ export class TahsilatModel {
             visible: true,
             format: {
                 type: 'currency',
+                precision: 2
             },
         },
         {
@@ -100,7 +101,12 @@ export class TahsilatModel {
                         return "";
                 },
                 valueExpr: 'id',
+                customParams: {
+                    detailKey: 'meskenKisiId',
+                    routerLink: ['/admin', 'tanimlamalar', 'kisi', ':meskenKisiId', 'detay']
+                }
             },
+            cellTemplate: 'detailLink',
             visible: true,
         },
         ];

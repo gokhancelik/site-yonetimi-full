@@ -12,7 +12,7 @@
       (onInitNewRow)="onInitNewRow.next($event)" [allowColumnReordering]="true" [showColumnLines]="true"
       [showRowLines]="true" [showBorders]="true" [rowAlternationEnabled]="true" [allowColumnResizing]="true"
       [columnAutoWidth]="true">
-      <dxo-group-panel [visible]="true"></dxo-group-panel>
+      <dxo-group-panel [visible]="groupPanel"></dxo-group-panel>
       <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
       <dxo-summary>
         <dxi-total-item [column]="col.key" *ngFor="let col of totalSummaryColumns" [valueFormat]="col.format"
@@ -20,7 +20,7 @@
         </dxi-total-item>
       </dxo-summary>
       <dxo-selection [selectAllMode]="'allPages'" [showCheckBoxesMode]="'always'" mode="multiple"></dxo-selection>
-      <dxo-export [enabled]="true" [fileName]="name" [allowExportSelectedData]="true"></dxo-export>
+      <dxo-export [enabled]="export" [fileName]="name" [allowExportSelectedData]="true"></dxo-export>
       <dxo-paging [enabled]="true"></dxo-paging>
       <dxo-state-storing [enabled]="true" type="localStorage" storageKey="{{name}}Grid"></dxo-state-storing>
       <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[5, 10, 15, 20]">
@@ -29,14 +29,14 @@
         [allowDeleting]="allowDeleting" [useIcons]="true">
       </dxo-editing>
 
-      <dxo-header-filter [visible]="true">
+      <dxo-header-filter [visible]="headerFilter">
       </dxo-header-filter>
-      <dxo-filter-panel [visible]="true">
+      <dxo-filter-panel [visible]="filterPanel">
       </dxo-filter-panel>
-      <dxo-filter-row [visible]="true">
+      <dxo-filter-row [visible]="filterRow">
       </dxo-filter-row>
-      <dxo-search-panel [visible]="true" [width]="240" placeholder="Ara"></dxo-search-panel>
-      <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+      <dxo-search-panel [visible]="searchPanel" [width]="240" placeholder="Ara"></dxo-search-panel>
+      <dxo-column-chooser [enabled]="columnChooser"></dxo-column-chooser>
       <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
       <dxi-column type="buttons" *ngIf="allowAdding || allowDeleting || allowUpdating || (buttons && buttons.length)"
         [width]="110">

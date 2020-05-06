@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinTable } from "typeorm";
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { TahsilatKalem } from "../tahsilat-kalem/tahsilat-kalem.entity";
 import { BaseEntity } from "../abstract/base.entity";
@@ -18,7 +18,7 @@ export enum TahsilatDurumu {
 }
 @Entity({ name: 'Tahsilat' })
 export class Tahsilat extends BaseEntity {
-    @Column('date')
+    @Column('datetime')
     odemeTarihi: Date;
 
     @Column({ type: 'nvarchar', nullable: true, length: 'MAX' })
@@ -33,7 +33,8 @@ export class Tahsilat extends BaseEntity {
     @Column({ type: 'uuid' })
     meskenKisiId: string;
 
-    @ManyToOne(type => MeskenKisi)
+    @ManyToOne(type => MeskenKisi, { eager: true })
+    @JoinTable()
     meskenKisi!: MeskenKisi;
 
     @Column({ type: 'int' })
@@ -45,9 +46,10 @@ export class Tahsilat extends BaseEntity {
     @Column({ length: 50, nullable: true })
     bankaSiparisNo: string;
 
-    @OneToMany(type => TahsilatKalem, t => t.tahsilat, { nullable: true })
+    @OneToMany(type => TahsilatKalem, t => t.tahsilat, { nullable: true, eager: true })
+    @JoinTable()
     tahsilatKalems?: TahsilatKalem[];
-    
+
     @Expose()
     public get kullanilabilirMiktar(): number {
         return this.tutar - this.kullanilanTutar;

@@ -1,9 +1,22 @@
-<div class="row">
+<div class="row my-2">
     <div class="col">
-        <data-table [dataSource]="dataSource" (dxGridReady)="onGridReady($event)" [title]="'Tahakkuklar'"
-            [columns]="columns" [allowAdding]="false" [allowDeleting]="false" [allowUpdating]="false"
-            name="odenmemisTahakkuklar">
-        </data-table>
-    <button class="btn btn-success" (click)="odemeYap()">Ödeme Yap</button>
+        <div class="alert alert-info">
+            Ödemek istediğiniz aidatı seçerek "Ödeme Yap" butonuna bastıktan sonra yönlendirilen ekranda kart
+            bilgilerinizi
+            girerek ödeme yapabilirsiniz.
+        </div>
+    </div>
 </div>
+<div class="row my-2">
+    <div class="col">
+        <data-table [dataSource]="dataSource" [groupPanel]="false" [filterRow]="false" [columnChooser]="false" [searchPanel]="false" [filterPanel]="false" [headerFilter]="false"
+            (dxGridReady)="onGridReady($event)" [title]="'Tahakkuklar'" [columns]="columns" [allowAdding]="false"
+            [allowDeleting]="false" [allowUpdating]="false" name="odenmemisTahakkuklar">
+        </data-table>
+    </div>
+</div>
+<div class="row my-2">
+    <div class="col">
+        <button class="btn btn-success" (click)="odemeYap()">Ödeme Yap</button>
+    </div>
 </div>

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinTable } from "typeorm";
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { Expose } from "class-transformer";
 import { BaseEntity } from "../abstract/base.entity";
@@ -24,6 +24,9 @@ export class Tahakkuk extends BaseEntity {
 
     @Column({ type: 'money', nullable: true })
     odenenTutar?: number;
+    
+    @Column({ type: 'money', nullable: true })
+    odenenFaiz?: number;
 
     @Column({ type: 'datetime', nullable: true })
     sonTahsilatTarihi?: Date;
@@ -35,12 +38,14 @@ export class Tahakkuk extends BaseEntity {
     odemeTipiId: string;
 
     @ManyToOne(type => GelirGiderTanimi, { eager: true })
+    @JoinTable()
     odemeTipi!: GelirGiderTanimi;
 
     @Column({ type: 'uuid' })
     meskenKisiId: string;
 
     @ManyToOne(type => MeskenKisi, { eager: true })
+    @JoinTable()
     meskenKisi!: MeskenKisi;
 
     @Column({ type: 'int' })
@@ -48,10 +53,10 @@ export class Tahakkuk extends BaseEntity {
 
     @Expose()
     public get odenecekTutar(): number {
-        return this.tutar - this.odenenTutar + this.faiz;
+        return this.tutar - this.odenenTutar + this.hesaplananFaiz;
     }
     @Expose()
-    public get faiz(): number {
+    public get hesaplananFaiz(): number {
         if (!this.odemeTarihi) {
             this.odemeTarihi = new Date();
         }
@@ -67,5 +72,9 @@ export class Tahakkuk extends BaseEntity {
         if (faiz > 0)
             return faiz;
         return 0;
+    }
+    @Expose()
+    public get faiz(): number {
+        return this.hesaplananFaiz + this.odenenFaiz;
     }
 }

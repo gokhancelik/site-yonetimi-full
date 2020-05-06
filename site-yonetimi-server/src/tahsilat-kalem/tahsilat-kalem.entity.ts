@@ -18,7 +18,9 @@ export class TahsilatKalem extends BaseEntity {
     @Column({ type: 'uuid' })
     odemeTipiId: string;
 
-    @ManyToOne(type => GelirGiderTanimi)
+    @ManyToOne(type => GelirGiderTanimi, {
+        eager: true
+    })
     odemeTipi!: GelirGiderTanimi;
 
     @Column({ type: 'uuid', nullable:true })

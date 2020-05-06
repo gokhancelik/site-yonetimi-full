@@ -10,11 +10,13 @@ import { FormsModule } from '@angular/forms';
 import { DxSelectBoxModule, DxTextBoxModule, DxValidatorModule, DxButtonModule } from 'devextreme-angular';
 import { PipesModule } from '../../pipes/pipes.module';
 import { OdemeGatewayComponent } from './odeme-gateway/odeme-gateway.component';
+import { OdenmisTahakkuklarComponent } from './odenmis-tahakkuklar/odenmis-tahakkuklar.component';
+import { TahsilatListComponent } from './tahsilat-list/tahsilat-list.component';
 
 
 
 @NgModule({
-  declarations: [OnlineIslemlerComponent, TahakkukListComponent, OdemeComponent, OdemeGatewayComponent,RunScriptsDirective],
+  declarations: [OnlineIslemlerComponent, TahakkukListComponent, OdemeComponent, OdemeGatewayComponent,RunScriptsDirective, OdenmisTahakkuklarComponent, TahsilatListComponent],
   imports: [
     CommonModule,
     OnlineIslemlerRoutingModule,

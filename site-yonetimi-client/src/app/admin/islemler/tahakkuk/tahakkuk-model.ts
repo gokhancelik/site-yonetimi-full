@@ -35,6 +35,7 @@ export class TahakkukModel {
             visible: true,
             format: {
                 type: 'currency',
+                precision: 2
             },
             editorOptions: {
                 format: {
@@ -50,6 +51,7 @@ export class TahakkukModel {
             visible: true,
             format: {
                 type: 'currency',
+                precision: 2
             },
             editorOptions: {
                 format: {

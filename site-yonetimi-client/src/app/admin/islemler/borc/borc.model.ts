@@ -34,6 +34,7 @@ export class Borc {
             visible: true,
             format: {
                 type: 'currency',
+                precision: 2
             },
             editorOptions: {
                 format: {
@@ -48,10 +49,11 @@ export class Borc {
             visible: true,
             format: {
                 type: 'currency',
+                precision: 2
             },
             editorOptions: {
                 format: {
-                    type: 'currency',
+                    type: 'currency'
                 },
             },
         },

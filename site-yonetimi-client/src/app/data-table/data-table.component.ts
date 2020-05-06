@@ -25,6 +25,13 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   @Input() allowAdding = true;
   @Input() allowUpdating = true;
   @Input() allowDeleting = true;
+  @Input() headerFilter = true;
+  @Input() filterPanel = true;
+  @Input() filterRow = true;
+  @Input() searchPanel = true;
+  @Input() columnChooser = true;
+  @Input() export = true;
+  @Input() groupPanel = true;
   totalSummaryColumns: any[];
 
   public get isBrowser(): boolean {

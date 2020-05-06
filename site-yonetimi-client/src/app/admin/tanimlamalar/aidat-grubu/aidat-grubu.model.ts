@@ -39,6 +39,7 @@ export class AidatGrubu {
             editorOptions: {
               format: {
                 type: 'currency',
+                precision: 2
               },
             },
           }];

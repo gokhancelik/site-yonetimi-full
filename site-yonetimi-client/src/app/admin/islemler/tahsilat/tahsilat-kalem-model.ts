@@ -47,6 +47,7 @@ export class TahsilatKalemModel {
             type: 'number',
             format: {
                 type: 'currency',
+                precision: 2
             },
             editorOptions: {
                 format: {

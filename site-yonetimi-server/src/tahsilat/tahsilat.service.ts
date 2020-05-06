@@ -18,7 +18,10 @@ export class TahsilatService extends BaseService<Tahsilat>{
     getDagitilacakTahsilatlar(): Promise<Tahsilat[]> {
         return this.repository.createQueryBuilder('tahsilat')
             .innerJoinAndSelect('tahsilat.meskenKisi', 'mk')
+            .innerJoinAndSelect('tahsilat.tahsilatKalems', 'tk')
+            .innerJoinAndSelect('tk.odemeTipi', 'ot')
             .where('tahsilat.durumu = 0')
+            .orderBy('tahsilat.odemeTarihi')
             // .andWhere('tahsilat.odemeYontemi <> 0')
             .getMany();
     }
