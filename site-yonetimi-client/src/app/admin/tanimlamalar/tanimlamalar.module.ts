@@ -25,6 +25,14 @@ import { MeskenDetayComponent } from './mesken/mesken-detay/mesken-detay.compone
 import { OdenmemisTahakkukListComponent } from './tahakkuk/odenmemis-tahakkuk-list/odenmemis-tahakkuk-list.component';
 import { OdenmisTahakkukListComponent } from './tahakkuk/odenmis-tahakkuk-list/odenmis-tahakkuk-list.component';
 import { TahsilatListComponent } from './tahsilat/tahsilat-list/tahsilat-list.component';
+import { PersonelComponent } from './personel/personel.component';
+import { PersonelListComponent } from './personel/personel-list/personel-list.component';
+import { KurulTipiComponent } from './kurul-tipi/kurul-tipi.component';
+import { KurulTipiListComponent } from './kurul-tipi/kurul-tipi-list/kurul-tipi-list.component';
+import { KurulUyeComponent } from './kurul-uye/kurul-uye.component';
+import { KurulUyeListComponent } from './kurul-uye/kurul-uye-list/kurul-uye-list.component';
+import { KurulUyeTipiComponent } from './kurul-uye-tipi/kurul-uye-tipi.component';
+import { KurulUyeTipiListComponent } from './kurul-uye-tipi/kurul-uye-tipi-list/kurul-uye-tipi-list.component';
 
 
 @NgModule({
@@ -32,6 +40,7 @@ import { TahsilatListComponent } from './tahsilat/tahsilat-list/tahsilat-list.co
     MeskenComponent,MeskenListComponent, MeskenKisiListComponent, MeskenDetayComponent,
     HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent,
     FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent,KisiDetayComponent, OdenmemisTahakkukListComponent, OdenmisTahakkukListComponent, TahsilatListComponent, 
+    KurulTipiComponent, KurulTipiListComponent, KurulUyeComponent, KurulUyeListComponent,PersonelComponent,PersonelListComponent, KurulUyeTipiComponent, KurulUyeTipiListComponent
     ],
   imports: [
     CommonModule,

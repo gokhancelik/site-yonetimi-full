@@ -54,6 +54,11 @@ export class AdminComponent implements OnInit {
           icon: 'user'
         },
         {
+          title: 'Personel',
+          link: '/admin/tanimlamalar/personel/list',
+          icon: 'user'
+        },
+        {
           title: 'Aidat Grupları',
           link: '/admin/tanimlamalar/aidat-grubu/list',
           icon: 'tags'
@@ -72,6 +77,21 @@ export class AdminComponent implements OnInit {
           title: 'Gelir-Gider Tanımları',
           link: '/admin/tanimlamalar/gelir-gider-tanimi/list',
           icon: 'receipt'
+        },
+        {
+          title: 'Kurul Tipi',
+          link: '/admin/tanimlamalar/kurul-tipi/list',
+          icon: 'user'
+        },
+        {
+          title: 'Kurul Uye',
+          link: '/admin/tanimlamalar/kurul-uye/list',
+          icon: 'user'
+        },
+        {
+          title: 'Kurul Uye Tipi',
+          link: '/admin/tanimlamalar/kurul-uye-tipi/list',
+          icon: 'user'
         },
       ]
     },

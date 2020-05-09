@@ -20,6 +20,10 @@ import { HealthController } from './health/health.controller';
 import { MeskenKisiModule } from './mesken-kisi/mesken-kisi.module';
 import { MeskenTipiModule } from './mesken-tipi/mesken-tipi.module';
 import { MeskenModule } from './mesken/mesken.module';
+import { PersonelModule } from './personel/personel.module';
+import { KurulTipiModule } from './kurul-tipi/kurul-tipi.module';
+import { KurulUyeModule } from './kurul-uye/kurul-uye.module';
+import { KurulUyeTipiModule } from './kurul-uye-tipi/kurul-uye-tipi.module';
 @Module({
   imports: [DatabaseModule,
     BorcModule,
@@ -38,7 +42,12 @@ import { MeskenModule } from './mesken/mesken.module';
     SanalPosModule,
     MeskenTipiModule,
     MeskenModule,
-    TerminusModule],
+    TerminusModule,
+    PersonelModule,
+    KurulTipiModule,
+    KurulUyeModule,
+    KurulUyeTipiModule
+  ],
   controllers: [AppController, HealthController],
   providers: [AppService],
 })
