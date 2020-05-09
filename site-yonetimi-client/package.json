@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "generate": "swagger-angular-generator -s src/api/scheme.json -d src/api/generated"
+    "generate-code:server": "openapi-generator generate -i http://api.aidattakip.site/openapi-json -g typescript-angular -o src/app/services/generated",
+    "generate-code:local": "openapi-generator generate -i http://localhost:4000/openapi-json -g typescript-angular -o src/app/services/generated"
   },
   "private": true,
   "dependencies": {

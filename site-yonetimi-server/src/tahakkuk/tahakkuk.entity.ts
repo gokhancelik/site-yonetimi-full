@@ -24,7 +24,7 @@ export class Tahakkuk extends BaseEntity {
 
     @Column({ type: 'money', nullable: true })
     odenenTutar?: number;
-    
+
     @Column({ type: 'money', nullable: true })
     odenenFaiz?: number;
 
@@ -53,7 +53,11 @@ export class Tahakkuk extends BaseEntity {
 
     @Expose()
     public get odenecekTutar(): number {
-        return this.tutar - this.odenenTutar + this.hesaplananFaiz;
+        return this.faizHaricOdenecekTutar + this.hesaplananFaiz;
+    }
+    @Expose()
+    public get faizHaricOdenecekTutar(): number {
+        return this.tutar - this.odenenTutar;
     }
     @Expose()
     public get hesaplananFaiz(): number {

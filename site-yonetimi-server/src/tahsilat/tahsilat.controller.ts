@@ -17,4 +17,5 @@ export class TahsilatController extends BaseController<Tahsilat, TahsilatService
     getByTahsilatId(@Param('id') tahsilatId: string): Promise<TahsilatKalem[]> {
         return (this.tahsilatKalemService).getByTahsilatId(tahsilatId);
     }
+    
 }

@@ -14,7 +14,8 @@ export class TahakkukController extends BaseController<Tahakkuk, TahakkukService
     }
     @Put('ode')
     ode(@Body() params: { selectedTahakkuks: string[], hesapHareketi: { tutar: number, odemeTarihi: Date, hesapId: string } }): Promise<Tahakkuk[]> {
-        return (this.service as TahakkukService).ode(params.selectedTahakkuks, params.hesapHareketi.tutar, params.hesapHareketi.odemeTarihi, params.hesapHareketi.hesapId);
+        return;
+        // return (this.service as TahakkukService).ode(params.selectedTahakkuks, params.hesapHareketi.tutar, params.hesapHareketi.odemeTarihi, params.hesapHareketi.hesapId);
     }
     
    

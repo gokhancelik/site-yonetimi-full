@@ -1,4 +1,4 @@
-import { Controller, Get, Request, UseGuards, Post, Body, HttpService, HttpException, ClassSerializerInterceptor, UseInterceptors, Res } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards, Post, Body, HttpService, HttpException, ClassSerializerInterceptor, UseInterceptors, Res, Param } from '@nestjs/common';
 import { Tahakkuk, AidatDurumu } from '../tahakkuk/tahakkuk.entity';
 import { TahakkukService } from '../tahakkuk/tahakkuk.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -6,8 +6,9 @@ import { TahsilatService } from '../tahsilat/tahsilat.service';
 import { Tahsilat, OdemeYontemi, TahsilatDurumu } from '../tahsilat/tahsilat.entity';
 import { KuveytTurkSanalPosService } from '../sanal-pos/servisler/kuveyt-turk/kuveyt-turk-sanal-pos.service';
 import { ApiTags } from '@nestjs/swagger';
-import { GelirGiderTanimi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entity';
 import { TahsilatKalemService } from '../tahsilat-kalem/tahsilat-kalem.service';
+import { TahsilatSanalPosLogService } from '../tahsilat/tahsilat-sanal-pos-log.service';
+import { TahsilatSanalPosLog } from '../tahsilat/tahsilat-sanal-pos-log.entity';
 
 @ApiTags('Online İşlemler')
 @Controller('online-islemler')
@@ -18,7 +19,8 @@ export class OnlineIslemlerController {
     constructor(private service: TahakkukService,
         private tahsilatService: TahsilatService,
         private tahsilatKalemService: TahsilatKalemService,
-        private readonly kuveytTurkSanalPosService: KuveytTurkSanalPosService) {
+        private readonly kuveytTurkSanalPosService: KuveytTurkSanalPosService,
+        private tahsilatSanalPosLog: TahsilatSanalPosLogService) {
     }
     @UseInterceptors(ClassSerializerInterceptor)
     @UseGuards(AuthGuard('jwt'))
@@ -38,17 +40,15 @@ export class OnlineIslemlerController {
         return this.tahsilatService.getTahsilatlarByUserId(request.user.userId);
     }
 
-    // @UseGuards(AuthGuard('jwt'))
-    // @Post('tahsilat-olustur')
-    // tahsilatOlustur(@Body() seciliTahakkuklar: Tahakkuk[]): Promise<Tahsilat> {
-    //     return this.service.krediKartiTahsilatiOlustur(seciliTahakkuklar);
-    // }
+    @UseGuards(AuthGuard('jwt'))
+    @Post('tahsilat-olustur')
+    tahsilatOlustur(@Body() seciliTahakkuklar: Tahakkuk[]): Promise<Tahsilat> {
+        return this.tahsilatService.krediKartiTahsilatiOlustur(seciliTahakkuklar);
+    }
     @Post('odeme-basarili')
     async odemeBasarili(@Body() model: any, @Res() res): Promise<any> {
-
         let provisionResult = await this.kuveytTurkSanalPosService.provision(model);
-        let success = provisionResult.responseCode === '00';
-        res.redirect('http://localhost:4200/online-islemler');
+        res.redirect('http://localhost:4200/online-islemler/odeme-sonucu?sonucId=' + provisionResult.id);
     }
     @Post('odeme-hatali')
     async odemeHatali(@Body() model: any): Promise<any> {
@@ -57,9 +57,9 @@ export class OnlineIslemlerController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('odeme')
-    async odeme(@Body() model: { tutar: number, creditCard: any }): Promise<any> {
+    async odeme(@Body() model: { tutar: number, creditCard: any, tahsilatId: string }): Promise<any> {
         // var baseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
-        return this.kuveytTurkSanalPosService.enrollment(model.tutar, model.creditCard);
+        return this.kuveytTurkSanalPosService.enrollment(model.tutar, model.creditCard, model.tahsilatId);
     }
 
     // @UseGuards(AuthGuard('jwt'))
@@ -102,7 +102,7 @@ export class OnlineIslemlerController {
                             odenecekTutar = tahakkuk.odenecekTutar;
                         }
                         if (tahsilat.odemeYontemi === OdemeYontemi.KrediKarti) {
-                            odenecekTutar = odenecekTutar * 1.0168;
+                            odenecekTutar = odenecekTutar * 1.0168;//TODO: sanal pos ayarından gelmesi lazım
                         }
                         tahakkuk.odenenFaiz += tahakkuk.hesaplananFaiz;
                         tahakkuk.odenenTutar += odenecekTutar;
@@ -146,5 +146,9 @@ export class OnlineIslemlerController {
             //     await this.service.update(tahakkuk.id, tahakkuk);
             // }
         }
+    }
+    @Get(':logId/sanal-pos-log')
+    getSanalPosLog(@Param('logId') logId: string): Promise<TahsilatSanalPosLog> {
+        return (this.tahsilatSanalPosLog).findById(logId);
     }
 }

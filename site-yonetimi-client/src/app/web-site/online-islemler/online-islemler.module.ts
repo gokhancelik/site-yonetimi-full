@@ -12,11 +12,11 @@ import { PipesModule } from '../../pipes/pipes.module';
 import { OdemeGatewayComponent } from './odeme-gateway/odeme-gateway.component';
 import { OdenmisTahakkuklarComponent } from './odenmis-tahakkuklar/odenmis-tahakkuklar.component';
 import { TahsilatListComponent } from './tahsilat-list/tahsilat-list.component';
-
-
+import { OdemeSonucuComponent } from './odeme-sonucu/odeme-sonucu.component';
 
 @NgModule({
-  declarations: [OnlineIslemlerComponent, TahakkukListComponent, OdemeComponent, OdemeGatewayComponent,RunScriptsDirective, OdenmisTahakkuklarComponent, TahsilatListComponent],
+  declarations: [OnlineIslemlerComponent, TahakkukListComponent, OdemeComponent,
+    OdemeGatewayComponent, RunScriptsDirective, OdenmisTahakkuklarComponent, TahsilatListComponent, OdemeSonucuComponent],
   imports: [
     CommonModule,
     OnlineIslemlerRoutingModule,

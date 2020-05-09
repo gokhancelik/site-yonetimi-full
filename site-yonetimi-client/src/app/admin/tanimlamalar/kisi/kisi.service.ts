@@ -5,12 +5,13 @@ import { Observable } from 'rxjs';
 import { MeskenKisi } from '../mesken-kisi/mesken-kisi.model';
 import { TahakkukModel } from '../../islemler/tahakkuk/tahakkuk-model';
 import { TahsilatModel } from '../../islemler/tahsilat/tahsilat-model';
+import { Kisi } from './kisi.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KisiService extends BaseCrudService {
-  
+
   constructor(http: HttpClient) {
     super(http, 'kisi');
   }
@@ -26,4 +27,8 @@ export class KisiService extends BaseCrudService {
   getTahsilatlar(id: string): Observable<TahsilatModel[]> {
     return this.http.get<TahsilatModel[]>(`${this.baseUrl}${this.path}/${id}/tahsilatlar`);
   }
+  getCurrentUser(): Observable<Kisi> {
+    return this.http.get<Kisi>(`${this.baseUrl}${this.path}/current-user`);
+  }
+
 }

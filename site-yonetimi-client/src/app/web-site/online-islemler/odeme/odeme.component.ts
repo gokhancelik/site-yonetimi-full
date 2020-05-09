@@ -73,33 +73,37 @@ export class OdemeComponent implements OnInit {
     //   });
   }
   odemeyiTamamla(e) {
-    this.onlineIslemlerService.odeme({ tutar: this.tutar, creditCard: this.model })
+    this.onlineIslemlerService.tahsilatOlustur(this.seciliTahakkuklar)
       .subscribe(d => {
-        this.sonucUrl = this.transform(d.htmlResponse);
-        this.sonucHtml = this.transformHtml(d.htmlResponse);
-        // var myWindow = window.open("", "newWindow", "width=500,height=700");
-        document.write(d.htmlResponse);
-        let form = <HTMLFormElement>document.getElementsByTagName('form')[0];
-        form.submit();
-        // myWindow.focus();
-        // myWindow.opener = window;
-        // myWindow.onclose = (e) => {
-        //   (console.log(e))
-        // }
-        // myWindow.onunload = () => {
-        //   console.log(myWindow);
-        // }
-        // var popupTick = setInterval(function () {
-        //   if (myWindow.closed) {
-        //     clearInterval(popupTick);
-        //   }
-        // }, 500);
-        let odemeModal = this.modalService.open(OdemeGatewayComponent, { size: 'xl' });
-        odemeModal.componentInstance.data = this.sonucUrl;
-        odemeModal.result.then((res) => {
-          console.log(res)
-        });
-      });
+        this.onlineIslemlerService.odeme({ tutar: this.tutar, creditCard: this.model, tahsilatId: d.id })
+          .subscribe(d => {
+            this.sonucUrl = this.transform(d.htmlResponse);
+            this.sonucHtml = this.transformHtml(d.htmlResponse);
+            // var myWindow = window.open("", "newWindow", "width=500,height=700");
+            document.write(d.htmlResponse);
+            let form = <HTMLFormElement>document.getElementsByTagName('form')[0];
+            form.submit();
+            // myWindow.focus();
+            // myWindow.opener = window;
+            // myWindow.onclose = (e) => {
+            //   (console.log(e))
+            // }
+            // myWindow.onunload = () => {
+            //   console.log(myWindow);
+            // }
+            // var popupTick = setInterval(function () {
+            //   if (myWindow.closed) {
+            //     clearInterval(popupTick);
+            //   }
+            // }, 500);
+            let odemeModal = this.modalService.open(OdemeGatewayComponent, { size: 'xl' });
+            odemeModal.componentInstance.data = this.sonucUrl;
+            odemeModal.result.then((res) => {
+              console.log(res)
+            });
+          });
+      })
+
   }
   public transform(value: any) {
     const getBlobURL = (code, type) => {

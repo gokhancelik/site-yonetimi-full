@@ -1,0 +1,28 @@
+import { Component, OnInit } from '@angular/core';
+import { OnlineIslemlerService } from '../online-islemler.service';
+import { ActivatedRoute } from '@angular/router';
+import { TahsilatSanalPosLog } from '../models/tahsilat-sanal-pos-log.model';
+
+@Component({
+  selector: 'app-odeme-sonucu',
+  templateUrl: './odeme-sonucu.component.html',
+  styleUrls: ['./odeme-sonucu.component.scss']
+})
+export class OdemeSonucuComponent implements OnInit {
+  sonucId: any;
+  sonuc: TahsilatSanalPosLog;
+  mesaj: any;
+
+  constructor(private onlineIslemlerService: OnlineIslemlerService,
+    private route: ActivatedRoute) { }
+
+  ngOnInit(): void {
+    this.sonucId = this.route.snapshot.queryParams['sonucId'];
+    this.onlineIslemlerService.getSanalPosLog(this.sonucId)
+    .subscribe(d=>{
+      this.sonuc = d;
+      this.mesaj = JSON.parse(this.sonuc.mesaj);
+    })
+  }
+
+}

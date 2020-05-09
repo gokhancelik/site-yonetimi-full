@@ -18,8 +18,7 @@ export class TahakkukService extends BaseService<Tahakkuk> {
 
 
     constructor(repository: TahakkukRepository,
-        private readonly connection: Connection,
-        private gelirGiderTanimiService: GelirGiderTanimiService) {
+        private readonly connection: Connection) {
         super(repository);
     }
     async aidatTahakkuklariOlustur() {
@@ -52,8 +51,6 @@ export class TahakkukService extends BaseService<Tahakkuk> {
         });
     }
     getOdenmisAidatlar(userId: any): Promise<Tahakkuk[]> {
-        let today = new Date();
-        let gelecekAy = new Date(today.getFullYear(), today.getMonth() + 1, 1);
         var aidatlar$ = this.repository.createQueryBuilder('tahakkuk')
             .innerJoinAndSelect('tahakkuk.meskenKisi', 'meskenKisi')
             .innerJoinAndSelect('tahakkuk.odemeTipi', 'odemeTipi')
@@ -63,111 +60,16 @@ export class TahakkukService extends BaseService<Tahakkuk> {
             .getMany();
         return aidatlar$;
     }
-    async ode(selectedTahakkukIds: string[], tutar: number, odemeTarihi: Date, hesapId: string, odemeYontemi: OdemeYontemi = OdemeYontemi.HavaleEFT): Promise<Tahakkuk[]> {
-        return await this.connection.transaction(async manager => {
-            // tutar = Number(tutar);
-            // odemeTarihi = new Date(odemeTarihi);
-            let selectedTahakkuks = await manager.createQueryBuilder(Tahakkuk, 'thk')
-                .whereInIds(selectedTahakkukIds).andWhere('thk.durumu = :durumu', { durumu: AidatDurumu.Odenmedi }).orderBy('thk.vadeTarihi').getMany();
-            // if (!selectedTahakkuks || !selectedTahakkuks.length) {
-            //     return Promise.all(selectedTahakkuks);
-            // }
-            // let meskenKisiId = selectedTahakkuks[0].meskenKisiId;
-            // let bakiyeKalanTahsilatlar = await manager.createQueryBuilder(Tahsilat, 'tah')
-            //     .where('tah.meskenKisiId = :meskenKisiId', { meskenKisiId }).getMany();
-            //     // .andWhere('tah.kullanilmamisTutar > 0').getMany();
-            // let kullanilmamisToplam = bakiyeKalanTahsilatlar.map(m => m.kullanilabilirMiktar).reduce((p, c) => p + c, 0);
-            // let tahsilat = new Tahsilat();
-            // tahsilat.durumu = TahsilatDurumu.Onaylandi;
-            // tahsilat.meskenKisiId = meskenKisiId
-            // tahsilat.tahsilatKalems = new Array<TahsilatKalem>();
-            // tahsilat.odemeTarihi = odemeTarihi;
-            // tahsilat.tutar = tutar;
-            // tahsilat.odemeYontemi = odemeYontemi;
-            // let hesapHareketi = new HesapHareketi(odemeTarihi, tutar, hesapId, tahsilat.id, null);
-            // await manager.save(hesapHareketi);
-            // tutar += kullanilmamisToplam;
-            // for (const eskiTahsilat of bakiyeKalanTahsilatlar) {
-            //     eskiTahsilat.kullanilabilirMiktar = 0;
-            //     await manager.save(eskiTahsilat);
-            // }
-            // for (const tahakkuk of selectedTahakkuks) {
-            //     if (tutar == 0) {
-            //         break;
-            //     }
-            //     tahsilat.aciklama = tahsilat.aciklama ? [tahsilat.aciklama, tahakkuk.aciklama].join(', ') : tahakkuk.aciklama;
-            //     tahakkuk.odemeTarihi = odemeTarihi;
-            //     if (!tahakkuk.odenenTutar) {
-            //         tahakkuk.odenenTutar = 0;
-            //     }
-            //     let sonuc = await this.tahsilatKalemOlusturVeOde(tahakkuk, tutar, manager);
-            //     manager.save(tahakkuk);
-            //     tahsilat.tahsilatKalems.push(...sonuc.tahsilatKalems);
-            //     tutar = sonuc.kalanTutar;
-            // }
-            // tahsilat.aciklama += ' Ödemesi';
-            // tahsilat.kullanilmamisTutar = tutar;
-            // await manager.save(tahsilat);
-            // for (const thk of tahsilat.tahsilatKalems) {
-            //     thk.tahsilatId = tahsilat.id;
-            //     await manager.save(thk);
-            // }
 
-            return Promise.all(selectedTahakkuks);
-        });
-    }
-    private async tahsilatKalemOlusturVeOde(tahakkuk: Tahakkuk, yatirilanTutar: number, @TransactionManager() manager?: EntityManager): Promise<{ tahsilatKalems: TahsilatKalem[], kalanTutar: number }> {
-        let result = new Array<TahsilatKalem>();
-        var tahsilatKalem = new TahsilatKalem();
-        let kullanilanTutar = 0;
-        if (tahakkuk.odenecekTutar < yatirilanTutar) {
-            kullanilanTutar = tahakkuk.odenecekTutar;
-            tahakkuk.odenenTutar += tahakkuk.odenecekTutar;
+    async odemeYap(tahakkukId, toplamTutar: number, tahsilatTarihi: Date = new Date()): Promise<Tahakkuk> {
+        let tahakkuk = await this.findById(tahakkukId);
+        if (toplamTutar >= tahakkuk.odenecekTutar) {
             tahakkuk.durumu = AidatDurumu.Odendi;
+            tahakkuk.odemeTarihi = new Date();
         }
-        else if (tahakkuk.odenecekTutar === yatirilanTutar) {
-            kullanilanTutar = yatirilanTutar;
-            tahakkuk.odenenTutar += yatirilanTutar;
-            tahakkuk.durumu = AidatDurumu.Odendi;
-        }
-        else {
-            tahakkuk.odenenTutar += yatirilanTutar;
-            kullanilanTutar = yatirilanTutar;
-        }
-        tahsilatKalem.odemeTipiId = tahakkuk.odemeTipiId;
-        tahsilatKalem.tahakkukId = tahakkuk.id;
-        tahsilatKalem.tutar = kullanilanTutar;
-        result.push(tahsilatKalem);
-        if (tahakkuk.hesaplananFaiz > 0) {
-            var tahsilatKalem = await this.faizKalemiOlustur(tahsilatKalem, tahakkuk);
-            result.push(tahsilatKalem);
-        }
-        // if (tahakkuk.bankaKomisyonu > 0) {
-        //     var tahsilatKalem = await this.bankaKomisyonuKalemiOlustur(tahsilatKalem, tahakkuk);
-        //     result.push(tahsilatKalem);
-        // }
-        return { tahsilatKalems: result, kalanTutar: yatirilanTutar - kullanilanTutar };
-    }
-
-    private async bankaKomisyonuKalemiOlustur(tahsilatKalem: TahsilatKalem, tahakkuk: Tahakkuk) {
-        var tahsilatKalem = new TahsilatKalem();
-        tahsilatKalem.tahakkukId = tahakkuk.id;
-        tahsilatKalem.tutar = 0;
-        tahsilatKalem.tahakkuk = tahakkuk;
-        let gelirTanimi = await this.gelirGiderTanimiService.getByKod(GelirGiderTanimi.BankaKomisyonu);
-        tahsilatKalem.odemeTipiId = gelirTanimi.id;
-        tahsilatKalem.odemeTipi = gelirTanimi;
-        return tahsilatKalem;
-    }
-
-    private async faizKalemiOlustur(tahsilatKalem: TahsilatKalem, tahakkuk: Tahakkuk) {
-        var tahsilatKalem = new TahsilatKalem();
-        tahsilatKalem.tahakkukId = tahakkuk.id;
-        tahsilatKalem.tutar = tahakkuk.hesaplananFaiz;
-        tahsilatKalem.tahakkuk = tahakkuk;
-        let gelirTanimi = await this.gelirGiderTanimiService.getByKod(GelirGiderTanimi.Faiz);
-        tahsilatKalem.odemeTipiId = gelirTanimi.id;
-        tahsilatKalem.odemeTipi = gelirTanimi;
-        return tahsilatKalem;
+        tahakkuk.odenenTutar += toplamTutar;
+        tahakkuk.sonTahsilatTarihi = tahsilatTarihi;
+        this.update(tahakkukId, tahakkuk);
+        return tahakkuk;
     }
 }

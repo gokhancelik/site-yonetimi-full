@@ -19,6 +19,6 @@ export class GelirGiderTanimi extends BaseEntity {
     @Column({ type: 'int', nullable: false })
     hareketTipi!: HareketTipi;
 
-    public static readonly Faiz = '4';
-    public static readonly BankaKomisyonu = '5';
+    public static readonly Faiz = 'FZ';
+    public static readonly BankaKomisyonu = '780.09';
 }

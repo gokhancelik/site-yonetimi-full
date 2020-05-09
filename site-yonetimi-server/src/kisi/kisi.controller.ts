@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Request, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
+import { Controller, Get, Param, Request, UseInterceptors, ClassSerializerInterceptor, UseGuards } from '@nestjs/common';
 import { BaseController } from '../abstract/base.controller';
 import { Kisi } from './kisi.entity';
 import { KisiService } from './kisi.service';
@@ -9,6 +9,7 @@ import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
 import { TahakkukService } from '../tahakkuk/tahakkuk.service';
 import { Tahsilat } from '../tahsilat/tahsilat.entity';
 import { TahsilatService } from '../tahsilat/tahsilat.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Kişi')
 @Controller('kisi')
@@ -39,5 +40,11 @@ export class KisiController extends BaseController<Kisi, KisiService> {
     @Get(':id/tahsilatlar')
     getTahsilatlar(@Param('id') id: string): Promise<Tahsilat[]> {
         return this.tahsilatService.getTahsilatlarByUserId(id);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('current-user')
+    getCurrentUser(@Request() request): Promise<Kisi> {
+        return this.service.findById(request.user.userId);
     }
 }

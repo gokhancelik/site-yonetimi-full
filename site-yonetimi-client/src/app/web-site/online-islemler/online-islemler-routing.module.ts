@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OnlineIslemlerComponent } from './online-islemler.component';
 import { OdemeComponent } from './odeme/odeme.component';
+import { OdemeSonucuComponent } from './odeme-sonucu/odeme-sonucu.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'odeme',
     component: OdemeComponent
+  },
+  {
+    path: 'odeme-sonucu',
+    component: OdemeSonucuComponent
   }
 ];
 

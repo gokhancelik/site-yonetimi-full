@@ -4,13 +4,18 @@ import { map, catchError } from 'rxjs/operators';
 import * as xml2js from 'xml2js';
 import { of } from 'rxjs';
 import { TransactionType } from './transaction-type-enum';
+import { TahsilatService } from '../../../tahsilat/tahsilat.service';
+import { Tahsilat } from '../../../tahsilat/tahsilat.entity';
+import { SanalPosOdemeSonucuModel } from '../../sanal-pos-odeme-sonucu.model';
+import { TahsilatSanalPosLog } from '../../../tahsilat/tahsilat-sanal-pos-log.entity';
 
 @Injectable()
 export class KuveytTurkSanalPosService {
     /**
     *
     */
-    constructor(private readonly httpService: HttpService) {
+    constructor(private readonly httpService: HttpService,
+        private tahsilatService: TahsilatService) {
     }
 
     async error(model: any): Promise<any> {
@@ -27,7 +32,7 @@ export class KuveytTurkSanalPosService {
             return index == 0 ? word.toLowerCase() : word.toUpperCase();
         }).replace(/\s+/g, '');
     }
-    async provision(model: any): Promise<VPosTransactionResponseContract> {
+    async provision(model: any): Promise<TahsilatSanalPosLog> {
         let enrollmentResult = await xml2js.parseStringPromise(decodeURIComponent(model.AuthenticationResponse).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase], });
         const UserName = 'apitest'; //  api rollü kullanici adı
         const Password = 'api123'; //  api rollü kullanici sifresi
@@ -67,22 +72,27 @@ export class KuveytTurkSanalPosService {
                 headers: {
                     'Content-Type': 'application/xml',
                 }
-            }).pipe(map(d => {
-                const paymentResult = xml2js.parseStringPromise(decodeURIComponent(d.data).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase] });
-                return paymentResult;
-
+            }).pipe(map(async (d) => {
+                const paymentResult: VPosTransactionResponseContract = await xml2js.parseStringPromise(decodeURIComponent(d.data).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase] });
+                let sonuc = false;
+                if (paymentResult.responseCode === '00') {
+                    let tahsilat = await this.tahsilatService.onayla(paymentResult.merchantOrderId);
+                    sonuc = true;
+                } else {
+                    sonuc = false;
+                }
+                return await this.tahsilatService.sanalPosLogEkle(paymentResult.merchantOrderId, JSON.stringify(paymentResult), sonuc);
             })).pipe(catchError(e => {
                 throw new HttpException(e.response.data, e.response.status);
             })).toPromise();
         }
     }
 
-    async enrollment(tutar: number, creditCard: any): Promise<any> {
-        const merchantOrderId = Date.now().toString();
+    async enrollment(tutar: number, creditCard: any, tahsilatId: string): Promise<any> {
         const CustomerId = '400235'; // Müsteri Numarasi
         const MerchantId = '496'; // Magaza Kodu
-        const OkUrl = 'http://localhost:4000/api/online-islemler/odeme-basarili'; // Basarili sonuç alinirsa, yönledirelecek sayfa
-        const FailUrl = 'http://localhost:4000/api/online-islemler/odeme-hatali'; // Basarisiz sonuç alinirsa, yönledirelecek sayfa
+        const OkUrl = 'http://localhost:4000/online-islemler/odeme-basarili'; // Basarili sonuç alinirsa, yönledirelecek sayfa
+        const FailUrl = 'http://localhost:4000/online-islemler/odeme-hatali'; // Basarisiz sonuç alinirsa, yönledirelecek sayfa
         const UserName = 'apitest'; //  api rollü kullanici adı
         const Password = 'api123'; //  api rollü kullanici sifresi
         const gServer = 'https://boatest.kuveytturk.com.tr/boa.virtualpos.services/Home/ThreeDModelPayGate';
@@ -99,7 +109,7 @@ export class KuveytTurkSanalPosService {
             OkUrl,
             FailUrl,
             MerchantId,
-            merchantOrderId,
+            tahsilatId,
             UserName,
             Password,
             gServer,
