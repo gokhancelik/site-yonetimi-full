@@ -21,6 +21,8 @@ import { MeskenKisiModule } from './mesken-kisi/mesken-kisi.module';
 import { MeskenTipiModule } from './mesken-tipi/mesken-tipi.module';
 import { MeskenModule } from './mesken/mesken.module';
 import { PersonelModule } from './personel/personel.module';
+import { KurulTipiModule } from './kurul-tipi/kurul-tipi.module';
+import { KurulUyeModule } from './kurul-uye/kurul-uye.module';
 @Module({
   imports: [DatabaseModule,
     BorcModule,
@@ -40,7 +42,10 @@ import { PersonelModule } from './personel/personel.module';
     MeskenTipiModule,
     MeskenModule,
     TerminusModule,
-    PersonelModule],
+    PersonelModule,
+    KurulTipiModule,
+    KurulUyeModule
+  ],
   controllers: [AppController, HealthController],
   providers: [AppService],
 })

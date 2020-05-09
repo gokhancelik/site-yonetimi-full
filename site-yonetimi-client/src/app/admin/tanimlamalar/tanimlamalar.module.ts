@@ -27,13 +27,18 @@ import { OdenmisTahakkukListComponent } from './tahakkuk/odenmis-tahakkuk-list/o
 import { TahsilatListComponent } from './tahsilat/tahsilat-list/tahsilat-list.component';
 import { PersonelComponent } from './personel/personel.component';
 import { PersonelListComponent } from './personel/personel-list/personel-list.component';
+import { KurulTipiComponent } from './kurul-tipi/kurul-tipi.component';
+import { KurulTipiListComponent } from './kurul-tipi/kurul-tipi-list/kurul-tipi-list.component';
+import { KurulUyeComponent } from './kurul-uye/kurul-uye.component';
+import { KurulUyeListComponent } from './kurul-uye/kurul-uye-list/kurul-uye-list.component';
 
 
 @NgModule({
   declarations: [ AidatGrubuComponent, AidatGrubuListComponent,
     MeskenComponent,MeskenListComponent, MeskenKisiListComponent, MeskenDetayComponent,
     HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent,
-    FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent,KisiDetayComponent, OdenmemisTahakkukListComponent, OdenmisTahakkukListComponent, TahsilatListComponent, PersonelComponent, PersonelListComponent, 
+    FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent,KisiDetayComponent, OdenmemisTahakkukListComponent, OdenmisTahakkukListComponent, TahsilatListComponent, 
+    KurulTipiComponent, KurulTipiListComponent, KurulUyeComponent, KurulUyeListComponent,PersonelComponent,PersonelListComponent
     ],
   imports: [
     CommonModule,

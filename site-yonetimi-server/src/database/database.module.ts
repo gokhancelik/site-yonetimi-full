@@ -17,6 +17,8 @@ import { Mesken } from '../mesken/mesken.entity';
 import { MeskenAidatGrubu } from '../aidat-grubu/mesken-aidat-grubu.entity';
 import { MeskenTipi } from '../mesken-tipi/mesken-tipi.entity';
 import { Personel } from 'src/personel/personel.entity';
+import { KurulTipi } from 'src/kurul-tipi/kurul-tipi.entity';
+import { KurulUye } from 'src/kurul-uye/kurul-uye.entity';
 
 @Module({
     imports: [
@@ -53,7 +55,9 @@ import { Personel } from 'src/personel/personel.entity';
                 TahsilatKalem,
                 SanalPos,
                 MeskenTipi,
-                Personel
+                Personel,
+                KurulTipi,
+                KurulUye
             ],
             synchronize: true,
         })

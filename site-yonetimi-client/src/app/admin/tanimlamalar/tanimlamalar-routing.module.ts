@@ -16,6 +16,10 @@ import { MeskenListComponent } from './mesken/mesken-list/mesken-list.component'
 import { MeskenDetayComponent } from './mesken/mesken-detay/mesken-detay.component';
 import { PersonelComponent } from './personel/personel.component';
 import { PersonelListComponent } from './personel/personel-list/personel-list.component';
+import { KurulTipiComponent } from './kurul-tipi/kurul-tipi.component';
+import { KurulTipiListComponent } from './kurul-tipi/kurul-tipi-list/kurul-tipi-list.component';
+import { KurulUyeComponent } from './kurul-uye/kurul-uye.component';
+import { KurulUyeListComponent } from './kurul-uye/kurul-uye-list/kurul-uye-list.component';
 
 const routes: Routes = [
   {
@@ -93,6 +97,26 @@ const routes: Routes = [
       {
         path: 'list',
         component: PersonelListComponent
+      }
+    ]
+  },
+  {
+    path: 'kurul-tipi',
+    component: KurulTipiComponent,
+    children: [
+      {
+        path: 'list',
+        component: KurulTipiListComponent
+      }
+    ]
+  },
+  {
+    path: 'kurul-uye',
+    component: KurulUyeComponent,
+    children: [
+      {
+        path: 'list',
+        component: KurulUyeListComponent
       }
     ]
   },
