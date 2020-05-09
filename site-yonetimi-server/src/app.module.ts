@@ -23,6 +23,7 @@ import { MeskenModule } from './mesken/mesken.module';
 import { PersonelModule } from './personel/personel.module';
 import { KurulTipiModule } from './kurul-tipi/kurul-tipi.module';
 import { KurulUyeModule } from './kurul-uye/kurul-uye.module';
+import { KurulUyeTipiModule } from './kurul-uye-tipi/kurul-uye-tipi.module';
 @Module({
   imports: [DatabaseModule,
     BorcModule,
@@ -44,7 +45,8 @@ import { KurulUyeModule } from './kurul-uye/kurul-uye.module';
     TerminusModule,
     PersonelModule,
     KurulTipiModule,
-    KurulUyeModule
+    KurulUyeModule,
+    KurulUyeTipiModule
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
