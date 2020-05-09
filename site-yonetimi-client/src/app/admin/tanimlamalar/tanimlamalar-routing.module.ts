@@ -14,6 +14,8 @@ import { KisiDetayComponent } from './kisi/kisi-detay/kisi-detay.component';
 import { MeskenComponent } from './mesken/mesken.component';
 import { MeskenListComponent } from './mesken/mesken-list/mesken-list.component';
 import { MeskenDetayComponent } from './mesken/mesken-detay/mesken-detay.component';
+import { PersonelComponent } from './personel/personel.component';
+import { PersonelListComponent } from './personel/personel-list/personel-list.component';
 
 const routes: Routes = [
   {
@@ -81,6 +83,16 @@ const routes: Routes = [
       {
         path: 'list',
         component: GelirGiderTanimListComponent
+      }
+    ]
+  },
+  {
+    path: 'personel',
+    component: PersonelComponent,
+    children: [
+      {
+        path: 'list',
+        component: PersonelListComponent
       }
     ]
   },

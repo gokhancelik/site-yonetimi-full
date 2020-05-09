@@ -54,6 +54,11 @@ export class AdminComponent implements OnInit {
           icon: 'user'
         },
         {
+          title: 'Personel',
+          link: '/admin/tanimlamalar/personel/list',
+          icon: 'user'
+        },
+        {
           title: 'Aidat Grupları',
           link: '/admin/tanimlamalar/aidat-grubu/list',
           icon: 'tags'
