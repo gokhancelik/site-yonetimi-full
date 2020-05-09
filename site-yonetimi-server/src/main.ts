@@ -4,13 +4,13 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
+  // app.setGlobalPrefix('api');
   const options = new DocumentBuilder()
     .setTitle('Aidat Takip Programı')
     .setDescription('Aidat Takip Programı API')
     .setVersion('1.0')
     .addTag('aidattakip')
-    .setBasePath('api')
+    // .setBasePath('api')
     .build();
   const document = SwaggerModule.createDocument(app, options, {
     ignoreGlobalPrefix: false,

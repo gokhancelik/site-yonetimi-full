@@ -14,9 +14,24 @@
     <nb-card-header></nb-card-header>
     <nb-card-body>
         <ngb-tabset>
-            <ngb-tab title="Kişiler">
+            <ngb-tab title="Bağımsız Bölümler">
                 <ng-template ngbTabContent>
                     <app-mesken-kisi-list [kisiId]="id"></app-mesken-kisi-list>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Ödenmemiş Tahakkuklar">
+                <ng-template ngbTabContent>
+                    <app-odenmemis-tahakkuk-list [kisiId]="id"></app-odenmemis-tahakkuk-list>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Ödenmiş Tahakkuklar">
+                <ng-template ngbTabContent>
+                    <app-odenmis-tahakkuk-list [kisiId]="id"></app-odenmis-tahakkuk-list>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Tahsilatlar">
+                <ng-template ngbTabContent>
+                    <app-kisi-tahsilat-list [kisiId]="id"></app-kisi-tahsilat-list>
                 </ng-template>
             </ngb-tab>
         </ngb-tabset>

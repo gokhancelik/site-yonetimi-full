@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { BaseEntity } from "../abstract/base.entity";
 import { MeskenKisi } from "../mesken-kisi/mesken-kisi.entity";
+import { Expose } from "class-transformer/decorators";
 
 @Entity({ name: 'Kisi' })
 export class Kisi extends BaseEntity {
@@ -9,7 +10,10 @@ export class Kisi extends BaseEntity {
 
     @Column({ length: 50 })
     soyad: string;
-
+    @Expose()
+    public get tamAd(): string {
+        return `${this.ad} ${this.soyad}`;
+    }
     @Column({ length: 50, nullable: true })
     tcKimlikNo: string;
 

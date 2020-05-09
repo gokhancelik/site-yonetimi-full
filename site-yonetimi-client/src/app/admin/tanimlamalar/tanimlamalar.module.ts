@@ -22,13 +22,16 @@ import { MeskenComponent } from './mesken/mesken.component';
 import { MeskenListComponent } from './mesken/mesken-list/mesken-list.component';
 import { MeskenKisiListComponent } from './mesken-kisi/mesken-kisi-list/mesken-kisi-list.component';
 import { MeskenDetayComponent } from './mesken/mesken-detay/mesken-detay.component';
+import { OdenmemisTahakkukListComponent } from './tahakkuk/odenmemis-tahakkuk-list/odenmemis-tahakkuk-list.component';
+import { OdenmisTahakkukListComponent } from './tahakkuk/odenmis-tahakkuk-list/odenmis-tahakkuk-list.component';
+import { TahsilatListComponent } from './tahsilat/tahsilat-list/tahsilat-list.component';
 
 
 @NgModule({
   declarations: [ AidatGrubuComponent, AidatGrubuListComponent,
     MeskenComponent,MeskenListComponent, MeskenKisiListComponent, MeskenDetayComponent,
     HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent,
-    FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent,KisiDetayComponent, 
+    FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent,KisiDetayComponent, OdenmemisTahakkukListComponent, OdenmisTahakkukListComponent, TahsilatListComponent, 
     ],
   imports: [
     CommonModule,
