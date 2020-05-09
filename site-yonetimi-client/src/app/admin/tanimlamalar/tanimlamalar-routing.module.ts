@@ -16,6 +16,8 @@ import { MeskenListComponent } from './mesken/mesken-list/mesken-list.component'
 import { MeskenDetayComponent } from './mesken/mesken-detay/mesken-detay.component';
 import { KurulTipiComponent } from './kurul-tipi/kurul-tipi.component';
 import { KurulTipiListComponent } from './kurul-tipi/kurul-tipi-list/kurul-tipi-list.component';
+import { KurulUyeComponent } from './kurul-uye/kurul-uye.component';
+import { KurulUyeListComponent } from './kurul-uye/kurul-uye-list/kurul-uye-list.component';
 
 const routes: Routes = [
   {
@@ -93,6 +95,16 @@ const routes: Routes = [
       {
         path: 'list',
         component: KurulTipiListComponent
+      }
+    ]
+  },
+  {
+    path: 'kurul-uye',
+    component: KurulUyeComponent,
+    children: [
+      {
+        path: 'list',
+        component: KurulUyeListComponent
       }
     ]
   },
