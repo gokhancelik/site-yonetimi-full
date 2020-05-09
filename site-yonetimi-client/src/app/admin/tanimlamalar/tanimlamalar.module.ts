@@ -25,6 +25,8 @@ import { MeskenDetayComponent } from './mesken/mesken-detay/mesken-detay.compone
 import { OdenmemisTahakkukListComponent } from './tahakkuk/odenmemis-tahakkuk-list/odenmemis-tahakkuk-list.component';
 import { OdenmisTahakkukListComponent } from './tahakkuk/odenmis-tahakkuk-list/odenmis-tahakkuk-list.component';
 import { TahsilatListComponent } from './tahsilat/tahsilat-list/tahsilat-list.component';
+import { KurulTipiComponent } from './kurul-tipi/kurul-tipi.component';
+import { KurulTipiListComponent } from './kurul-tipi/kurul-tipi-list/kurul-tipi-list.component';
 
 
 @NgModule({
@@ -32,6 +34,7 @@ import { TahsilatListComponent } from './tahsilat/tahsilat-list/tahsilat-list.co
     MeskenComponent,MeskenListComponent, MeskenKisiListComponent, MeskenDetayComponent,
     HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent,
     FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent,KisiDetayComponent, OdenmemisTahakkukListComponent, OdenmisTahakkukListComponent, TahsilatListComponent, 
+    KurulTipiComponent, KurulTipiListComponent
     ],
   imports: [
     CommonModule,

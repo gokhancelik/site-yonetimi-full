@@ -73,6 +73,11 @@ export class AdminComponent implements OnInit {
           link: '/admin/tanimlamalar/gelir-gider-tanimi/list',
           icon: 'receipt'
         },
+        {
+          title: 'Kurul Tipi',
+          link: '/admin/tanimlamalar/kurul-tipi/list',
+          icon: 'user'
+        },
       ]
     },
     {
