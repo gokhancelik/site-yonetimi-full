@@ -19,6 +19,7 @@ import { MeskenTipi } from '../mesken-tipi/mesken-tipi.entity';
 import { Personel } from 'src/personel/personel.entity';
 import { KurulTipi } from 'src/kurul-tipi/kurul-tipi.entity';
 import { KurulUye } from 'src/kurul-uye/kurul-uye.entity';
+import { KurulUyeTipi } from 'src/kurul-uye-tipi/kurul-uye-tipi.entity';
 
 @Module({
     imports: [
@@ -57,7 +58,8 @@ import { KurulUye } from 'src/kurul-uye/kurul-uye.entity';
                 MeskenTipi,
                 Personel,
                 KurulTipi,
-                KurulUye
+                KurulUye,
+                KurulUyeTipi
             ],
             synchronize: true,
         })

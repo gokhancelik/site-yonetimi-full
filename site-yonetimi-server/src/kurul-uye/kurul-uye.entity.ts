@@ -3,6 +3,7 @@ import { Column, Entity, OneToMany, ManyToOne } from "typeorm";
 import { Mesken } from "src/mesken/mesken.entity";
 import { Kisi } from "src/kisi/kisi.entity";
 import { KurulTipi } from "src/kurul-tipi/kurul-tipi.entity";
+import { KurulUyeTipi } from "src/kurul-uye-tipi/kurul-uye-tipi.entity";
 
 
 
@@ -34,4 +35,10 @@ export class KurulUye extends BaseEntity {
 
     @Column({ type: 'uuid', nullable: false })
     kisiId!: string; 
+
+    @ManyToOne(type => KurulUyeTipi, { nullable: false })
+    kurulUyeTipi!: KurulUyeTipi;
+
+    @Column({ type: 'uuid', nullable: false })
+    kurulUyeTipiId!: string; 
 }

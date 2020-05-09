@@ -31,6 +31,8 @@ import { KurulTipiComponent } from './kurul-tipi/kurul-tipi.component';
 import { KurulTipiListComponent } from './kurul-tipi/kurul-tipi-list/kurul-tipi-list.component';
 import { KurulUyeComponent } from './kurul-uye/kurul-uye.component';
 import { KurulUyeListComponent } from './kurul-uye/kurul-uye-list/kurul-uye-list.component';
+import { KurulUyeTipiComponent } from './kurul-uye-tipi/kurul-uye-tipi.component';
+import { KurulUyeTipiListComponent } from './kurul-uye-tipi/kurul-uye-tipi-list/kurul-uye-tipi-list.component';
 
 
 @NgModule({
@@ -38,7 +40,7 @@ import { KurulUyeListComponent } from './kurul-uye/kurul-uye-list/kurul-uye-list
     MeskenComponent,MeskenListComponent, MeskenKisiListComponent, MeskenDetayComponent,
     HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent,
     FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent,KisiDetayComponent, OdenmemisTahakkukListComponent, OdenmisTahakkukListComponent, TahsilatListComponent, 
-    KurulTipiComponent, KurulTipiListComponent, KurulUyeComponent, KurulUyeListComponent,PersonelComponent,PersonelListComponent
+    KurulTipiComponent, KurulTipiListComponent, KurulUyeComponent, KurulUyeListComponent,PersonelComponent,PersonelListComponent, KurulUyeTipiComponent, KurulUyeTipiListComponent
     ],
   imports: [
     CommonModule,
