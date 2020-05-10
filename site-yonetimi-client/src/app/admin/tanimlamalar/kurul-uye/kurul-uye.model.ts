@@ -3,12 +3,14 @@ import { of } from 'rxjs';
 import { MeskenService } from '../mesken/mesken.service';
 import { KisiService } from '../kisi/kisi.service';
 import { KurulTipiService } from '../kurul-tipi/kurul-tipi.service';
+import { KurulUyeTipiService } from '../kurul-uye-tipi/kurul-uye-tipi.service';
 
 export class KurulUye {
     id: string;
     baslamaTarihi: Date;
     bitisTarihi: Date;    
     meskenId: string;
+    kurulUyeTipiId: string;
     kisiId: string;
     aktifMi: boolean;
     kurulTipiId: string;
@@ -53,19 +55,24 @@ export class KurulUye {
             },
         },
         {
-            key: 'meskenId',
-            name: 'Mesken',
-            type: 'select',
-            validators: [{
-                type: 'required',
-                message: 'Bağımsız Bölüm  zorunludur',
-            }],
-            editorOptions: {
-                itemsAsync: injector.get(MeskenService).getList(),
-                displayExpr: 'ad',
-                valueExpr: 'id',
+          key: 'meskenId',
+          name: 'Mesken',
+          type: 'select',
+          validators: [{
+            type: 'required',
+            message: 'Mesken zorunludur',
+          }],
+          editorOptions: {
+            itemsAsync: injector.get(MeskenService).getList(),
+            displayExpr: 'kod',
+            valueExpr: 'id',
+            customParams: {
+              detailKey: 'meskenId',
+              routerLink: ['/admin', 'tanimlamalar', 'mesken', ':meskenId', 'detay']
             },
-            visible: true,
+          },
+          cellTemplate: 'detailLink',
+          visible: true,
         },
         {
             key: 'kisiId',
@@ -102,6 +109,21 @@ export class KurulUye {
             },
             visible: true,
         },
+        {
+            key: 'kurulUyeTipiId',
+            name: 'Kurul Üye Tipi',
+            type: 'select',
+            validators: [{
+                type: 'required',
+                message: 'Kurul Üye Tipi zorunludur',
+            }],
+            editorOptions: {
+                itemsAsync: injector.get(KurulUyeTipiService).getList(),
+                displayExpr: 'ad',
+                valueExpr: 'id'
+            },
+            visible: true,
+        }
         ];
     }
 }

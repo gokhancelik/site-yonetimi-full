@@ -1,4 +1,4 @@
-import { Tahsilat } from '../../../services/generated';
+import { Tahsilat } from './tahsilat.model';
 
 export interface TahsilatSanalPosLog {
     tahsilatId: string;

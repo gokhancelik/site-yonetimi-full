@@ -20,6 +20,11 @@
                     </app-mesken-kisi-list>
                 </ng-template>
             </ngb-tab>
+            <ngb-tab title="Kurul Üyeleri">
+                <ng-template ngbTabContent>
+                    <app-kurul-uye-list [meskenId]="id"></app-kurul-uye-list>
+                </ng-template>
+            </ngb-tab>
         </ngb-tabset>
     </nb-card-body>
 </nb-card>
