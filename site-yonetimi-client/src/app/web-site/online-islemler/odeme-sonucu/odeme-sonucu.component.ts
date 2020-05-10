@@ -21,7 +21,7 @@ export class OdemeSonucuComponent implements OnInit {
     this.onlineIslemlerService.getSanalPosLog(this.sonucId)
     .subscribe(d=>{
       this.sonuc = d;
-      this.mesaj = JSON.parse(this.sonuc.mesaj);
+      this.mesaj = JSON.parse(this.sonuc.mesaj) || this.sonuc.mesaj;
     })
   }
 

@@ -23,9 +23,9 @@ export class TahsilatKalem extends BaseEntity {
     })
     odemeTipi!: GelirGiderTanimi;
 
-    @Column({ type: 'uuid', nullable:true })
+    @Column({ type: 'uuid', nullable: true })
     tahakkukId: string;
 
-    @ManyToOne(type => Tahakkuk)
+    @ManyToOne(type => Tahakkuk, { eager: true })
     tahakkuk?: Tahakkuk;
 }

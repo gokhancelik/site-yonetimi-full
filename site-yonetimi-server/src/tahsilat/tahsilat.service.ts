@@ -10,6 +10,8 @@ import { GelirGiderTanimi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entit
 import { TahakkukService } from '../tahakkuk/tahakkuk.service';
 import { TahsilatSanalPosLog } from './tahsilat-sanal-pos-log.entity';
 import { TahsilatSanalPosLogRepository } from './tahsilat-sanal-pos-log.repository';
+import { HesapHareketiService } from '../hesap-hareketi/hesap-hareketi.service';
+import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
 
 @Injectable()
 export class TahsilatService extends BaseService<Tahsilat>{
@@ -18,6 +20,7 @@ export class TahsilatService extends BaseService<Tahsilat>{
     constructor(repository: TahsilatRepository,
         private readonly connection: Connection,
         private readonly tahakkukService: TahakkukService,
+        private readonly hesapHareketiService: HesapHareketiService,
         private readonly tahsilatSanalPosLogRepository: TahsilatSanalPosLogRepository,
         private gelirGiderTanimiService: GelirGiderTanimiService
     ) {
@@ -39,7 +42,7 @@ export class TahsilatService extends BaseService<Tahsilat>{
             // .andWhere('tahsilat.odemeYontemi <> 0')
             .getMany();
     }
-    async krediKartiTahsilatiOlustur(tahakkuklar: Tahakkuk[]): Promise<Tahsilat> {
+    async krediKartiTahsilatiOlustur(tahakkuklar: Tahakkuk[], komisyon: number): Promise<Tahsilat> {
         return await this.connection.transaction(async manager => {
             let tahsilat = new Tahsilat();
             tahsilat.aciklama = tahakkuklar.map(m => m.aciklama).join(', ') + ' Ödemesi';
@@ -57,14 +60,15 @@ export class TahsilatService extends BaseService<Tahsilat>{
                     var faizKalemi = await this.faizKalemiOlustur(tahakkuk);
                     tahsilat.tahsilatKalems.push(faizKalemi);
                 }
-                var bankaKomisyonu = await this.bankaKomisyonuKalemiOlustur(tahakkuk);
-                tahsilat.tahsilatKalems.push(bankaKomisyonu);
                 var tahakkukTahsilatKalemi = new TahsilatKalem();
                 tahakkukTahsilatKalemi.odemeTipiId = tahakkuk.odemeTipiId;
                 tahakkukTahsilatKalemi.tahakkukId = tahakkuk.id;
                 tahakkukTahsilatKalemi.tutar = tahakkuk.faizHaricOdenecekTutar;
                 tahsilat.tahsilatKalems.push(tahakkukTahsilatKalemi);
             }
+            var toplamTutar = tahsilat.tahsilatKalems.map(m => m.tutar).reduce((prev, current) => prev + current, 0);
+            var bankaKomisyonu = await this.bankaKomisyonuKalemiOlustur(toplamTutar, komisyon);
+            tahsilat.tahsilatKalems.push(bankaKomisyonu);
             tahsilat.tutar = tahsilat.tahsilatKalems.map(m => m.tutar).reduce((prev, current) => prev + current, 0);
             await manager.save(tahsilat);
             for (const thk of tahsilat.tahsilatKalems) {
@@ -74,7 +78,7 @@ export class TahsilatService extends BaseService<Tahsilat>{
             return tahsilat;
         });
     }
-    async onayla(tahsilatId: string, bankaSiparisNo: string = null): Promise<Tahsilat> {
+    async onayla(tahsilatId: string, hesapTanimiId: string, bankaSiparisNo: string = null): Promise<Tahsilat> {
         let tahsilat = await this.findById(tahsilatId);
         let tahakkukIds: Array<{ tahakkukId: string, tutar: number }> = [];
         for (const tahsilatKalem of tahsilat.tahsilatKalems) {
@@ -92,6 +96,8 @@ export class TahsilatService extends BaseService<Tahsilat>{
         }
         tahsilat.bankaSiparisNo = bankaSiparisNo;
         tahsilat.durumu = TahsilatDurumu.Onaylandi;
+        let hesapHareketi = new HesapHareketi(tahsilat.odemeTarihi, tahsilat.tutar, hesapTanimiId, tahsilat.id);
+        await this.hesapHareketiService.create(hesapHareketi)
         return tahsilat;
     }
     async sanalPosLogEkle(tahsilatId: string, log: string, durum: boolean): Promise<TahsilatSanalPosLog> {
@@ -102,11 +108,9 @@ export class TahsilatService extends BaseService<Tahsilat>{
         await this.tahsilatSanalPosLogRepository.insert(entity);
         return entity;
     }
-    private async bankaKomisyonuKalemiOlustur(tahakkuk: Tahakkuk) {
+    private async bankaKomisyonuKalemiOlustur(tutar, oran: number) {
         var tahsilatKalem = new TahsilatKalem();
-        tahsilatKalem.tahakkukId = tahakkuk.id;
-        tahsilatKalem.tutar = 0;
-        tahsilatKalem.tahakkuk = tahakkuk;
+        tahsilatKalem.tutar = tutar * oran;
         let gelirTanimi = await this.gelirGiderTanimiService.getByKod(GelirGiderTanimi.BankaKomisyonu);
         tahsilatKalem.odemeTipiId = gelirTanimi.id;
         tahsilatKalem.odemeTipi = gelirTanimi;

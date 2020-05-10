@@ -32,7 +32,6 @@ export class Kisi {
             visible: true,
             cellTemplate: 'detailLink',
             editorOptions: {
-              readOnly: true,
               customParams: {
                 detailKey: 'id',
                 routerLink: ['/admin', 'tanimlamalar', 'kisi', ':id', 'detay']
@@ -50,7 +49,6 @@ export class Kisi {
             visible: true,
             cellTemplate: 'detailLink',
             editorOptions: {
-              readOnly: true,
               customParams: {
                 detailKey: 'id',
                 routerLink: ['/admin', 'tanimlamalar', 'kisi', ':id', 'detay']
@@ -68,7 +66,6 @@ export class Kisi {
             visible: true,
             cellTemplate: 'detailLink',
             editorOptions: {
-              readOnly: true,
               customParams: {
                 detailKey: 'id',
                 routerLink: ['/admin', 'tanimlamalar', 'kisi', ':id', 'detay']
@@ -99,6 +96,12 @@ export class Kisi {
             type: 'string',
             visible: true,
           },
+          {
+            key: 'sifre',
+            name: 'Şifre',
+            type: 'string',
+            visible: true,
+          }
           ];
           
       }

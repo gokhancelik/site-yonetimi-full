@@ -9,6 +9,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { TahsilatKalemService } from '../tahsilat-kalem/tahsilat-kalem.service';
 import { TahsilatSanalPosLogService } from '../tahsilat/tahsilat-sanal-pos-log.service';
 import { TahsilatSanalPosLog } from '../tahsilat/tahsilat-sanal-pos-log.entity';
+import { SanalPosService } from '../sanal-pos/sanal-pos.service';
 
 @ApiTags('Online İşlemler')
 @Controller('online-islemler')
@@ -18,6 +19,7 @@ export class OnlineIslemlerController {
      */
     constructor(private service: TahakkukService,
         private tahsilatService: TahsilatService,
+        private sanalPosService: SanalPosService,
         private tahsilatKalemService: TahsilatKalemService,
         private readonly kuveytTurkSanalPosService: KuveytTurkSanalPosService,
         private tahsilatSanalPosLog: TahsilatSanalPosLogService) {
@@ -42,8 +44,9 @@ export class OnlineIslemlerController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('tahsilat-olustur')
-    tahsilatOlustur(@Body() seciliTahakkuklar: Tahakkuk[]): Promise<Tahsilat> {
-        return this.tahsilatService.krediKartiTahsilatiOlustur(seciliTahakkuklar);
+    async tahsilatOlustur(@Body() seciliTahakkuklar: Tahakkuk[]): Promise<Tahsilat> {
+        let sanaPos = await this.sanalPosService.getByKod('kuveyt-turk-sanal-pos');
+        return this.tahsilatService.krediKartiTahsilatiOlustur(seciliTahakkuklar, sanaPos.komisyon);
     }
     @Post('odeme-basarili')
     async odemeBasarili(@Body() model: any, @Res() res): Promise<any> {
@@ -51,8 +54,9 @@ export class OnlineIslemlerController {
         res.redirect('http://localhost:4200/online-islemler/odeme-sonucu?sonucId=' + provisionResult.id);
     }
     @Post('odeme-hatali')
-    async odemeHatali(@Body() model: any): Promise<any> {
-        return this.kuveytTurkSanalPosService.error(model);
+    async odemeHatali(@Body() model: any, @Res() res): Promise<any> {
+        let result = await this.kuveytTurkSanalPosService.error(model);
+        res.redirect('http://localhost:4200/online-islemler/odeme-sonucu?sonucId=' + result.id);
     }
 
     @UseGuards(AuthGuard('jwt'))
@@ -76,6 +80,7 @@ export class OnlineIslemlerController {
             }
             let tahakkuklar = await this.service.getOdenmemisAidatlar(tahsilat.meskenKisi.kisiId);
             for (const tk of tahsilat.tahsilatKalems) {
+
                 if (tahsilat.kullanilabilirMiktar === 0) {
                     break;
                 }
@@ -95,7 +100,7 @@ export class OnlineIslemlerController {
                     tahakkuk.odemeTarihi = tahsilat.odemeTarihi;
                     if (tahsilat.kullanilabilirMiktar > 0) {
                         let odenecekTutar = 0;
-                        if (tahakkuk.odenecekTutar > tahsilat.kullanilabilirMiktar) {
+                        if (Math.round(tahakkuk.odenecekTutar * 100) >= Math.round(tahsilat.kullanilabilirMiktar * 100)) {
                             odenecekTutar = tahsilat.kullanilabilirMiktar;
                         }
                         else {

@@ -8,6 +8,7 @@ import { SanalPosService } from './sanal-pos.service';
 @Module({
     imports: [TypeOrmModule.forFeature([SanalPos]), DatabaseModule],
     controllers: [SanalPosController],
-    providers: [SanalPosService]
+    providers: [SanalPosService],
+    exports: [SanalPosService]
 })
 export class SanalPosModule { }

@@ -10,12 +10,15 @@ import { TahakkukModule } from '../tahakkuk/tahakkuk.module';
 import { TahsilatSanalPosLog } from './tahsilat-sanal-pos-log.entity';
 import { TahsilatSanalPosLogRepository } from './tahsilat-sanal-pos-log.repository';
 import { TahsilatSanalPosLogService } from './tahsilat-sanal-pos-log.service';
+import { SanalPosModule } from '../sanal-pos/sanal-pos.module';
+import { HesapHareketiModule } from '../hesap-hareketi/hesap-hareketi.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Tahsilat, TahsilatSanalPosLog]),
     TahsilatSanalPosLogRepository,
     DatabaseModule,
     GelirGiderTanimiModule,
+    HesapHareketiModule,
     TahakkukModule,
     TahsilatKalemModule],
   providers: [TahsilatService, TahsilatSanalPosLogService],

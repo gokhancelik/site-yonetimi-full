@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild, Directive, ElementRef } from '@angular/core';
 import { OdemeService } from '../odeme.service';
 import { Tahakkuk } from '../models/tahakkuk.model';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { OnlineIslemlerService } from '../online-islemler.service';
 import { Tahsilat } from '../models/tahsilat.model';
 import { SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OdemeGatewayComponent } from '../odeme-gateway/odeme-gateway.component';
+import { TahsilatService } from '../../../admin/islemler/tahsilat/tahsilat-service';
 
 @Component({
   selector: 'app-odeme',
@@ -28,23 +29,31 @@ export class OdemeComponent implements OnInit {
   tutar: number;
   brandNames: { name: string; id: number; }[];
   sonucHtml: SafeHtml;
+  tahsilat: Tahsilat;
+  tahsilatId: any;
   get odenecekTutar() {
     return this.seciliTahakkuklar.map(t => t.odenecekTutar)
   }
   @ViewChild('iFrameRef', { static: true }) iFrameRef;
   constructor(private odemeService: OdemeService,
+    private tahsilatService: TahsilatService,
     private modalService: NgbModal,
     private onlineIslemlerService: OnlineIslemlerService,
     protected sanitizer: DomSanitizer,
+    private activatedRoute: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit() {
-    this.seciliTahakkuklar = this.odemeService.seciliTahakkuklar;
-    if (!this.seciliTahakkuklar || !this.seciliTahakkuklar.length) {
-      this.router.navigate(['/online-islemler']);
-      return;
-    }
-    this.tutar = this.seciliTahakkuklar.map(m => m.odenecekTutar).reduce((p, c) => p + c, 0)
+    this.tahsilatId = this.activatedRoute.snapshot.params['tahsilatId'];
+    this.tahsilatService.get<Tahsilat>(this.tahsilatId)
+      .subscribe(d => {
+        this.tahsilat = d;
+      })
+    // this.seciliTahakkuklar = this.odemeService.seciliTahakkuklar;
+    // if (!this.seciliTahakkuklar || !this.seciliTahakkuklar.length) {
+    //   this.router.navigate(['/online-islemler']);
+    //   return;
+    // }
     this.aylar = Array.from(Array(12).keys()).map(x => {
       const y = x + 1;
       const id = y > 9 ? y.toString() : `0${y}`;
@@ -66,43 +75,37 @@ export class OdemeComponent implements OnInit {
       { name: 'AmericanExpress', id: 300, },
       { name: 'Troy', id: 400, }
     ]
-    // this.onlineIslemlerService.tahsilatOlustur(this.seciliTahakkuklar)
-    //   .subscribe(d => {
-    //     console.log(d)
-    //     this.tahsilat = d;
-    //   });
+
   }
   odemeyiTamamla(e) {
-    this.onlineIslemlerService.tahsilatOlustur(this.seciliTahakkuklar)
+    this.onlineIslemlerService.odeme({ tutar: this.tahsilat.tutar, creditCard: this.model, tahsilatId: this.tahsilat.id })
       .subscribe(d => {
-        this.onlineIslemlerService.odeme({ tutar: this.tutar, creditCard: this.model, tahsilatId: d.id })
-          .subscribe(d => {
-            this.sonucUrl = this.transform(d.htmlResponse);
-            this.sonucHtml = this.transformHtml(d.htmlResponse);
-            // var myWindow = window.open("", "newWindow", "width=500,height=700");
-            document.write(d.htmlResponse);
-            let form = <HTMLFormElement>document.getElementsByTagName('form')[0];
-            form.submit();
-            // myWindow.focus();
-            // myWindow.opener = window;
-            // myWindow.onclose = (e) => {
-            //   (console.log(e))
-            // }
-            // myWindow.onunload = () => {
-            //   console.log(myWindow);
-            // }
-            // var popupTick = setInterval(function () {
-            //   if (myWindow.closed) {
-            //     clearInterval(popupTick);
-            //   }
-            // }, 500);
-            let odemeModal = this.modalService.open(OdemeGatewayComponent, { size: 'xl' });
-            odemeModal.componentInstance.data = this.sonucUrl;
-            odemeModal.result.then((res) => {
-              console.log(res)
-            });
-          });
-      })
+        this.sonucUrl = this.transform(d.htmlResponse);
+        this.sonucHtml = this.transformHtml(d.htmlResponse);
+        // var myWindow = window.open("", "newWindow", "width=500,height=700");
+        document.write(d.htmlResponse);
+        let form = <HTMLFormElement>document.getElementsByTagName('form')[0];
+        form.submit();
+        // myWindow.focus();
+        // myWindow.opener = window;
+        // myWindow.onclose = (e) => {
+        //   (console.log(e))
+        // }
+        // myWindow.onunload = () => {
+        //   console.log(myWindow);
+        // }
+        // var popupTick = setInterval(function () {
+        //   if (myWindow.closed) {
+        //     clearInterval(popupTick);
+        //   }
+        // }, 500);
+        let odemeModal = this.modalService.open(OdemeGatewayComponent, { size: 'xl' });
+        odemeModal.componentInstance.data = this.sonucUrl;
+        odemeModal.result.then((res) => {
+          console.log(res)
+        });
+      });
+
 
   }
   public transform(value: any) {

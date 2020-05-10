@@ -3,6 +3,7 @@ import { BankaTanim } from '../banka-tanim/banka-tanim.entity';
 import { BaseEntity } from '../abstract/base.entity';
 import { HesapTanimi } from '../hesap-tanimi/hesap-tanimi.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 export enum HesapTipi {
     Kasa = 100,
     Banka = 102
@@ -16,10 +17,17 @@ export class SanalPos extends BaseEntity {
     @Column({ length: 50 })
     kod: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, length: 'MAX' })
     ayarlar: string;
+    @Expose()
+    get ayarlarParsed() {
+        return JSON.parse(this.ayarlar);
+    }
 
-    @ManyToOne(type => BankaTanim, { nullable: true })
+    @Column({ type: 'decimal', nullable: true, scale: 5, precision: 5 })
+    komisyon: number;
+
+    @ManyToOne(type => HesapTanimi, { nullable: true })
     hesap?: HesapTanimi;
 
     @Column({ type: 'uuid', nullable: true })

@@ -2,23 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { BaseService } from '../abstract/base.service';
 import { Tahakkuk, AidatDurumu } from './tahakkuk.entity';
 import { TahakkukRepository } from './tahakkuk.repository';
-import { Tahsilat, TahsilatDurumu, OdemeYontemi } from '../tahsilat/tahsilat.entity';
-import { TahsilatKalem } from '../tahsilat-kalem/tahsilat-kalem.entity';
-import { GelirGiderTanimiService } from '../gelir-gider-tanimi/gelir-gider-tanimi.service';
-import { GelirGiderTanimi, HareketTipi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entity';
-import { TahsilatService } from '../tahsilat/tahsilat.service';
-import { TahsilatKalemService } from '../tahsilat-kalem/tahsilat-kalem.service';
-import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
-import { HesapHareketiService } from '../hesap-hareketi/hesap-hareketi.service';
-import { Connection, TransactionManager, EntityManager } from 'typeorm';
 
 @Injectable()
 export class TahakkukService extends BaseService<Tahakkuk> {
 
 
 
-    constructor(repository: TahakkukRepository,
-        private readonly connection: Connection) {
+    constructor(repository: TahakkukRepository) {
         super(repository);
     }
     async aidatTahakkuklariOlustur() {
@@ -28,7 +18,7 @@ export class TahakkukService extends BaseService<Tahakkuk> {
         //kaydet
 
     }
-    async borctanTahakkukOlustur(borcId) {
+    async borctanTahakkukOlustur() {
         //borcu cek
         //borcun blogunun bagimsiz bolumleri cek;
         //herbir meskene tutari paylastirarak tahakkuk olustur.
@@ -63,13 +53,13 @@ export class TahakkukService extends BaseService<Tahakkuk> {
 
     async odemeYap(tahakkukId, toplamTutar: number, tahsilatTarihi: Date = new Date()): Promise<Tahakkuk> {
         let tahakkuk = await this.findById(tahakkukId);
-        if (toplamTutar >= tahakkuk.odenecekTutar) {
+        if (Math.round(toplamTutar * 100) >= Math.round(tahakkuk.odenecekTutar * 100)) {
             tahakkuk.durumu = AidatDurumu.Odendi;
             tahakkuk.odemeTarihi = new Date();
         }
         tahakkuk.odenenTutar += toplamTutar;
         tahakkuk.sonTahsilatTarihi = tahsilatTarihi;
-        this.update(tahakkukId, tahakkuk);
+        await this.update(tahakkukId, tahakkuk);
         return tahakkuk;
     }
 }
