@@ -3,6 +3,7 @@ export class Kisi {
  
     id: string;
     ad: string;
+    tamAd: string;
     soyad: string;
     telefon: string;
     cepTelefon: string;

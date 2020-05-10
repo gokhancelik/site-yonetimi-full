@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HesapHareketiComponent } from './hesap-hareketi.component';
 import { HesapHareketiListComponent } from './hesap-hareketi-list/hesap-hareketi-list.component';
+import { HesapHareketiYukleComponent } from './hesap-hareketi-yukle/hesap-hareketi-yukle.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,10 @@ const routes: Routes = [
       {
         path: ':id/detay',
         component: null
+      },
+      {
+        path: 'hesap-hareketi-yukle',
+        component: HesapHareketiYukleComponent
       }
     ]
   }];

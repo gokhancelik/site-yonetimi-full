@@ -3,6 +3,8 @@ import { of } from 'rxjs';
 import { Injector } from '@angular/core';
 import { HesapTanimiService } from '../../tanimlamalar/hesap-tanimi/hesap-tanimi.service';
 import { HesapHareketleriService } from './hesap-hareketi.service';
+import { KisiService } from '../../tanimlamalar/kisi/kisi.service';
+import { BorcService } from '../borc/borc.service';
 export enum HareketTipi {
     Gelir = 1,
     Gider = 2,
@@ -73,6 +75,110 @@ export class HesapHareketi {
             },
             visible: true,
         },
+        ];
+    }
+}
+export class BankaHesapHareketi {
+    tarih: Date;
+    aciklama: string;
+    etiket: string;
+    tutar: number;
+    bakiye: number;
+    dekontNo: string;
+    kisiId: string;
+    borcId: string;
+    hesapId: string;
+    colDefs(injector: Injector) {
+        return [
+            {
+                key: 'tarih',
+                name: 'Tarih',
+                type: 'date',
+                format: 'dd.MM.yyyy',
+                validators: [{
+                    type: 'required',
+                    message: 'Tarih zorunludur',
+                }],
+                editorOptions: {
+                    type: 'date',
+                },
+            },
+            {
+                key: 'aciklama',
+                name: 'Açıklama',
+                type: 'textarea',
+                editorOptions: {
+                    itemsAsync: injector.get(HesapHareketleriService).getListWithInnerModel(),
+                    displayExpr: (item) => {
+                        if (item)
+                            return item.borc ? item.borc.aciklama : (item.tahsilat ? item.tahsilat.aciklama : "");
+                        else
+                            return "";
+                    },
+                    valueExpr: 'aciklama'
+                },
+                visible: true,
+            },
+            {
+                key: 'etiket',
+                name: 'Etiket',
+                type: 'string'
+            },
+            {
+                key: 'tutar',
+                name: 'Tutar',
+                type: 'number',
+                visible: true,
+                editorOptions: {
+                    displayExpr: 'tutar',
+                    placeholder: 'Para'
+                },
+            },
+            {
+                key: 'bakiye',
+                name: 'Bakiye',
+                type: 'number',
+                visible: true,
+                editorOptions: {
+                    displayExpr: 'tutar',
+                    placeholder: 'Para'
+                },
+            },
+            {
+                key: 'dekontNo',
+                name: 'Dekont No',
+                type: 'string'
+            },
+            {
+                key: 'hesapTanimiId',
+                name: 'Hesap',
+                type: 'select',
+                editorOptions: {
+                    itemsAsync: injector.get(HesapTanimiService).getList(),
+                    displayExpr: 'ad',
+                    valueExpr: 'id'
+                },
+            },
+            {
+                key: 'kisiId',
+                name: 'Kişi',
+                type: 'select',
+                editorOptions: {
+                    itemsAsync: injector.get(KisiService).getList(),
+                    displayExpr: 'tamAd',
+                    valueExpr: 'id'
+                },
+            },
+            {
+                key: 'borcId',
+                name: 'Borç',
+                type: 'select',
+                editorOptions: {
+                    itemsAsync: injector.get(BorcService).getList(),
+                    displayExpr: 'ad',
+                    valueExpr: 'id'
+                },
+            },
         ];
     }
 }

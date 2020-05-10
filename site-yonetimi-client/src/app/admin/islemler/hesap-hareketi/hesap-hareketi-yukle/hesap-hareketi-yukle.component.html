@@ -1,0 +1,27 @@
+<div class="row" *ngIf="!hesapHareketiFile">
+
+    <div class="col">
+        <div class="uploadfilecontainer" (click)="fileInput.click()" dragDrop (onFileDropped)="dosyaYuklendi($event)">
+            <input hidden type="file" #fileInput (change)="dosyaYuklendi($event.target.files)">
+            Dosyayı buraya sürükleyin veya tıklayın.
+        </div>
+
+    </div>
+</div>
+<div class="row" *ngIf="hesapHareketiFile">
+    <div class="col-3">
+        <div>
+            {{hesapHareketiFile.name}}
+            <button type="button" [disabled]="yukleniyor" class="btn btn-danger btn-sm" (click)="dosyaSil()"><i
+                    class="fa fa-trash" aria-hidden="true"></i></button>
+
+        </div>
+    </div>
+    <div class="col-9">
+        <!-- <ngb-progressbar [value]="topuYukleProgress" [striped]="true" [animated]="yukleniyor"></ngb-progressbar> -->
+    </div>
+</div>
+<data-table [dataSource]="dataSource" [title]="'Hesap Hareketleri'" [columns]="columns" [editMode]="'row'"
+    name="hesapHareketleri" (onRowUpdating)="onRowUpdating($event)" [allowAdding]="false" [allowDeleting]="false"
+    [allowUpdating]="true" >
+</data-table>
