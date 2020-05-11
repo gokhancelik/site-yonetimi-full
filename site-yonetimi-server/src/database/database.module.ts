@@ -21,6 +21,8 @@ import { Personel } from 'src/personel/personel.entity';
 import { KurulTipi } from 'src/kurul-tipi/kurul-tipi.entity';
 import { KurulUye } from 'src/kurul-uye/kurul-uye.entity';
 import { KurulUyeTipi } from 'src/kurul-uye-tipi/kurul-uye-tipi.entity';
+import { KisiCuzdan } from '../kisi-cuzdan/kisi-cuzdan.entity';
+import { KisiCuzdanGecmis } from '../kisi-cuzdan/kisi-cuzdan-gecmis';
 
 @Module({
     imports: [
@@ -61,7 +63,9 @@ import { KurulUyeTipi } from 'src/kurul-uye-tipi/kurul-uye-tipi.entity';
                 Personel,
                 KurulTipi,
                 KurulUye,
-                KurulUyeTipi
+                KurulUyeTipi,
+                KisiCuzdan,
+                KisiCuzdanGecmis
             ],
             synchronize: true,
         })
