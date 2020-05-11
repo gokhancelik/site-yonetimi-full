@@ -24,6 +24,7 @@ import { PersonelModule } from './personel/personel.module';
 import { KurulTipiModule } from './kurul-tipi/kurul-tipi.module';
 import { KurulUyeModule } from './kurul-uye/kurul-uye.module';
 import { KurulUyeTipiModule } from './kurul-uye-tipi/kurul-uye-tipi.module';
+import { OdemeIslemleriModule } from './odeme-islemleri/odeme-islemleri.module';
 @Module({
   imports: [DatabaseModule,
     BorcModule,
@@ -46,7 +47,8 @@ import { KurulUyeTipiModule } from './kurul-uye-tipi/kurul-uye-tipi.module';
     PersonelModule,
     KurulTipiModule,
     KurulUyeModule,
-    KurulUyeTipiModule
+    KurulUyeTipiModule,
+    OdemeIslemleriModule
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],

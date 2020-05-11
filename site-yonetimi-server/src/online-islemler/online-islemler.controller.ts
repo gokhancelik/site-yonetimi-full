@@ -1,4 +1,4 @@
-import { Controller, Get, Request, UseGuards, Post, Body, HttpService, HttpException, ClassSerializerInterceptor, UseInterceptors, Res, Param } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards, Post, Body, HttpService, HttpException, ClassSerializerInterceptor, UseInterceptors, Res, Param, ValidationPipe } from '@nestjs/common';
 import { Tahakkuk, AidatDurumu } from '../tahakkuk/tahakkuk.entity';
 import { TahakkukService } from '../tahakkuk/tahakkuk.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -10,6 +10,7 @@ import { TahsilatKalemService } from '../tahsilat-kalem/tahsilat-kalem.service';
 import { TahsilatSanalPosLogService } from '../tahsilat/tahsilat-sanal-pos-log.service';
 import { TahsilatSanalPosLog } from '../tahsilat/tahsilat-sanal-pos-log.entity';
 import { SanalPosService } from '../sanal-pos/sanal-pos.service';
+import { OdemeIslemleriService } from '../odeme-islemleri/odeme-islemleri.service';
 
 @ApiTags('Online İşlemler')
 @Controller('online-islemler')
@@ -20,6 +21,7 @@ export class OnlineIslemlerController {
     constructor(private service: TahakkukService,
         private tahsilatService: TahsilatService,
         private sanalPosService: SanalPosService,
+        private odemeIslemleriService: OdemeIslemleriService,
         private tahsilatKalemService: TahsilatKalemService,
         private readonly kuveytTurkSanalPosService: KuveytTurkSanalPosService,
         private tahsilatSanalPosLog: TahsilatSanalPosLogService) {
@@ -44,17 +46,18 @@ export class OnlineIslemlerController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('tahsilat-olustur')
-    async tahsilatOlustur(@Body() seciliTahakkuklar: Tahakkuk[]): Promise<Tahsilat> {
+    @UseInterceptors(ClassSerializerInterceptor)
+    async tahsilatOlustur(@Body(new ValidationPipe({transform: true})) seciliTahakkuklar: Tahakkuk[]): Promise<Tahsilat> {
         let sanaPos = await this.sanalPosService.getByKod('kuveyt-turk-sanal-pos');
-        return this.tahsilatService.krediKartiTahsilatiOlustur(seciliTahakkuklar, sanaPos.komisyon);
+        return this.odemeIslemleriService.krediKartiTahsilatiOlustur(seciliTahakkuklar, sanaPos.komisyon);
     }
     @Post('odeme-basarili')
-    async odemeBasarili(@Body() model: any, @Res() res): Promise<any> {
+    async odemeBasarili(@Body(new ValidationPipe({transform: true})) model: any, @Res() res): Promise<any> {
         let provisionResult = await this.kuveytTurkSanalPosService.provision(model);
         res.redirect('http://localhost:4200/online-islemler/odeme-sonucu?sonucId=' + provisionResult.id);
     }
     @Post('odeme-hatali')
-    async odemeHatali(@Body() model: any, @Res() res): Promise<any> {
+    async odemeHatali(@Body(new ValidationPipe({transform: true})) model: any, @Res() res): Promise<any> {
         let result = await this.kuveytTurkSanalPosService.error(model);
         res.redirect('http://localhost:4200/online-islemler/odeme-sonucu?sonucId=' + result.id);
     }
@@ -69,88 +72,8 @@ export class OnlineIslemlerController {
     // @UseGuards(AuthGuard('jwt'))
     @Post('odemeleri-dagit')
     async odemeleriDagit(): Promise<any> {
-        let tahsilatList = await this.tahsilatService.getDagitilacakTahsilatlar();
-        // let tahsilatList2 = tahsilatList.filter(p => p.meskenKisiId === '2EFFC39A-3882-EA11-80EE-887EF3F77D6E')
-        for (const tahsilat of tahsilatList) {
-            //tahsilat kalemlerini getir
-            //tahsilat kalemiyle ilişkili olabilecek tahakkuklari getir
-            // eskiden başlayarak öde 
-            if (!tahsilat.kullanilanTutar) {
-                tahsilat.kullanilanTutar = 0;
-            }
-            let tahakkuklar = await this.service.getOdenmemisAidatlar(tahsilat.meskenKisi.kisiId);
-            for (const tk of tahsilat.tahsilatKalems) {
-
-                if (tahsilat.kullanilabilirMiktar === 0) {
-                    break;
-                }
-                let odemeTipis = [];
-                if (tk.odemeTipi.kod === 'FZ') {
-                    odemeTipis.push('01', '02', '03');
-                } else {
-                    odemeTipis.push(tk.odemeTipi.kod);
-                }
-                let iliskiliOlabilecekTahakkuklar = tahakkuklar.filter(tah => odemeTipis.includes(tah.odemeTipi.kod));
-                for (const tahakkuk of iliskiliOlabilecekTahakkuklar) {
-                    if (tahakkuk.odenecekTutar <= 0) {
-                        tahakkuk.durumu = AidatDurumu.Odendi;
-                        await this.service.update(tahakkuk.id, tahakkuk);
-                        continue;
-                    }
-                    tahakkuk.odemeTarihi = tahsilat.odemeTarihi;
-                    if (tahsilat.kullanilabilirMiktar > 0) {
-                        let odenecekTutar = 0;
-                        if (Math.round(tahakkuk.odenecekTutar * 100) >= Math.round(tahsilat.kullanilabilirMiktar * 100)) {
-                            odenecekTutar = tahsilat.kullanilabilirMiktar;
-                        }
-                        else {
-                            odenecekTutar = tahakkuk.odenecekTutar;
-                        }
-                        if (tahsilat.odemeYontemi === OdemeYontemi.KrediKarti) {
-                            odenecekTutar = odenecekTutar * 1.0168;//TODO: sanal pos ayarından gelmesi lazım
-                        }
-                        tahakkuk.odenenFaiz += tahakkuk.hesaplananFaiz;
-                        tahakkuk.odenenTutar += odenecekTutar;
-                        tahakkuk.sonTahsilatTarihi = tahsilat.odemeTarihi;
-                        tahsilat.kullanilanTutar += odenecekTutar;
-                        tk.tahakkukId = tahakkuk.id;
-                        if (tahakkuk.odenecekTutar <= 0) {
-                            tahakkuk.durumu = AidatDurumu.Odendi;
-                        }
-                        await this.tahsilatService.update(tahsilat.id, tahsilat);
-                        await this.tahsilatKalemService.update(tk.id, tk);
-                        await this.service.update(tahakkuk.id, tahakkuk);
-                    } else {
-                        break;
-                    }
-                }
-            }
-            if (tahsilat.kullanilabilirMiktar === 0) {
-                tahsilat.durumu = TahsilatDurumu.Onaylandi;
-                await this.tahsilatService.update(tahsilat.id, tahsilat);
-            }
-            // for (let j = 0; j < tahakkuklar.length; j++) {
-            //     const tahakkuk = tahakkuklar[j];
-            //     if (!tahakkuk.tutar) {
-            //         tahakkuk.durumu = AidatDurumu.Odendi;
-            //         await this.service.update(tahakkuk.id, tahakkuk);
-            //         continue;
-            //     }
-            //     if (tahsilat.kullanilabilirMiktar > 0) {
-            //         if (tahsilat.kullanilabilirMiktar > tahakkuk.odenecekTutar) {
-            //             let karsilananMiktar = tahakkuk.odenecekTutar;
-            //             tahakkuk.odenenTutar += karsilananMiktar;
-            //             tahsilat.kullanilanTutar += karsilananMiktar;
-            //         }
-            //     } else {
-            //         tahakkuk.odenenTutar += tahsilat.kullanilabilirMiktar;
-            //         tahsilat.kullanilanTutar += tahsilat.kullanilabilirMiktar;
-            //     }
-            //     tahakkuk.sonTahsilatTarihi = tahsilat.odemeTarihi;
-            //     await this.tahsilatService.update(tahsilat.id, tahsilat);
-            //     await this.service.update(tahakkuk.id, tahakkuk);
-            // }
-        }
+        let sanaPos = await this.sanalPosService.getByKod('kuveyt-turk-sanal-pos');
+        this.odemeIslemleriService.odemeleriDagit(sanaPos.komisyon);
     }
     @Get(':logId/sanal-pos-log')
     getSanalPosLog(@Param('logId') logId: string): Promise<TahsilatSanalPosLog> {

@@ -10,6 +10,7 @@ import { SanalPosOdemeSonucuModel } from '../../sanal-pos-odeme-sonucu.model';
 import { TahsilatSanalPosLog } from '../../../tahsilat/tahsilat-sanal-pos-log.entity';
 import { SanalPosService } from '../../sanal-pos.service';
 import { SanalPos } from '../../sanal-pos.entity';
+import { OdemeIslemleriService } from '../../../odeme-islemleri/odeme-islemleri.service';
 
 @Injectable()
 export class KuveytTurkSanalPosService {
@@ -19,6 +20,7 @@ export class KuveytTurkSanalPosService {
     */
     constructor(private readonly httpService: HttpService,
         private readonly sanalPosService: SanalPosService,
+        private readonly odemeIslemleriService: OdemeIslemleriService,
         private tahsilatService: TahsilatService) {
     }
 
@@ -29,7 +31,7 @@ export class KuveytTurkSanalPosService {
         //     kod: enrollmentResult.responseCode,
         //     mesaj: enrollmentResult.responseMessage,
         // };
-        return await this.tahsilatService.sanalPosLogEkle(enrollmentResult.merchantOrderId, JSON.stringify(enrollmentResult), false);
+        return await this.odemeIslemleriService.sanalPosLogEkle(enrollmentResult.merchantOrderId, JSON.stringify(enrollmentResult), false);
     }
     private camelCase(str) {
         return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
@@ -83,17 +85,17 @@ export class KuveytTurkSanalPosService {
                     const paymentResult: VPosTransactionResponseContract = await xml2js.parseStringPromise(decodeURIComponent(d.data).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase] });
                     let sonuc = false;
                     if (paymentResult.responseCode === '00') {
-                        let tahsilat = await this.tahsilatService.onayla(paymentResult.merchantOrderId, paymentResult.orderId, this.sanalPosAyarlari.hesapId);
+                        let tahsilat = await this.odemeIslemleriService.tahsilatOnayla(paymentResult.merchantOrderId, paymentResult.orderId, this.sanalPosAyarlari.hesapId);
                         sonuc = true;
                     } else {
                         await this.tahsilatService.delete(paymentResult.orderId);
                         sonuc = false;
                     }
-                    return await this.tahsilatService.sanalPosLogEkle(paymentResult.merchantOrderId, JSON.stringify(paymentResult), sonuc);
+                    return await this.odemeIslemleriService.sanalPosLogEkle(paymentResult.merchantOrderId, JSON.stringify(paymentResult), sonuc);
                 })).toPromise();
             }
         } catch (e) {
-            return await this.tahsilatService.sanalPosLogEkle(enrollmentResult.merchantOrderId, JSON.stringify({ responseMessage: 'Banka Tarafında beklenmeyen bir hata oluştu. Ödeme kredi kartınızdan çekildiyse site yöneticisi ile irtibata geçiniz.', error: e }), false);
+            return await this.odemeIslemleriService.sanalPosLogEkle(enrollmentResult.merchantOrderId, JSON.stringify({ responseMessage: 'Banka Tarafında beklenmeyen bir hata oluştu. Ödeme kredi kartınızdan çekildiyse site yöneticisi ile irtibata geçiniz.', error: e }), false);
         }
     }
 

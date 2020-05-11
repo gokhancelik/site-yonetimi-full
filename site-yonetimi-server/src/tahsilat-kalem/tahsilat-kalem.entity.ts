@@ -26,6 +26,6 @@ export class TahsilatKalem extends BaseEntity {
     @Column({ type: 'uuid', nullable: true })
     tahakkukId: string;
 
-    @ManyToOne(type => Tahakkuk, { eager: true })
+    @ManyToOne(type => Tahakkuk)
     tahakkuk?: Tahakkuk;
 }

@@ -20,5 +20,6 @@ export class GelirGiderTanimi extends BaseEntity {
     hareketTipi!: HareketTipi;
 
     public static readonly Faiz = 'FZ';
+    public static readonly Emanet = 'Emanet';
     public static readonly BankaKomisyonu = '780.09';
 }

@@ -10,7 +10,6 @@ import { TahakkukModule } from '../tahakkuk/tahakkuk.module';
 import { TahsilatSanalPosLog } from './tahsilat-sanal-pos-log.entity';
 import { TahsilatSanalPosLogRepository } from './tahsilat-sanal-pos-log.repository';
 import { TahsilatSanalPosLogService } from './tahsilat-sanal-pos-log.service';
-import { SanalPosModule } from '../sanal-pos/sanal-pos.module';
 import { HesapHareketiModule } from '../hesap-hareketi/hesap-hareketi.module';
 
 @Module({
@@ -23,6 +22,6 @@ import { HesapHareketiModule } from '../hesap-hareketi/hesap-hareketi.module';
     TahsilatKalemModule],
   providers: [TahsilatService, TahsilatSanalPosLogService],
   controllers: [TahsilatController],
-  exports: [TahsilatService, TahsilatSanalPosLogService]
+  exports: [TahsilatService, TahsilatSanalPosLogService,TahsilatSanalPosLogRepository]
 })
 export class TahsilatModule { }

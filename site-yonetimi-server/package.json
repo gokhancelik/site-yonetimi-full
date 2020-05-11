@@ -31,6 +31,7 @@
     "@nestjs/typeorm": "^7.0.0",
     "@types/node-xlsx": "^0.15.0",
     "class-transformer": "^0.2.3",
+    "class-validator": "^0.12.2",
     "mssql": "^6.2.0",
     "node-xlsx": "^0.15.0",
     "passport": "^0.4.1",
@@ -41,6 +42,7 @@
     "rxjs": "^6.5.4",
     "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.24",
+    "typeorm-transactional-cls-hooked": "^0.1.12",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {

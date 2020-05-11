@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BaseService } from '../abstract/base.service';
 import { Tahakkuk, AidatDurumu } from './tahakkuk.entity';
 import { TahakkukRepository } from './tahakkuk.repository';
+import { EntityManager } from 'typeorm';
 
 @Injectable()
 export class TahakkukService extends BaseService<Tahakkuk> {
@@ -35,10 +36,7 @@ export class TahakkukService extends BaseService<Tahakkuk> {
             .andWhere('tahakkuk.durumu = 0 AND tahakkuk.vadeTarihi <= :tarih', { tarih: gelecekAy })
             .orderBy('tahakkuk.vadeTarihi')
             .getMany();
-        return (await aidatlar$).map(a => {
-            a.odemeTarihi = new Date();
-            return a;
-        });
+        return aidatlar$;
     }
     getOdenmisAidatlar(userId: any): Promise<Tahakkuk[]> {
         var aidatlar$ = this.repository.createQueryBuilder('tahakkuk')
@@ -50,16 +48,8 @@ export class TahakkukService extends BaseService<Tahakkuk> {
             .getMany();
         return aidatlar$;
     }
-
-    async odemeYap(tahakkukId, toplamTutar: number, tahsilatTarihi: Date = new Date()): Promise<Tahakkuk> {
-        let tahakkuk = await this.findById(tahakkukId);
-        if (Math.round(toplamTutar * 100) >= Math.round(tahakkuk.odenecekTutar * 100)) {
-            tahakkuk.durumu = AidatDurumu.Odendi;
-            tahakkuk.odemeTarihi = new Date();
-        }
-        tahakkuk.odenenTutar += toplamTutar;
-        tahakkuk.sonTahsilatTarihi = tahsilatTarihi;
-        await this.update(tahakkukId, tahakkuk);
-        return tahakkuk;
+    findByIds(selectedTahakkuks: string[]): Promise<Tahakkuk[]> {
+        return this.repository.findByIds(selectedTahakkuks);
     }
+
 }

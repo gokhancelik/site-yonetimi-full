@@ -6,6 +6,7 @@ import { DxDataGridComponent } from 'devextreme-angular';
 import { HesapTanimiService } from '../../../tanimlamalar/hesap-tanimi/hesap-tanimi.service';
 import { HesapTanimi } from '../../../tanimlamalar/hesap-tanimi/hesap-tanimi.model';
 import { BorcDurumu } from '../../borc/borc.model';
+import { TahsilatService } from '../../tahsilat/tahsilat-service';
 
 @Component({
   selector: 'app-tahakkuk-list',
@@ -20,6 +21,7 @@ export class TahakkukListComponent extends BaseListComponent<TahakkukModel> impl
   selectedTahakkuks: TahakkukModel[];
   constructor(service: TahakkukService,
     hesapTanimiService: HesapTanimiService,
+    private tahsilatService: TahsilatService,
     injector: Injector) {
     super(service, injector, TahakkukModel);
     hesapTanimiService.getList<HesapTanimi>()
@@ -48,7 +50,7 @@ export class TahakkukListComponent extends BaseListComponent<TahakkukModel> impl
   }
   ode(e) {
     if (this.selectedTahakkuks && this.selectedTahakkuks.length) {
-      (this.service as TahakkukService).ode(this.selectedTahakkuks.map(d => d.id), this.hesapHareketi)
+      (this.tahsilatService).ode(this.selectedTahakkuks.map(d => d.id), this.hesapHareketi)
         .subscribe(d => {
           this.popupVisible = false;
           this.grid.instance.refresh();

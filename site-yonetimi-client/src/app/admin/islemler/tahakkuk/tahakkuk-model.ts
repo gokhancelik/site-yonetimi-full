@@ -15,6 +15,7 @@ export class TahakkukModel {
     aciklama: string;
     tutar: number;
     odenenTutar?: number;
+    odenecekTutar?: number;
     sonTahsilatTarihi?: Date;
     faizOrani: number;
     odemeTipiId: string;

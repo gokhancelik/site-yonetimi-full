@@ -11,7 +11,5 @@ export class TahakkukService extends BaseCrudService {
   constructor(http: HttpClient) {
     super(http, 'tahakkuk');
   }
-  ode(selectedTahakkuks: string[], hesapHareketi: { tutar?: number; odemeTarihi?: Date; hesapId?: string; }) {
-    return this.http.put<TahakkukModel[]>(`${this.baseUrl}${this.path}/ode`, { selectedTahakkuks, hesapHareketi });
-  }
+ 
 }

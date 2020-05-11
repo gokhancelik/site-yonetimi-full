@@ -8,7 +8,7 @@
         <div>
             <ul>
                 <li *ngFor="let tahakkuk of selectedTahakkuks">
-                    {{tahakkuk.aciklama}} - {{tahakkuk.tutar|currency}}
+                    {{tahakkuk.aciklama}} - {{tahakkuk.odenecekTutar|currency:'TRY'}}
                 </li>
             </ul>
         </div>
@@ -28,12 +28,12 @@
             <div class="dx-field">
                 <div class="dx-field-label">Tutar</div>
                 <div class="dx-field-value">
-                    <dx-text-box name="tutar" required [(ngModel)]="hesapHareketi.tutar" type="number">
+                    <dx-number-box name="tutar" required [(ngModel)]="hesapHareketi.tutar">
                         <dx-validator>
                             <dxi-validation-rule type="required" message="Ödeme yapılacak tutar zorunludur.">
                             </dxi-validation-rule>
                         </dx-validator>
-                    </dx-text-box>
+                    </dx-number-box>
                 </div>
             </div>
 

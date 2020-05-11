@@ -8,7 +8,7 @@ import { DataTableModule } from 'src/app/data-table/data-table.module';
 import { DetayGorunumuModule } from '../../../detay-gorunumu/detay-gorunumu.module';
 import { NbCardModule } from '@nebular/theme';
 import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
-import { DxPopupModule, DxDateBoxModule, DxSelectBoxModule, DxButtonModule, DxValidatorModule, DxTextBoxModule } from 'devextreme-angular';
+import { DxPopupModule, DxDateBoxModule, DxSelectBoxModule, DxButtonModule, DxValidatorModule, DxTextBoxModule, DxNumberBoxModule } from 'devextreme-angular';
 import { FormsModule } from '@angular/forms';
 
 
@@ -25,6 +25,7 @@ import { FormsModule } from '@angular/forms';
     DxDateBoxModule,
     DxSelectBoxModule,
     DxButtonModule,
+    DxNumberBoxModule,
     DxValidatorModule,
     DxTextBoxModule,
     FormsModule,
