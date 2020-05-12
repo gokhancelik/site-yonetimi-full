@@ -22,7 +22,6 @@ import { KurulTipi } from 'src/kurul-tipi/kurul-tipi.entity';
 import { KurulUye } from 'src/kurul-uye/kurul-uye.entity';
 import { KurulUyeTipi } from 'src/kurul-uye-tipi/kurul-uye-tipi.entity';
 import { KisiCuzdan } from '../kisi-cuzdan/kisi-cuzdan.entity';
-import { KisiCuzdanGecmis } from '../kisi-cuzdan/kisi-cuzdan-gecmis';
 
 @Module({
     imports: [
@@ -64,8 +63,7 @@ import { KisiCuzdanGecmis } from '../kisi-cuzdan/kisi-cuzdan-gecmis';
                 KurulTipi,
                 KurulUye,
                 KurulUyeTipi,
-                KisiCuzdan,
-                KisiCuzdanGecmis
+                KisiCuzdan
             ],
             synchronize: true,
         })

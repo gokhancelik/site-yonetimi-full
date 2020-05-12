@@ -7,9 +7,10 @@ import { DatabaseModule } from '../database/database.module';
 import { MeskenKisiModule } from '../mesken-kisi/mesken-kisi.module';
 import { TahsilatModule } from '../tahsilat/tahsilat.module';
 import { TahakkukModule } from '../tahakkuk/tahakkuk.module';
+import { KisiCuzdanModule } from '../kisi-cuzdan/kisi-cuzdan.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Kisi]), DatabaseModule, MeskenKisiModule, TahsilatModule, TahakkukModule],
+  imports: [TypeOrmModule.forFeature([Kisi]), DatabaseModule, MeskenKisiModule, TahsilatModule, TahakkukModule, KisiCuzdanModule],
   controllers: [KisiController],
   providers: [KisiService],
   exports: [KisiService]

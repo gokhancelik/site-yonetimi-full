@@ -16,7 +16,4 @@ export class TahsilatService extends BaseCrudService {
   getTahsilatKalems(id: string): Observable<TahsilatKalemModel[]> {
     return this.http.get<TahsilatKalemModel[]>(`${this.baseUrl}${this.path}/${id}/tahsilatKalems`);
   }
-  ode(selectedTahakkuks: string[], hesapHareketi: { tutar?: number; odemeTarihi?: Date; hesapId?: string; }): Observable<TahsilatModel> {
-    return this.http.put<TahsilatModel>(`${this.baseUrl}odeme-islemleri/tahakkuk-ode`, { selectedTahakkuks, hesapHareketi });
-  }
 }

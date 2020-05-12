@@ -10,6 +10,8 @@ import { TahakkukService } from '../tahakkuk/tahakkuk.service';
 import { Tahsilat } from '../tahsilat/tahsilat.entity';
 import { TahsilatService } from '../tahsilat/tahsilat.service';
 import { AuthGuard } from '@nestjs/passport';
+import { KisiCuzdan } from '../kisi-cuzdan/kisi-cuzdan.entity';
+import { KisiCuzdanService } from '../kisi-cuzdan/kisi-cuzdan.service';
 
 @ApiTags('Kişi')
 @Controller('kisi')
@@ -17,6 +19,7 @@ export class KisiController extends BaseController<Kisi, KisiService> {
     constructor(service: KisiService,
         private tahakkukService: TahakkukService,
         private tahsilatService: TahsilatService,
+        private kisiCuzdanService: KisiCuzdanService,
         private meskenKisiService: MeskenKisiService) {
         super(service);
     }
@@ -46,5 +49,9 @@ export class KisiController extends BaseController<Kisi, KisiService> {
     @Get('current-user')
     getCurrentUser(@Request() request): Promise<Kisi> {
         return this.service.findById(request.user.userId);
+    }
+    @Get(':id/cuzdan')
+    getKisiCuzdan(@Param('id') id: string): Promise<KisiCuzdan> {
+        return this.kisiCuzdanService.getCuzdan(id);
     }
 }

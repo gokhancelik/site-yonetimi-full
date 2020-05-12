@@ -7,6 +7,7 @@ import { HesapHareketiModule } from '../hesap-hareketi/hesap-hareketi.module';
 import { GelirGiderTanimiModule } from '../gelir-gider-tanimi/gelir-gider-tanimi.module';
 import { OdemeIslemleriController } from './odeme-islemleri.controller';
 import { KisiCuzdanModule } from '../kisi-cuzdan/kisi-cuzdan.module';
+import { MeskenKisiModule } from '../mesken-kisi/mesken-kisi.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { KisiCuzdanModule } from '../kisi-cuzdan/kisi-cuzdan.module';
     TahsilatKalemModule,
     HesapHareketiModule,
     GelirGiderTanimiModule,
-    KisiCuzdanModule
+    KisiCuzdanModule,
+    MeskenKisiModule
   ],
   providers: [OdemeIslemleriService],
   controllers: [OdemeIslemleriController],

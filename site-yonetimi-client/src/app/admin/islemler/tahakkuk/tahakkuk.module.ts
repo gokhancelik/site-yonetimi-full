@@ -10,10 +10,11 @@ import { NbCardModule } from '@nebular/theme';
 import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
 import { DxPopupModule, DxDateBoxModule, DxSelectBoxModule, DxButtonModule, DxValidatorModule, DxTextBoxModule, DxNumberBoxModule } from 'devextreme-angular';
 import { FormsModule } from '@angular/forms';
+import { TahakkukOdeComponent } from './tahakkuk-ode/tahakkuk-ode.component';
 
 
 @NgModule({
-  declarations: [TahakkukComponent, TahakkukListComponent],
+  declarations: [TahakkukComponent, TahakkukListComponent, TahakkukOdeComponent],
   imports: [
     CommonModule,
     TahakkukRoutingModule, 

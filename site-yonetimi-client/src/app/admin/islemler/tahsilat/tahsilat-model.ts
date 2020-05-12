@@ -1,6 +1,7 @@
 import { of } from 'rxjs';
 import { Injector } from '@angular/core';
 import { MeskenKisiService } from '../../tanimlamalar/mesken-kisi/mesken-kisi.service';
+import { TahsilatKalemModel } from './tahsilat-kalem-model';
 
 export enum OdemeYontemi {
     HavaleEFT = 0,
@@ -24,6 +25,7 @@ export class TahsilatModel {
     durumu: TahsilatDurumu;
     odemeYontemi: OdemeYontemi;
     bankaSiparisNo: string;
+    tahsilatKalems: TahsilatKalemModel[];
     colDefs(injector: Injector) {
         return [{
             key: 'id',

@@ -85,7 +85,7 @@ export class KuveytTurkSanalPosService {
                     const paymentResult: VPosTransactionResponseContract = await xml2js.parseStringPromise(decodeURIComponent(d.data).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase] });
                     let sonuc = false;
                     if (paymentResult.responseCode === '00') {
-                        let tahsilat = await this.odemeIslemleriService.tahsilatOnayla(paymentResult.merchantOrderId, paymentResult.orderId, this.sanalPosAyarlari.hesapId);
+                        // let tahsilat = await this.odemeIslemleriService.tahsilatOnayla(paymentResult.merchantOrderId, paymentResult.orderId, this.sanalPosAyarlari.hesapId);
                         sonuc = true;
                     } else {
                         await this.tahsilatService.delete(paymentResult.orderId);

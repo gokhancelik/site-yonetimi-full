@@ -7,6 +7,9 @@ import { HesapTanimiService } from '../../../tanimlamalar/hesap-tanimi/hesap-tan
 import { HesapTanimi } from '../../../tanimlamalar/hesap-tanimi/hesap-tanimi.model';
 import { BorcDurumu } from '../../borc/borc.model';
 import { TahsilatService } from '../../tahsilat/tahsilat-service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalWindow } from '@ng-bootstrap/ng-bootstrap/modal/modal-window';
+import { TahakkukOdeComponent } from '../tahakkuk-ode/tahakkuk-ode.component';
 
 @Component({
   selector: 'app-tahakkuk-list',
@@ -16,12 +19,10 @@ import { TahsilatService } from '../../tahsilat/tahsilat-service';
 export class TahakkukListComponent extends BaseListComponent<TahakkukModel> implements OnInit {
   grid: DxDataGridComponent;
   popupVisible: boolean;
-  hesapHareketi: { tutar?: number, odemeTarihi?: Date, hesapId?: string } = {};
   hesapTanimlari: HesapTanimi[];
-  selectedTahakkuks: TahakkukModel[];
   constructor(service: TahakkukService,
     hesapTanimiService: HesapTanimiService,
-    private tahsilatService: TahsilatService,
+    private modal: NgbModal,
     injector: Injector) {
     super(service, injector, TahakkukModel);
     hesapTanimiService.getList<HesapTanimi>()
@@ -43,20 +44,13 @@ export class TahakkukListComponent extends BaseListComponent<TahakkukModel> impl
   }
   openOdeModal(e) {
     this.popupVisible = true;
-    this.selectedTahakkuks = this.grid.instance.getSelectedRowsData().filter(d => d.durumu === AidatDurumu.Odenmedi);
+    let modalRef = this.modal.open(TahakkukOdeComponent, { size: 'xl' });
+    modalRef.componentInstance.selectedTahakkuks = this.grid.instance.getSelectedRowsData().filter(d => d.durumu === AidatDurumu.Odenmedi);
+
   }
   gridReady(e: DxDataGridComponent) {
     this.grid = e;
   }
-  ode(e) {
-    if (this.selectedTahakkuks && this.selectedTahakkuks.length) {
-      (this.tahsilatService).ode(this.selectedTahakkuks.map(d => d.id), this.hesapHareketi)
-        .subscribe(d => {
-          this.popupVisible = false;
-          this.grid.instance.refresh();
-        })
-    }
 
-  }
 }
 

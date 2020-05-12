@@ -2,6 +2,8 @@ import { Injector } from '@angular/core';
 import { TahsilatService } from './tahsilat-service';
 import { GelirGiderTanimService } from '../../tanimlamalar/gelir-gider-tanim/gelir-gider-tanim.service';
 import { TahakkukService } from '../tahakkuk/tahakkuk-service';
+import { TahakkukModel } from '../tahakkuk/tahakkuk-model';
+import { GelirGiderTanimi } from '../../tanimlamalar/gelir-gider-tanim/gelir-gider-tanim.model';
 
 export class TahsilatKalemModel {
     id: string;
@@ -9,6 +11,8 @@ export class TahsilatKalemModel {
     tahsilatId: string;;
     odemeTipiId: string;
     tahakkukId: string;
+    tahakkuk: TahakkukModel;
+    odemeTipi: GelirGiderTanimi;
     colDefs(injector: Injector) {
         return [{
             key: 'id',

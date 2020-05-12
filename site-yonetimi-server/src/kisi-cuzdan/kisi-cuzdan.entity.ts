@@ -7,11 +7,13 @@ import { MeskenKisi } from "../mesken-kisi/mesken-kisi.entity";
 export class KisiCuzdan extends BaseEntity {
     @Column({ type: 'money' })
     tutar: number;
-    
-    @Column({ type: 'uuid' })
-    meskenKisiId: string;
 
-    @ManyToOne(type => MeskenKisi, { eager: true })
-    @JoinTable()
-    meskenKisi!: MeskenKisi;
+    @Column({ type: 'uuid', nullable: true })
+    tahsilatId?: string;
+
+    @ManyToOne(() => Tahsilat)
+    tahsilat?: Tahsilat;
+
+    @Column({ type: 'bit', nullable: false, default:false })
+    aktifMi: boolean;
 }
