@@ -25,6 +25,11 @@
                     <app-kurul-uye-list [meskenId]="id"></app-kurul-uye-list>
                 </ng-template>
             </ngb-tab>
+            <ngb-tab title="Alt Meskenler">
+                <ng-template ngbTabContent>
+                    <app-mesken-list [ustId]="id"></app-mesken-list>
+                </ng-template>
+            </ngb-tab>
         </ngb-tabset>
     </nb-card-body>
 </nb-card>

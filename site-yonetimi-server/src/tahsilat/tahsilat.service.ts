@@ -37,10 +37,4 @@ export class TahsilatService extends BaseService<Tahsilat>{
             // .andWhere('tahsilat.odemeYontemi <> 0')
             .getMany();
     }
-
-    
-
-
-    
-
 }

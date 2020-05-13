@@ -1,4 +1,4 @@
-<data-table [dataSource]="dataSource" (dxGridReady)="gridReady($event)" [title]="meskenTipi?.ad +' Listesi'"
+<data-table [dataSource]="dataSource" (dxGridReady)="gridReady($event)" [title]="meskenTipi?.ad || '' + ' Listesi'"
     [columns]="columns" [editMode]="'row'" [name]="meskenTipi?.kod" (onRowUpdating)="onRowUpdating($event)"
     [allowUpdating]="!isDetay" [allowAdding]="!isDetay" [allowDeleting]="!isDetay" (onInitNewRow)="onInitNewRow($event)"
     (onToolbarPreparing)="onToolbarPreparing($event)">
