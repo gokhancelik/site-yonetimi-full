@@ -42,9 +42,11 @@ export class TahakkukOdeComponent implements OnInit {
   }
   ode(e) {
     // if (this.selectedTahakkuks && this.selectedTahakkuks.length) {
-    //   (this.odemeIslemleriService).tahakkukOde(this.selectedTahakkuks.map(d => d.id), this.hesapHareketi)
-    //     .subscribe(d => {
-    //     })
+    this.tahsilatSonucu.hesapId = this.tahsilatOlusturDto.hesapId;
+    (this.odemeIslemleriService).tahakkukOde(this.tahsilatSonucu)
+      .subscribe(d => {
+        this.activeModal.close();
+      })
     // }
   }
 }

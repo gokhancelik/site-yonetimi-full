@@ -251,7 +251,7 @@ export class OdemeIslemleriService {
     }
     async faizHesapla(tahakkuk: Tahakkuk, odemeTarihi): Promise<number> {
         let tahsilatKalemler = await this.tahsilatKalemService.getByTahakkukId(tahakkuk.id);
-        let sonTahsilatTarihi = tahsilatKalemler && tahsilatKalemler.length ? tahsilatKalemler.map(m => m.tahsilat.odemeTarihi).sort((a, b) => a.getTime() - b.getTime())[0] : null;
+        let sonTahsilatTarihi = tahsilatKalemler && tahsilatKalemler.length ? tahsilatKalemler.map(m => m.tahsilat.odemeTarihi).sort((a, b) => b.getTime() - a.getTime())[0] : null;
         var faiz = 0;
         if (tahakkuk.durumu == AidatDurumu.Icrada)
             return faiz;
@@ -428,7 +428,25 @@ export class OdemeIslemleriService {
         }
         return tahsilat;
     }
+    async tahsilatKaydet(dto: TahsilatOlusturSonucuDto): Promise<Tahsilat[]> {
+        for (const tahsilat of dto.tahsilatlar) {
+            if (!tahsilat.id) {
+                tahsilat.durumu = TahsilatDurumu.Onaylandi;
+                await this.tahsilatService.create(tahsilat);
+                let hesapHareketi = new HesapHareketi(tahsilat.odemeTarihi, tahsilat.tutar, dto.hesapId, tahsilat.id);
+                await this.hesapHareketiService.create(hesapHareketi);
 
+            } else {
+                await this.tahsilatService.update(tahsilat.id, tahsilat);
+                await this.kisiCuzdanService.create(dto.cuzdan, tahsilat.meskenKisi.kisiId);
+            }
+            for (const tk of tahsilat.tahsilatKalems) {
+                tk.tahsilatId = tahsilat.id;
+                await this.tahsilatKalemService.create(tk);
+            }
+        }
+        return dto.tahsilatlar;
+    }
     async krediKartiTahsilatiOlustur(tahakkuklarDto: Tahakkuk[], komisyon: number): Promise<Tahsilat> {
         let tahakkuklar = await this.tahakkukService.findByIds(tahakkuklarDto.map(p => p.id))
         return await this.connection.transaction(async manager => {

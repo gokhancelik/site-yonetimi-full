@@ -12,8 +12,8 @@ import { Tahsilat } from '../../../web-site/online-islemler/models/tahsilat.mode
 export class OdemeIslemleriService {
   baseUrl: string = environment.apiUrl
   constructor(private http: HttpClient) { }
-  tahakkukOde(selectedTahakkuks: string[], hesapHareketi: { tutar?: number; odemeTarihi?: Date; hesapId?: string; }): Observable<TahsilatModel> {
-    return this.http.put<TahsilatModel>(`${this.baseUrl}odeme-islemleri/tahakkuk-ode`, { selectedTahakkuks, hesapHareketi });
+  tahakkukOde(dto: TahsilatOlusturSonucuDto): Observable<TahsilatModel> {
+    return this.http.put<TahsilatModel>(`${this.baseUrl}odeme-islemleri/tahakkuk-ode`, dto);
   }
   tahsilatOlustur(dto: TahsilatOlusturDto): Observable<TahsilatOlusturSonucuDto> {
     return this.http.post<TahsilatOlusturSonucuDto>(`${this.baseUrl}odeme-islemleri/tahsilat-olustur`, dto);
@@ -36,4 +36,5 @@ export class TahsilatOlusturDto {
 export class TahsilatOlusturSonucuDto {
   tahsilatlar: Tahsilat[];
   cuzdan: KisiCuzdan;
+  hesapId: string;
 }

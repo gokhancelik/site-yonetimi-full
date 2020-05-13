@@ -10,8 +10,8 @@ export class OdemeIslemleriController {
     constructor(private odemeIslemleriService: OdemeIslemleriService) {
     }
     @Put('tahakkuk-ode')
-    tahakkukOde(@Body(new ValidationPipe({ transform: true })) params: { selectedTahakkuks: string[], hesapHareketi: { tutar: number, odemeTarihi: Date, hesapId: string } }): Promise<Tahsilat> {
-        return null;
+    tahakkukOde(@Body(new ValidationPipe({ transform: true })) dto: TahsilatOlusturSonucuDto): Promise<Tahsilat[]> {
+        return this.odemeIslemleriService.tahsilatKaydet(dto);
         // return this.odemeIslemleriService.tahakkukOdeById(params.selectedTahakkuks, params.hesapHareketi.tutar, params.hesapHareketi.odemeTarihi,
         //     OdemeYontemi.HavaleEFT, params.hesapHareketi.hesapId);
     }

@@ -15,10 +15,11 @@ import { TahsilatKalemService } from '../tahsilat-kalem/tahsilat-kalem.service';
 export class TahsilatService extends BaseService<Tahsilat>{
 
 
+
     constructor(repository: TahsilatRepository,
         private readonly tahakkukService: TahakkukService,
         private readonly tahsilatKalemService: TahsilatKalemService,
-        private readonly tahsilatSanalPosLogRepository: TahsilatSanalPosLogRepository    ) {
+        private readonly tahsilatSanalPosLogRepository: TahsilatSanalPosLogRepository) {
         super(repository);
     }
     getTahsilatlarByUserId(userId: any): Promise<Tahsilat[]> {
@@ -36,5 +37,8 @@ export class TahsilatService extends BaseService<Tahsilat>{
             .orderBy('tahsilat.odemeTarihi')
             // .andWhere('tahsilat.odemeYontemi <> 0')
             .getMany();
+    }
+    getByTahakkukId(tahakkukId: string): Promise<Tahsilat[]> {
+        throw new Error("Method not implemented.");
     }
 }
