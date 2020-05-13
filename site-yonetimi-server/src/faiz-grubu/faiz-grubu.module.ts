@@ -9,6 +9,7 @@ import { DatabaseModule } from '../database/database.module';
 @Module({
   imports: [TypeOrmModule.forFeature([FaizGrubu, FaizGrubuRepository]), DatabaseModule],
   controllers: [FaizGrubuController],
-  providers: [FaizGrubuService]
+  providers: [FaizGrubuService],
+  exports: [FaizGrubuService]
 })
 export class FaizGrubuModule {}

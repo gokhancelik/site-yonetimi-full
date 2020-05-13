@@ -22,4 +22,11 @@ export class MeskenService extends BaseService<Mesken> {
         }
         return result;
     }
+    async findByUstMeskenId(meskenId: string): Promise<Mesken[]>{
+        return this.repository.createQueryBuilder('m')
+            .leftJoinAndSelect('m.meskenKisis', 'mk')
+            .leftJoinAndSelect('mk.kisi', 'k')
+            .where('m.ustId = :meskenId and mk.bitisTarihi is null' , { meskenId: meskenId })
+            .getMany();
+    }
 }

@@ -37,4 +37,7 @@ export class Borc extends BaseEntity {
 
     @ManyToOne(type => GelirGiderTanimi)
     islemTipi!: GelirGiderTanimi;
+    
+    @Column({  default: false })
+    tahakkukOlusturulduMu: boolean;
 }

@@ -18,6 +18,7 @@ export class Borc {
     odenenTutar?: number;
     durumu: BorcDurumu;
     islemTipiId: string;
+    tahakkukOlusturulduMu: boolean;
 
     colDefs(injector: Injector) {
         return [{
@@ -120,6 +121,17 @@ export class Borc {
                 valueExpr: 'id'
             },
             visible: true,
-        }];
+        },
+        {
+            key: 'tahakkukOlusturulduMu',
+            name: 'Tahakkuk Durumu',
+            type: 'select',
+            editorOptions: {
+                itemsAsync: of([{ id: true, name: 'Evet' }, { id: false, name: 'Hayır' }]),
+                displayExpr: 'name',
+                valueExpr: 'id'
+            }
+        },   
+    ];
     }
 };

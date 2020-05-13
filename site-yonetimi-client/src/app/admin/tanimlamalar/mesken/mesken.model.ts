@@ -56,23 +56,23 @@ export class Mesken extends BaseModel {
             type: 'textarea',
             visible: true,
         },
-        // {
-        //     key: 'ustId',
-        //     name: 'Üst',
-        //     type: 'select',
-        //     validators: [],
-        //     editorOptions: {
-        //         itemsAsync: injector.get(MeskenService).getList(),
-        //         displayExpr: 'ad',
-        //         valueExpr: 'id',
-        //         customParams: {
-        //             detailKey: 'ustId',
-        //             routerLink: ['/admin', 'tanimlamalar', 'mesken', ':ustId', 'detay']
-        //         },
-        //     },
-        //     cellTemplate: 'detailLink',
-        //     visible: true,
-        // }
+        {
+            key: 'ustId',
+            name: 'Üst',
+            type: 'select',
+            validators: [],
+            editorOptions: {
+                itemsAsync: injector.get(MeskenService).getList(),
+                displayExpr: 'ad',
+                valueExpr: 'id',
+                customParams: {
+                    detailKey: 'ustId',
+                    routerLink: ['/admin', 'tanimlamalar', 'mesken', ':ustId', 'detay']
+                },
+            },
+            cellTemplate: 'detailLink',
+            visible: true,
+        }
     ];
     }
 }
