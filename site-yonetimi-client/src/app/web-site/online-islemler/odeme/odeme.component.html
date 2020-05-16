@@ -1,5 +1,13 @@
-<div class="row" *ngIf="tahsilat && tahsilat?.durumu === 0">
+<div class="row" *ngIf="odenecekTahsilat">
+
     <div class="col">
+        <div class="row" *ngIf="cuzdan && cuzdan.aktifMi">
+            <div class="col">
+                <div class="alert alert-success">
+                    Cüzdanınızda {{cuzdan.tutar|currency:'TRY'}} var. Otomatik kullanılacak.
+                </div>
+            </div>
+        </div>
         <div class="card">
             <h5 class="card-header">Kart Bilgileri</h5>
             <div class="card-body">
@@ -81,7 +89,7 @@
             </div>
         </div>
     </div>
-    <div class="col">
+    <div class="col-6">
         <div class="card">
             <h5 class="card-header">Ödeme Bilgileri</h5>
             <div class="card-body">
@@ -100,7 +108,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <ng-container *ngFor="let tahsilatKalem of tahsilat?.tahsilatKalems">
+                        <ng-container *ngFor="let tahsilatKalem of odenecekTahsilat?.tahsilatKalems">
                             <tr>
                                 <td>
                                     {{tahsilatKalem?.tahakkuk?.vadeTarihi|date}}
@@ -116,20 +124,38 @@
 
                     </tbody>
                     <tfoot>
+
+
                         <tr>
-                            <td colspan="2"><b> Toplam:</b></td>
+                            <td colspan="2"><b> Kapatılacak Tahakkuk Toplamı:</b></td>
                             <td class="text-right"><b>
-                                    {{ tahsilat.tutar|currency: 'TRY'}}</b>
+                                    {{ odenecekTahsilat?.tutar - tahsilat.cuzdan?.tutar|currency: 'TRY'}}</b>
+                            </td>
+                        </tr>
+                        <tr class="alert alert-warning">
+                            <td colspan="2"><b> Yatırılacak Tutar:</b></td>
+                            <td class="text-right"><b>
+                                    {{ odenecekTahsilat?.tutar|currency: 'TRY'}}</b>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="tahsilat.cuzdan" class="alert alert-success">
+                            <td colspan="2"><b> Cüzdana Aktarılacak Tutar:</b></td>
+                            <td class="text-right"><b>
+                                    {{ tahsilat.cuzdan?.tutar|currency: 'TRY'}}</b>
                             </td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
+        <!-- <div class="alert alert-success" role="alert" *ngIf="tahsilatSonucu?.cuzdan">
+            <p>Cüzdana aktarılacak tutar: {{(tahsilatSonucu.cuzdan?.tutar)| currency : 'TRY'}}</p>
+        </div> -->
     </div>
 </div>
-<div class="alert alert-success" *ngIf="tahsilat && tahsilat.durumu === 1" role="alert">
+<!-- <div class="alert alert-success" *ngIf="tahsilat && tahsilat.durumu === 1" role="alert">
     <h4 class="alert-heading">Tahsilat Zaten Ödenmiş</h4>
     <p>Ödeme Tarihi: {{tahsilat.odemeTarihi|date}}</p>
     <p class="mb-0">{{tahsilat.tutar|currency: 'TRY'}}</p>
-</div>
+</div> -->

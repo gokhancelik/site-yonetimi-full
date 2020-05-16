@@ -6,6 +6,7 @@ import { MeskenKisi } from '../mesken-kisi/mesken-kisi.model';
 import { TahakkukModel } from '../../islemler/tahakkuk/tahakkuk-model';
 import { TahsilatModel } from '../../islemler/tahsilat/tahsilat-model';
 import { Kisi } from './kisi.model';
+import { KisiCuzdan } from '../../islemler/services/odeme-islemleri.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +31,7 @@ export class KisiService extends BaseCrudService {
   getCurrentUser(): Observable<Kisi> {
     return this.http.get<Kisi>(`${this.baseUrl}${this.path}/current-user`);
   }
-
+  getCuzdan(id: string): Observable<KisiCuzdan> {
+    return this.http.get<KisiCuzdan>(`${this.baseUrl}${this.path}/${id}/cuzdan`);
+  }
 }

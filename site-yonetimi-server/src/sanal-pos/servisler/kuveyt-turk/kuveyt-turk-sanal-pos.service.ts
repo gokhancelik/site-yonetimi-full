@@ -87,9 +87,6 @@ export class KuveytTurkSanalPosService {
                     if (paymentResult.responseCode === '00') {
                         // let tahsilat = await this.odemeIslemleriService.tahsilatOnayla(paymentResult.merchantOrderId, paymentResult.orderId, this.sanalPosAyarlari.hesapId);
                         sonuc = true;
-                    } else {
-                        await this.tahsilatService.delete(paymentResult.orderId);
-                        sonuc = false;
                     }
                     return await this.odemeIslemleriService.sanalPosLogEkle(paymentResult.merchantOrderId, JSON.stringify(paymentResult), sonuc);
                 })).toPromise();

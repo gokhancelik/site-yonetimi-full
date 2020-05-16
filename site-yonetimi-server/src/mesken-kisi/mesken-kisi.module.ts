@@ -4,9 +4,10 @@ import { MeskenKisiService } from './mesken-kisi.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MeskenKisi } from './mesken-kisi.entity';
 import { DatabaseModule } from '../database/database.module';
+import { KisiCuzdanModule } from '../kisi-cuzdan/kisi-cuzdan.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([MeskenKisi]), DatabaseModule],
+  imports: [TypeOrmModule.forFeature([MeskenKisi]), DatabaseModule, KisiCuzdanModule],
   controllers: [MeskenKisiController],
   providers: [MeskenKisiService],
   exports: [MeskenKisiService]

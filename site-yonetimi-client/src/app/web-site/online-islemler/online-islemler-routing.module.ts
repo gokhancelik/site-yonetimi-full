@@ -11,7 +11,7 @@ const routes: Routes = [
     component: OnlineIslemlerComponent,
   },
   {
-    path: 'odeme/:tahsilatId',
+    path: 'odeme',
     component: OdemeComponent
   },
   {

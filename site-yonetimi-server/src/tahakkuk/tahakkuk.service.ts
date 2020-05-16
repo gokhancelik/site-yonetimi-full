@@ -12,10 +12,8 @@ import { FaizGrubuService } from 'src/faiz-grubu/faiz-grubu.service';
 @Injectable()
 export class TahakkukService extends BaseService<Tahakkuk> {
 
-
-
-    constructor(repository: TahakkukRepository, 
-        private meskenService: MeskenService, private borcService: BorcService, private faizGrubuService: FaizGrubuService ) {
+    constructor(repository: TahakkukRepository,
+        private meskenService: MeskenService, private borcService: BorcService, private faizGrubuService: FaizGrubuService) {
         super(repository);
     }
     async aidatTahakkuklariOlustur() {
@@ -66,25 +64,29 @@ export class TahakkukService extends BaseService<Tahakkuk> {
         var meskenCount = meskenList.length;
         var tahakkukTutari = tutar / meskenCount;
 
-        if(meskenCount > 0) {
+        if (meskenCount > 0) {
             meskenList.forEach(mesken => {
-                    var tahakkuk = new Tahakkuk();
-                    tahakkuk.tutar = tahakkukTutari;
-                    tahakkuk.vadeTarihi = vadeTarihi;
-                    tahakkuk.odemeTipiId = borc.islemTipiId;
-                    tahakkuk.aciklama = borc.aciklama;
-                    tahakkuk.faizOrani = faizGrubu.oran;
-                    tahakkuk.durumu = AidatDurumu.Odenmedi;
-                    //TODO: Kişinin boş olma durumu
-                    tahakkuk.meskenKisiId = mesken.meskenKisis.find(f => !f.bitisTarihi).id;
-                    tahakkukList.push(tahakkuk);
+                var tahakkuk = new Tahakkuk();
+                tahakkuk.tutar = tahakkukTutari;
+                tahakkuk.vadeTarihi = vadeTarihi;
+                tahakkuk.odemeTipiId = borc.islemTipiId;
+                tahakkuk.aciklama = borc.aciklama;
+                tahakkuk.faizOrani = faizGrubu.oran;
+                tahakkuk.durumu = AidatDurumu.Odenmedi;
+                //TODO: Kişinin boş olma durumu
+                tahakkuk.meskenKisiId = mesken.meskenKisis.find(f => !f.bitisTarihi).id;
+                tahakkukList.push(tahakkuk);
             });
         }
-        if(tahakkukList && tahakkukList.length > 0) {
+        if (tahakkukList && tahakkukList.length > 0) {
             await this.repository.save(tahakkukList);
             borc.tahakkukOlusturulduMu = true;
             await this.borcService.update(borc.id, borc);
         }
         return tahakkukList;
+    }
+    async tahakkukKapat(tahakkuk: Tahakkuk): Promise<Tahakkuk> {
+        tahakkuk.durumu = AidatDurumu.Odendi;
+        return this.update(tahakkuk.id, tahakkuk);
     }
 }

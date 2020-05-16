@@ -11,6 +11,7 @@ import { TahsilatSanalPosLogService } from '../tahsilat/tahsilat-sanal-pos-log.s
 import { TahsilatSanalPosLog } from '../tahsilat/tahsilat-sanal-pos-log.entity';
 import { SanalPosService } from '../sanal-pos/sanal-pos.service';
 import { OdemeIslemleriService } from '../odeme-islemleri/odeme-islemleri.service';
+import { TahsilatOlusturSonucuDto } from '../odeme-islemleri/tahsilat-olustur-sonucu.dto';
 
 @ApiTags('Online İşlemler')
 @Controller('online-islemler')
@@ -47,17 +48,17 @@ export class OnlineIslemlerController {
     @UseGuards(AuthGuard('jwt'))
     @Post('tahsilat-olustur')
     @UseInterceptors(ClassSerializerInterceptor)
-    async tahsilatOlustur(@Body(new ValidationPipe({transform: true})) seciliTahakkuklar: Tahakkuk[]): Promise<Tahsilat> {
+    async tahsilatOlustur(@Body(new ValidationPipe({ transform: true })) seciliTahakkuklar: Tahakkuk[]): Promise<TahsilatOlusturSonucuDto> {
         let sanaPos = await this.sanalPosService.getByKod('kuveyt-turk-sanal-pos');
         return this.odemeIslemleriService.krediKartiTahsilatiOlustur(seciliTahakkuklar, sanaPos.komisyon);
     }
     @Post('odeme-basarili')
-    async odemeBasarili(@Body(new ValidationPipe({transform: true})) model: any, @Res() res): Promise<any> {
+    async odemeBasarili(@Body(new ValidationPipe({ transform: true })) model: any, @Res() res): Promise<any> {
         let provisionResult = await this.kuveytTurkSanalPosService.provision(model);
         res.redirect('http://localhost:4200/online-islemler/odeme-sonucu?sonucId=' + provisionResult.id);
     }
     @Post('odeme-hatali')
-    async odemeHatali(@Body(new ValidationPipe({transform: true})) model: any, @Res() res): Promise<any> {
+    async odemeHatali(@Body(new ValidationPipe({ transform: true })) model: any, @Res() res): Promise<any> {
         let result = await this.kuveytTurkSanalPosService.error(model);
         res.redirect('http://localhost:4200/online-islemler/odeme-sonucu?sonucId=' + result.id);
     }

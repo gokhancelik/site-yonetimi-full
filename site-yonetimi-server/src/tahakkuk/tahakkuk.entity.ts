@@ -17,8 +17,6 @@ export class Tahakkuk extends BaseEntity {
     aciklama: string;
     @Column({ type: 'money' })
     tutar: number;
-    @Column({ type: 'money', nullable: true })
-    odenenTutar?: number;
     @Column({ type: 'money' })
     faizOrani: number;
     @Column({ type: 'uuid' })

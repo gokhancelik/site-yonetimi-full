@@ -3,11 +3,13 @@ import { OdemeService } from '../odeme.service';
 import { Tahakkuk } from '../models/tahakkuk.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OnlineIslemlerService } from '../online-islemler.service';
-import { Tahsilat } from '../models/tahsilat.model';
+import { Tahsilat, OdemeYontemi } from '../models/tahsilat.model';
 import { SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OdemeGatewayComponent } from '../odeme-gateway/odeme-gateway.component';
 import { TahsilatService } from '../../../admin/islemler/tahsilat/tahsilat-service';
+import { TahsilatOlusturSonucuDto, KisiCuzdan } from '../../../admin/islemler/services/odeme-islemleri.service';
+import { MeskenKisiService } from '../../../admin/tanimlamalar/mesken-kisi/mesken-kisi.service';
 
 @Component({
   selector: 'app-odeme',
@@ -29,14 +31,19 @@ export class OdemeComponent implements OnInit {
   tutar: number;
   brandNames: { name: string; id: number; }[];
   sonucHtml: SafeHtml;
-  tahsilat: Tahsilat;
-  tahsilatId: any;
+  tahsilat: TahsilatOlusturSonucuDto;
+  cuzdan: KisiCuzdan;
   get odenecekTutar() {
     return this.seciliTahakkuklar.map(t => t.odenecekTutar)
   }
+  get odenecekTahsilat(): Tahsilat {
+    return this.tahsilat && this.tahsilat.tahsilatlar.find(p => p.odemeYontemi === OdemeYontemi.KrediKarti);
+  }
+
   @ViewChild('iFrameRef', { static: true }) iFrameRef;
   constructor(private odemeService: OdemeService,
     private tahsilatService: TahsilatService,
+    private meskenKisiService: MeskenKisiService,
     private modalService: NgbModal,
     private onlineIslemlerService: OnlineIslemlerService,
     protected sanitizer: DomSanitizer,
@@ -44,11 +51,24 @@ export class OdemeComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.tahsilatId = this.activatedRoute.snapshot.params['tahsilatId'];
-    this.tahsilatService.get<Tahsilat>(this.tahsilatId)
+    this.seciliTahakkuklar = this.odemeService.seciliTahakkuklar;
+    if (!this.seciliTahakkuklar || !this.seciliTahakkuklar.length) {
+      this.router.navigate(['/online-islemler']);
+      return;
+    }
+    this.meskenKisiService.getCuzdan(this.seciliTahakkuklar[0].meskenKisiId)
+      .subscribe(d => {
+        this.cuzdan = d;
+      })
+    this.onlineIslemlerService.tahsilatOlustur(this.seciliTahakkuklar)
       .subscribe(d => {
         this.tahsilat = d;
-      })
+      });
+    // this.tahsilatId = this.activatedRoute.snapshot.params['tahsilatId'];
+    // this.tahsilatService.get<Tahsilat>(this.tahsilatId)
+    //   .subscribe(d => {
+    //     this.tahsilat = d;
+    //   })
     // this.seciliTahakkuklar = this.odemeService.seciliTahakkuklar;
     // if (!this.seciliTahakkuklar || !this.seciliTahakkuklar.length) {
     //   this.router.navigate(['/online-islemler']);
@@ -78,7 +98,7 @@ export class OdemeComponent implements OnInit {
 
   }
   odemeyiTamamla(e) {
-    this.onlineIslemlerService.odeme({ tutar: this.tahsilat.tutar, creditCard: this.model, tahsilatId: this.tahsilat.id })
+    this.onlineIslemlerService.odeme({ tutar: this.odenecekTahsilat.tutar, creditCard: this.model, tahsilatId: this.odenecekTahsilat.id })
       .subscribe(d => {
         this.sonucUrl = this.transform(d.htmlResponse);
         this.sonucHtml = this.transformHtml(d.htmlResponse);

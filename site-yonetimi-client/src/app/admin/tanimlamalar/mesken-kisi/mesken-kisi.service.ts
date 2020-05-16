@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { MeskenKisi } from './mesken-kisi.model';
 import { Mesken } from '../mesken/mesken.model';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { KisiCuzdan } from '../../islemler/services/odeme-islemleri.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +22,8 @@ export class MeskenKisiService extends BaseCrudService {
     return this.http.get<MeskenKisi[]>(`${this.baseUrl}${this.path}/withKisi`).pipe(map(d => {
       return d;
     }));
+  }
+  getCuzdan(id: string): Observable<KisiCuzdan> {
+    return this.http.get<KisiCuzdan>(`${this.baseUrl}${this.path}/${id}/cuzdan`);
   }
 }

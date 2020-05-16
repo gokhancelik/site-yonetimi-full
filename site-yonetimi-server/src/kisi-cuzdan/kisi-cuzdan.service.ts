@@ -15,14 +15,37 @@ export class KisiCuzdanService {
     }
     async eskiKayitlariPasifYap(kisiId: string) {
         let eskiKayit = await this.getCuzdan(kisiId);
-        eskiKayit.aktifMi = false;
-        await this.repository.save(eskiKayit);
+        if (eskiKayit) {
+            eskiKayit.aktifMi = false;
+            await this.repository.save(eskiKayit);
+        }
     }
     async getCuzdan(kisiId: string): Promise<KisiCuzdan> {
         return this.repository.createQueryBuilder('cuzdan')
             .innerJoin('cuzdan.tahsilat', 'tahsilat')
             .innerJoin('tahsilat.meskenKisi', 'meskenKisi')
             .where('meskenKisi.kisiId = :kisiId and aktifMi = :aktifMi', { kisiId: kisiId, aktifMi: true })
+            .getOne();
+    }
+    async getCuzdanByMeskenKisiId(meskenKisiId: string): Promise<KisiCuzdan> {
+        // let result = this.repository.findOne({
+        //     where: {
+        //         tahsilat: {
+        //             meskenKisiId: meskenKisiId
+        //         },
+        //         aktifMi: true
+        //     },
+
+        // });
+        // return result;
+        //.getOne();
+
+        return this.repository.createQueryBuilder('cuzdan')
+            .innerJoinAndSelect('cuzdan.tahsilat', 'tahsilat')
+            .innerJoinAndSelect('tahsilat.meskenKisi', 'meskenKisi')
+            .innerJoinAndSelect('tahsilat.tahsilatKalems', 'tahsilatKalem')
+            .where('meskenKisi.id = :meskenKisiId and aktifMi = :aktifMi', { meskenKisiId: meskenKisiId, aktifMi: true })
+            .printSql()
             .getOne();
     }
 }

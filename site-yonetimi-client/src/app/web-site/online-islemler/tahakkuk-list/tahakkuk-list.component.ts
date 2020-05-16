@@ -101,9 +101,8 @@ export class TahakkukListComponent implements OnInit {
     this.grid = e;
   }
   odemeYap() {
-    this.service.tahsilatOlustur(this.grid.instance.getSelectedRowsData())
-      .subscribe(d => {
-        this.router.navigate(['online-islemler', 'odeme', d.id])
-      });
+    this.odemeService.seciliTahakkuklar = this.grid.instance.getSelectedRowsData();
+    this.router.navigate(['online-islemler', 'odeme'])
+
   }
 }

@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Tahakkuk } from './models/tahakkuk.model';
 import { Tahsilat } from './models/tahsilat.model';
 import { TahsilatSanalPosLog } from './models/tahsilat-sanal-pos-log.model';
+import { TahsilatOlusturSonucuDto } from '../../admin/islemler/services/odeme-islemleri.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +30,8 @@ export class OnlineIslemlerService {
   getTahsilatlar(): Observable<Tahsilat[]> {
     return this.http.get<Tahsilat[]>(`${this.baseUrl}/tahsilatlar`);
   }
-  tahsilatOlustur(tahakkukList: Tahakkuk[]): Observable<Tahsilat> {
-    return this.http.post<Tahsilat>(`${this.baseUrl}/tahsilat-olustur`, tahakkukList);
+  tahsilatOlustur(tahakkukList: Tahakkuk[]): Observable<TahsilatOlusturSonucuDto> {
+    return this.http.post<TahsilatOlusturSonucuDto>(`${this.baseUrl}/tahsilat-olustur`, tahakkukList);
   }
   odeme(tahsilat: any): Observable<{ htmlResponse: string }> {
     return this.http.post<{ htmlResponse: string }>(`${this.baseUrl}/odeme`, tahsilat);

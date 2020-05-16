@@ -7,7 +7,7 @@ import { TahakkukListComponent } from './tahakkuk-list/tahakkuk-list.component';
 import { DataTableModule } from 'src/app/data-table/data-table.module';
 import { DetayGorunumuModule } from '../../../detay-gorunumu/detay-gorunumu.module';
 import { NbCardModule } from '@nebular/theme';
-import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTabsetModule, NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DxPopupModule, DxDateBoxModule, DxSelectBoxModule, DxButtonModule, DxValidatorModule, DxTextBoxModule, DxNumberBoxModule } from 'devextreme-angular';
 import { FormsModule } from '@angular/forms';
 import { TahakkukOdeComponent } from './tahakkuk-ode/tahakkuk-ode.component';
@@ -30,6 +30,8 @@ import { TahakkukOdeComponent } from './tahakkuk-ode/tahakkuk-ode.component';
     DxValidatorModule,
     DxTextBoxModule,
     FormsModule,
+    NgbDatepickerModule,
+    NgbModule
   ]
 })
 export class TahakkukModule { }

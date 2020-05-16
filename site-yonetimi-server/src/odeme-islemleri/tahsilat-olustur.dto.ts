@@ -7,5 +7,4 @@ export class TahsilatOlusturDto {
     tutar: number;
     odemeTarihi: Date;
     odemeYontemi: OdemeYontemi;
-    cuzdan: KisiCuzdan;
 }

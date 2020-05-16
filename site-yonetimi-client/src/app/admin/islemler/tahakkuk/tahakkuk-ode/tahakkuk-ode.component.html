@@ -1,12 +1,40 @@
 <div class="modal-header">
-    <h4 class="modal-title">Hi there!</h4>
+    <h4 class="modal-title">Tahakkuk Ödeme</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
 <div class="modal-body">
+
     <div class="row">
+
+
         <div class="col-6">
+            <div class="row">
+                <div class="col">
+                    <div class="btn-group btn-group-toggle" ngbRadioGroup name="odemeYontemi"
+                        [(ngModel)]="tahsilatOlusturDto.odemeYontemi">
+                        <label ngbButtonLabel class="btn-secondary">
+                            <input ngbButton type="radio" [value]="0"> Havale / EFT
+                        </label>
+                        <label ngbButtonLabel class="btn-secondary">
+                            <input ngbButton type="radio" [value]="1"> Kredi Kartı
+                        </label>
+                        <label ngbButtonLabel class="btn-secondary">
+                            <input ngbButton type="radio" [value]="2"> Kasa
+                        </label>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="cuzdan && cuzdan.aktifMi">
+                <div class="col">
+                    <div class="alert alert-success">
+                        Kişinin cüzdanında {{cuzdan.tutar|currency:'TRY'}} var. Otomatik kullanılacak. Ödeme sonrası
+                        artan miktar tekrar cüzdana atılır
+                    </div>
+                </div>
+            </div>
             <form #form="ngForm" novalidate>
                 <div class="form-group">
                     <label for="odemeTarihi">Ödeme Tarihi</label>
@@ -100,19 +128,34 @@
 
                         </tbody>
                         <tfoot>
+
+
                             <tr>
-                                <td colspan="2"><b> Toplam:</b></td>
+                                <td colspan="2"><b> Kapatılacak Tahakkuk Toplamı:</b></td>
+                                <td class="text-right"><b>
+                                        {{ tahsilat?.tutar - tahsilatSonucu.cuzdan?.tutar|currency: 'TRY'}}</b>
+                                </td>
+                            </tr>
+                            <tr class="alert alert-warning">
+                                <td colspan="2"><b> Yatırılacak Tutar:</b></td>
                                 <td class="text-right"><b>
                                         {{ tahsilat?.tutar|currency: 'TRY'}}</b>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="tahsilatSonucu.cuzdan" class="alert alert-success">
+                                <td colspan="2"><b> Cüzdana Aktarılacak Tutar:</b></td>
+                                <td class="text-right"><b>
+                                        {{ tahsilatSonucu.cuzdan?.tutar|currency: 'TRY'}}</b>
                                 </td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
-            <div class="alert alert-success" role="alert" *ngIf="tahsilatSonucu?.cuzdan">
+            <!-- <div class="alert alert-success" role="alert" *ngIf="tahsilatSonucu?.cuzdan">
                 <p>Cüzdana aktarılacak tutar: {{(tahsilatSonucu.cuzdan?.tutar)| currency : 'TRY'}}</p>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
