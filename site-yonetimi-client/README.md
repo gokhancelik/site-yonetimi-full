@@ -25,3 +25,6 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Docker virtual host
+docker run -d --name aidat-takip-demo-client --expose 80 --net nginx-proxy -e VIRTUAL_HOST=aidattakip.site registry.gitlab.com/zelektronik/site-yonetimi-applications/site-yonetimi-full/client:latest

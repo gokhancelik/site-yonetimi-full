@@ -1,10 +1,11 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Request, Get, Param, UseGuards } from '@nestjs/common';
 import { BaseController } from '../abstract/base.controller';
 import { MeskenKisi } from './mesken-kisi.entity';
 import { MeskenKisiService } from './mesken-kisi.service';
 import { ApiTags } from '@nestjs/swagger';
 import { KisiCuzdan } from '../kisi-cuzdan/kisi-cuzdan.entity';
 import { KisiCuzdanService } from '../kisi-cuzdan/kisi-cuzdan.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Mesken Kişi')
 @Controller('mesken-kisi')
@@ -26,5 +27,10 @@ export class MeskenKisiController extends BaseController<MeskenKisi, MeskenKisiS
     @Get(':id/cuzdan')
     getKisiCuzdan(@Param('id') id: string): Promise<KisiCuzdan> {
         return this.kisiCuzdanService.getCuzdanByMeskenKisiId(id);
+    }
+    @UseGuards(AuthGuard('jwt'))
+    @Get('currentUserCuzdan')
+    getCurrentUserCuzdan(@Request() request): Promise<KisiCuzdan> {
+        return this.kisiCuzdanService.getCuzdan(request.user.userId);
     }
 }

@@ -7,6 +7,8 @@ import { GelirGiderTanimService } from '../../../admin/tanimlamalar/gelir-gider-
 import { DxDataGridComponent } from 'devextreme-angular';
 import { OdemeService } from '../odeme.service';
 import { Router } from '@angular/router';
+import { MeskenKisiService } from '../../../admin/tanimlamalar/mesken-kisi/mesken-kisi.service';
+import { KisiCuzdan } from '../../../admin/islemler/services/odeme-islemleri.service';
 
 @Component({
   selector: 'app-tahakkuk-list',
@@ -18,10 +20,16 @@ export class TahakkukListComponent implements OnInit {
   dataSource: CustomStore;
   seciliTahakkuklar: Tahakkuk[];
   grid: DxDataGridComponent;
+  cuzdan: KisiCuzdan;
   ngOnInit(): void {
+    this.meskenKisiService.getCurrentUserCuzdan()
+      .subscribe(d => {
+        this.cuzdan = d;
+      })
   }
   constructor(private service: OnlineIslemlerService,
     private router: Router,
+    private meskenKisiService: MeskenKisiService,
     private odemeService: OdemeService,
     gelirGiderTanimiService: GelirGiderTanimService
   ) {
@@ -101,8 +109,9 @@ export class TahakkukListComponent implements OnInit {
     this.grid = e;
   }
   odemeYap() {
-    this.odemeService.seciliTahakkuklar = this.grid.instance.getSelectedRowsData();
-    this.router.navigate(['online-islemler', 'odeme'])
-
+    this.service.tahsilatOlustur(this.grid.instance.getSelectedRowsData())
+      .subscribe(d => {
+        this.router.navigate(['online-islemler', 'odeme', d.id])
+      });
   }
 }

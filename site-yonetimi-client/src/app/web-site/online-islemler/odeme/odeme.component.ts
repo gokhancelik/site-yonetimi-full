@@ -10,6 +10,11 @@ import { OdemeGatewayComponent } from '../odeme-gateway/odeme-gateway.component'
 import { TahsilatService } from '../../../admin/islemler/tahsilat/tahsilat-service';
 import { TahsilatOlusturSonucuDto, KisiCuzdan } from '../../../admin/islemler/services/odeme-islemleri.service';
 import { MeskenKisiService } from '../../../admin/tanimlamalar/mesken-kisi/mesken-kisi.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CreditCardValidators } from 'angular-cc-library';
+import { KisiService } from '../../../admin/tanimlamalar/kisi/kisi.service';
+import { Kisi } from '../../../admin/tanimlamalar/kisi/kisi.model';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-odeme',
@@ -31,49 +36,23 @@ export class OdemeComponent implements OnInit {
   tutar: number;
   brandNames: { name: string; id: number; }[];
   sonucHtml: SafeHtml;
-  tahsilat: TahsilatOlusturSonucuDto;
+  tahsilat: Tahsilat;
   cuzdan: KisiCuzdan;
+  form: FormGroup;
+  kisi: Kisi;
+  tahsilatId: any;
   get odenecekTutar() {
     return this.seciliTahakkuklar.map(t => t.odenecekTutar)
   }
-  get odenecekTahsilat(): Tahsilat {
-    return this.tahsilat && this.tahsilat.tahsilatlar.find(p => p.odemeYontemi === OdemeYontemi.KrediKarti);
-  }
-
   @ViewChild('iFrameRef', { static: true }) iFrameRef;
   constructor(private odemeService: OdemeService,
     private tahsilatService: TahsilatService,
-    private meskenKisiService: MeskenKisiService,
     private modalService: NgbModal,
     private onlineIslemlerService: OnlineIslemlerService,
     protected sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
-    private router: Router) { }
-
-  ngOnInit() {
-    this.seciliTahakkuklar = this.odemeService.seciliTahakkuklar;
-    if (!this.seciliTahakkuklar || !this.seciliTahakkuklar.length) {
-      this.router.navigate(['/online-islemler']);
-      return;
-    }
-    this.meskenKisiService.getCuzdan(this.seciliTahakkuklar[0].meskenKisiId)
-      .subscribe(d => {
-        this.cuzdan = d;
-      })
-    this.onlineIslemlerService.tahsilatOlustur(this.seciliTahakkuklar)
-      .subscribe(d => {
-        this.tahsilat = d;
-      });
-    // this.tahsilatId = this.activatedRoute.snapshot.params['tahsilatId'];
-    // this.tahsilatService.get<Tahsilat>(this.tahsilatId)
-    //   .subscribe(d => {
-    //     this.tahsilat = d;
-    //   })
-    // this.seciliTahakkuklar = this.odemeService.seciliTahakkuklar;
-    // if (!this.seciliTahakkuklar || !this.seciliTahakkuklar.length) {
-    //   this.router.navigate(['/online-islemler']);
-    //   return;
-    // }
+    private authService: AuthService,
+    private router: Router) {
     this.aylar = Array.from(Array(12).keys()).map(x => {
       const y = x + 1;
       const id = y > 9 ? y.toString() : `0${y}`;
@@ -95,10 +74,21 @@ export class OdemeComponent implements OnInit {
       { name: 'AmericanExpress', id: 300, },
       { name: 'Troy', id: 400, }
     ]
+  }
 
+  ngOnInit() {
+    this.tahsilatId = this.activatedRoute.snapshot.params['id'];
+    if (!this.tahsilatId) {
+      this.router.navigate(['/online-islemler']);
+      return;
+    }
+    this.tahsilatService.get<Tahsilat>(this.tahsilatId)
+      .subscribe(d => {
+        this.tahsilat = d;
+      });
   }
   odemeyiTamamla(e) {
-    this.onlineIslemlerService.odeme({ tutar: this.odenecekTahsilat.tutar, creditCard: this.model, tahsilatId: this.odenecekTahsilat.id })
+    this.onlineIslemlerService.odeme({ tutar: this.tahsilat.tutar, creditCard: this.model, tahsilatId: this.tahsilat.id })
       .subscribe(d => {
         this.sonucUrl = this.transform(d.htmlResponse);
         this.sonucHtml = this.transformHtml(d.htmlResponse);

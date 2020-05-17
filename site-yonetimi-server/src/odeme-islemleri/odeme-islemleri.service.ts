@@ -431,16 +431,20 @@ export class OdemeIslemleriService {
         }
         return tahsilat;
     }
-    async tahsilatKaydet(dto: TahsilatOlusturSonucuDto): Promise<Tahsilat[]> {
+    async tahsilatKaydet(dto: TahsilatOlusturSonucuDto, tahsilatDurumu = TahsilatDurumu.Onaylandi): Promise<Tahsilat[]> {
         for (const tahsilat of dto.tahsilatlar) {
+            let cuzdanTahsilati;
             if (tahsilat.id) {
+                cuzdanTahsilati = tahsilat;
                 await this.tahsilatService.update(tahsilat.id, tahsilat);
                 await this.kisiCuzdanService.eskiKayitlariPasifYap(tahsilat.meskenKisi.kisiId);
             } else {
-                tahsilat.durumu = TahsilatDurumu.Onaylandi;
+                tahsilat.durumu = tahsilatDurumu;
                 await this.tahsilatService.create(tahsilat);
                 let hesapHareketi = new HesapHareketi(tahsilat.odemeTarihi, tahsilat.tutar, dto.hesapId, tahsilat.id);
-                await this.hesapHareketiService.create(hesapHareketi);
+                if (tahsilat.durumu === TahsilatDurumu.Onaylandi) {
+                    await this.hesapHareketiService.create(hesapHareketi);
+                }
             }
             if (dto.cuzdan) {
                 dto.cuzdan.tahsilatId = tahsilat.id;
@@ -448,23 +452,38 @@ export class OdemeIslemleriService {
             }
             for (const tk of tahsilat.tahsilatKalems) {
                 tk.tahsilatId = tahsilat.id;
+                //cuzdan tahsilat kalemleri eskiler de geliyor. Sen hepsini create ediyon. 
                 await this.tahsilatKalemService.create(tk);
             }
-            //let tahakkuks = await this.tahakkukService.findByIds(tahsilat.tahsilatKalems.map(p => p.tahakkukId));
-            let uniqueTahakkukIds = [...new Set(tahsilat.tahsilatKalems.map(p => p.tahakkukId))];
-            let tahakkuks = await this.tahakkukService.findByIds(uniqueTahakkukIds);
-            for (const tahakkuk of tahakkuks) {
-                let kalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk, tahsilat); //Transaction yaptiginda burasi duzeltilecek asagidaki gibi
-                //bu tahsilattaki tutarlari bul oncekilerle topla kalan tutari sonra kontrol et
-
-                if (!kalanTutar) {
-                    await this.tahakkukService.tahakkukKapat(tahakkuk);
+            if (tahsilat.durumu === TahsilatDurumu.Onaylandi) {
+                let uniqueTahakkukIds = [...new Set(tahsilat.tahsilatKalems.map(p => p.tahakkukId))];
+                let tahakkuks = await this.tahakkukService.findByIds(uniqueTahakkukIds);
+                for (const tahakkuk of tahakkuks) {
+                    //cuzdan tahsilat kalemleri eskiler de geliyor. Sen hepsini create ediyon. 
+                    let kalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk, cuzdanTahsilati); //Transaction yaptiginda burasi duzeltilecek asagidaki gibi
+                    //bu tahsilattaki tutarlari bul oncekilerle topla kalan tutari sonra kontrol et
+                    if (!kalanTutar) {
+                        await this.tahakkukService.tahakkukKapat(tahakkuk);
+                    }
                 }
             }
-
+            return dto.tahsilatlar;
         }
-        return dto.tahsilatlar;
     }
+
+    async tahsilatiOnayla(tahsilatId: string, hesapId: string) {
+        let tahsilat = await this.tahsilatService.findById(tahsilatId);
+        tahsilat.durumu = TahsilatDurumu.Onaylandi;
+        await this.tahsilatService.update(tahsilat.id, tahsilat);
+        let hesapHareketi = new HesapHareketi(tahsilat.odemeTarihi, tahsilat.tutar, hesapId, tahsilat.id);
+        await this.hesapHareketiService.create(hesapHareketi);
+        let uniqueTahakkukIds = [...new Set(tahsilat.tahsilatKalems.map(p => p.tahakkukId))];
+        let tahakkuks = await this.tahakkukService.findByIds(uniqueTahakkukIds);
+        for (const tahakkuk of tahakkuks) {
+            await this.tahakkukService.tahakkukKapat(tahakkuk);
+        }
+    }
+
     async krediKartiTahsilatiOlustur(tahakkuklarDto: Tahakkuk[], komisyon: number): Promise<TahsilatOlusturSonucuDto> {
         return this.tahsilatOlustur({ tahakkuks: tahakkuklarDto, odemeYontemi: OdemeYontemi.KrediKarti, odemeTarihi: new Date(), tutar: 0 })
 
@@ -507,9 +526,9 @@ export class OdemeIslemleriService {
     }
     async sanalPosLogEkle(tahsilatId: string, log: string, durum: boolean): Promise<TahsilatSanalPosLog> {
         let entity = new TahsilatSanalPosLog();
-        entity.tahsilatId = tahsilatId;
         entity.mesaj = log;
         entity.durum = durum;
+        entity.tahsilatId = tahsilatId;
         await this.tahsilatSanalPosLogService.create(entity);
         return entity;
     }

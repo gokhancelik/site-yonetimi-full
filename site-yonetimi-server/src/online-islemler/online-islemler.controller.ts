@@ -48,9 +48,11 @@ export class OnlineIslemlerController {
     @UseGuards(AuthGuard('jwt'))
     @Post('tahsilat-olustur')
     @UseInterceptors(ClassSerializerInterceptor)
-    async tahsilatOlustur(@Body(new ValidationPipe({ transform: true })) seciliTahakkuklar: Tahakkuk[]): Promise<TahsilatOlusturSonucuDto> {
+    async tahsilatOlustur(@Body(new ValidationPipe({ transform: true })) seciliTahakkuklar: Tahakkuk[]): Promise<Tahsilat> {
         let sanaPos = await this.sanalPosService.getByKod('kuveyt-turk-sanal-pos');
-        return this.odemeIslemleriService.krediKartiTahsilatiOlustur(seciliTahakkuklar, sanaPos.komisyon);
+        let tahsilatSonucu = await this.odemeIslemleriService.krediKartiTahsilatiOlustur(seciliTahakkuklar, sanaPos.komisyon);
+        let tahsilatlar = await this.odemeIslemleriService.tahsilatKaydet(tahsilatSonucu, TahsilatDurumu.Bekliyor);
+        return tahsilatlar.find(p => p.odemeYontemi === OdemeYontemi.KrediKarti);
     }
     @Post('odeme-basarili')
     async odemeBasarili(@Body(new ValidationPipe({ transform: true })) model: any, @Res() res): Promise<any> {

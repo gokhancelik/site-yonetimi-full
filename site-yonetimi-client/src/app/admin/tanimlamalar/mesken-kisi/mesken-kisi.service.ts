@@ -26,4 +26,7 @@ export class MeskenKisiService extends BaseCrudService {
   getCuzdan(id: string): Observable<KisiCuzdan> {
     return this.http.get<KisiCuzdan>(`${this.baseUrl}${this.path}/${id}/cuzdan`);
   }
+  getCurrentUserCuzdan(): Observable<KisiCuzdan> {
+    return this.http.get<KisiCuzdan>(`${this.baseUrl}${this.path}/currentUserCuzdan`);
+  }
 }

@@ -30,8 +30,8 @@ export class OnlineIslemlerService {
   getTahsilatlar(): Observable<Tahsilat[]> {
     return this.http.get<Tahsilat[]>(`${this.baseUrl}/tahsilatlar`);
   }
-  tahsilatOlustur(tahakkukList: Tahakkuk[]): Observable<TahsilatOlusturSonucuDto> {
-    return this.http.post<TahsilatOlusturSonucuDto>(`${this.baseUrl}/tahsilat-olustur`, tahakkukList);
+  tahsilatOlustur(tahakkukList: Tahakkuk[]): Observable<Tahsilat> {
+    return this.http.post<Tahsilat>(`${this.baseUrl}/tahsilat-olustur`, tahakkukList);
   }
   odeme(tahsilat: any): Observable<{ htmlResponse: string }> {
     return this.http.post<{ htmlResponse: string }>(`${this.baseUrl}/odeme`, tahsilat);

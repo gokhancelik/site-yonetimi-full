@@ -1,13 +1,7 @@
-<div class="row" *ngIf="odenecekTahsilat">
+<div class="row" *ngIf="tahsilat">
 
     <div class="col">
-        <div class="row" *ngIf="cuzdan && cuzdan.aktifMi">
-            <div class="col">
-                <div class="alert alert-success">
-                    Cüzdanınızda {{cuzdan.tutar|currency:'TRY'}} var. Otomatik kullanılacak.
-                </div>
-            </div>
-        </div>
+       
         <div class="card">
             <h5 class="card-header">Kart Bilgileri</h5>
             <div class="card-body">
@@ -62,7 +56,7 @@
                     <div class="dx-field">
                         <div class="dx-field-label">CVV Kodu</div>
                         <div class="dx-field-value">
-                            <dx-text-box name="cardCVV2" required [(ngModel)]="model.cardCVV2">
+                            <dx-text-box name="cardCVV2" required [(ngModel)]="model.cardCVV2" autocomplete="off" ccCVC>
                                 <dx-validator>
                                     <dxi-validation-rule type="required" message="CVV Kodu zorunludur">
                                     </dxi-validation-rule>
@@ -108,7 +102,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <ng-container *ngFor="let tahsilatKalem of odenecekTahsilat?.tahsilatKalems">
+                        <ng-container *ngFor="let tahsilatKalem of tahsilat?.tahsilatKalems">
                             <tr>
                                 <td>
                                     {{tahsilatKalem?.tahakkuk?.vadeTarihi|date}}
@@ -124,25 +118,10 @@
 
                     </tbody>
                     <tfoot>
-
-
-                        <tr>
-                            <td colspan="2"><b> Kapatılacak Tahakkuk Toplamı:</b></td>
-                            <td class="text-right"><b>
-                                    {{ odenecekTahsilat?.tutar - tahsilat.cuzdan?.tutar|currency: 'TRY'}}</b>
-                            </td>
-                        </tr>
                         <tr class="alert alert-warning">
                             <td colspan="2"><b> Yatırılacak Tutar:</b></td>
                             <td class="text-right"><b>
-                                    {{ odenecekTahsilat?.tutar|currency: 'TRY'}}</b>
-                            </td>
-                        </tr>
-
-                        <tr *ngIf="tahsilat.cuzdan" class="alert alert-success">
-                            <td colspan="2"><b> Cüzdana Aktarılacak Tutar:</b></td>
-                            <td class="text-right"><b>
-                                    {{ tahsilat.cuzdan?.tutar|currency: 'TRY'}}</b>
+                                    {{ tahsilat?.tutar|currency: 'TRY'}}</b>
                             </td>
                         </tr>
                     </tfoot>

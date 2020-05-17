@@ -9,9 +9,17 @@
 </div>
 <div class="row my-2">
     <div class="col">
-        <data-table [dataSource]="dataSource" [groupPanel]="false" [filterRow]="false" [columnChooser]="false" [searchPanel]="false" [filterPanel]="false" [headerFilter]="false"
-            (dxGridReady)="onGridReady($event)" [title]="'Tahakkuklar'" [columns]="columns" [allowAdding]="false"
-            [allowDeleting]="false" [allowUpdating]="false" name="odenmemisTahakkuklar">
+        <div class="row" *ngIf="cuzdan && cuzdan.aktifMi">
+            <div class="col">
+                <div class="alert alert-success">
+                    Cüzdanınızda {{cuzdan.tutar|currency:'TRY'}} var. Otomatik kullanılacak.
+                </div>
+            </div>
+        </div>
+        <data-table [dataSource]="dataSource" [groupPanel]="false" [filterRow]="false" [columnChooser]="false"
+            [searchPanel]="false" [filterPanel]="false" [headerFilter]="false" (dxGridReady)="onGridReady($event)"
+            [title]="'Tahakkuklar'" [columns]="columns" [allowAdding]="false" [allowDeleting]="false"
+            [allowUpdating]="false" name="odenmemisTahakkuklar">
         </data-table>
     </div>
 </div>

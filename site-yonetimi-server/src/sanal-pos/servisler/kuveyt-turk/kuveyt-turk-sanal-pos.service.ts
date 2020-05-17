@@ -41,9 +41,7 @@ export class KuveytTurkSanalPosService {
     async provision(model: any): Promise<TahsilatSanalPosLog> {
         this.sanalPosAyarlari = await this.sanalPosService.getByKod('kuveyt-turk-sanal-pos');
         let enrollmentResult = await xml2js.parseStringPromise(decodeURIComponent(model.AuthenticationResponse).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase], });
-        //const UserName = 'apitest'; //  api rollü kullanici adı
-        //const Password = 'api123'; //  api rollü kullanici sifresi
-        //const CustomerId = '400235'; // Müsteri Numarasi
+
         let server = this.sanalPosAyarlari.ayarlarParsed.server; //'https://boatest.kuveytturk.com.tr/boa.virtualpos.services/Home/ThreeDModelProvisionGate';
         let provision = new KuveytTurkVPosMessage(
             enrollmentResult.vPosMessage.amount,
@@ -85,7 +83,7 @@ export class KuveytTurkSanalPosService {
                     const paymentResult: VPosTransactionResponseContract = await xml2js.parseStringPromise(decodeURIComponent(d.data).replace(/\+/g, ' '), { explicitArray: false, explicitRoot: false, tagNameProcessors: [this.camelCase] });
                     let sonuc = false;
                     if (paymentResult.responseCode === '00') {
-                        // let tahsilat = await this.odemeIslemleriService.tahsilatOnayla(paymentResult.merchantOrderId, paymentResult.orderId, this.sanalPosAyarlari.hesapId);
+                        await this.odemeIslemleriService.tahsilatiOnayla(paymentResult.merchantOrderId, this.sanalPosAyarlari.hesapId);
                         sonuc = true;
                     }
                     return await this.odemeIslemleriService.sanalPosLogEkle(paymentResult.merchantOrderId, JSON.stringify(paymentResult), sonuc);
