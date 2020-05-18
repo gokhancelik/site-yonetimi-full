@@ -80,19 +80,8 @@ export class TahakkukListComponent implements OnInit {
       }
     },
     {
-      key: 'faiz',
-      name: 'Faiz',
-      totalSummaryType: 'sum',
-      type: 'number',
-      visible: true,
-      format: {
-        type: 'currency',
-        precision: 2
-      }
-    },
-    {
-      key: 'odenecekTutar',
-      name: 'Ödenecek Tutar',
+      key: 'odenenTutar',
+      name: 'Ödeneen Tutar',
       totalSummaryType: 'sum',
       type: 'number',
       visible: true,

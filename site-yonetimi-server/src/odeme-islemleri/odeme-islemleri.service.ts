@@ -229,7 +229,7 @@ export class OdemeIslemleriService {
             return p.odemeTipi.kod !== GelirGiderTanimi.Faiz && p.odemeTipi.kod !== GelirGiderTanimi.BankaKomisyonu;
         }).map(p => p.tutar)
             .reduce((p, c) => p + c, 0);
-        let cuzdanTutari = cuzdanTahsilati ? cuzdanTahsilati.tahsilatKalems.filter(p => p.tahakkukId === tahakkuk.id).map(p => p.tutar).reduce((p, c) => p + c, 0) : 0;
+        let cuzdanTutari = cuzdanTahsilati ? cuzdanTahsilati.tahsilatKalems.filter(p => p.tahakkukId === tahakkuk.id && p.odemeTipi.kod !== GelirGiderTanimi.Faiz && p.odemeTipi.kod !== GelirGiderTanimi.BankaKomisyonu).map(p => p.tutar).reduce((p, c) => p + c, 0) : 0;
         return tahakkuk.tutar - faizHaricOdenenTutar - cuzdanTutari;
     }
 
@@ -432,43 +432,95 @@ export class OdemeIslemleriService {
         return tahsilat;
     }
     async tahsilatKaydet(dto: TahsilatOlusturSonucuDto, tahsilatDurumu = TahsilatDurumu.Onaylandi): Promise<Tahsilat[]> {
-        for (const tahsilat of dto.tahsilatlar) {
-            let cuzdanTahsilati;
-            if (tahsilat.id) {
-                cuzdanTahsilati = tahsilat;
-                await this.tahsilatService.update(tahsilat.id, tahsilat);
-                await this.kisiCuzdanService.eskiKayitlariPasifYap(tahsilat.meskenKisi.kisiId);
-            } else {
-                tahsilat.durumu = tahsilatDurumu;
-                await this.tahsilatService.create(tahsilat);
-                let hesapHareketi = new HesapHareketi(tahsilat.odemeTarihi, tahsilat.tutar, dto.hesapId, tahsilat.id);
-                if (tahsilat.durumu === TahsilatDurumu.Onaylandi) {
-                    await this.hesapHareketiService.create(hesapHareketi);
+        //eski cüzdan varsa iki tahsilat gelir
+        //cüzdan tahsilatından ödemeyi yap
+        let eskiCuzdanTahsilati = dto.tahsilatlar.find(p => !!p.id);
+        if (eskiCuzdanTahsilati) {
+            //veri geldiğinde kullanılan tutar değişmiş olduğu için güncelle
+            await this.tahsilatService.update(eskiCuzdanTahsilati.id, eskiCuzdanTahsilati);
+            let yeniEklenenTahsilatKalemleri = eskiCuzdanTahsilati.tahsilatKalems.filter(p => !p.id);
+            for (const tahsilatKalem of yeniEklenenTahsilatKalemleri) {
+                tahsilatKalem.tahsilatId = eskiCuzdanTahsilati.id;
+                await this.tahsilatKalemService.create(tahsilatKalem);
+            }
+            let uniqueTahakkukIds = [...new Set(yeniEklenenTahsilatKalemleri.map(p => p.tahakkukId))];
+            let tahakkuks = await this.tahakkukService.findByIds(uniqueTahakkukIds);
+            for (const tahakkuk of tahakkuks) {
+                let kalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk, null);
+                if (kalanTutar <= 0) {
+                    await this.tahakkukService.tahakkukKapat(tahakkuk);
                 }
             }
-            if (dto.cuzdan) {
-                dto.cuzdan.tahsilatId = tahsilat.id;
-                await this.kisiCuzdanService.create(dto.cuzdan, tahsilat.meskenKisi.kisiId);
-            }
-            for (const tk of tahsilat.tahsilatKalems) {
-                tk.tahsilatId = tahsilat.id;
-                //cuzdan tahsilat kalemleri eskiler de geliyor. Sen hepsini create ediyon. 
+        }
+        //yeni oluşacak tahsilattan ödemeyi yap
+        let yeniTahsilat = dto.tahsilatlar.find(p => !eskiCuzdanTahsilati || p.id !== eskiCuzdanTahsilati.id);
+        if (yeniTahsilat) {
+            yeniTahsilat.durumu = tahsilatDurumu;
+            await this.tahsilatService.create(yeniTahsilat);
+            for (const tk of yeniTahsilat.tahsilatKalems) {
+                tk.tahsilatId = yeniTahsilat.id;
                 await this.tahsilatKalemService.create(tk);
             }
-            if (tahsilat.durumu === TahsilatDurumu.Onaylandi) {
-                let uniqueTahakkukIds = [...new Set(tahsilat.tahsilatKalems.map(p => p.tahakkukId))];
+            if (yeniTahsilat.durumu === TahsilatDurumu.Onaylandi) {
+                let hesapHareketi = new HesapHareketi(yeniTahsilat.odemeTarihi, yeniTahsilat.tutar, dto.hesapId, yeniTahsilat.id);
+                await this.hesapHareketiService.create(hesapHareketi);
+                let uniqueTahakkukIds = [...new Set(yeniTahsilat.tahsilatKalems.map(p => p.tahakkukId))];
                 let tahakkuks = await this.tahakkukService.findByIds(uniqueTahakkukIds);
                 for (const tahakkuk of tahakkuks) {
                     //cuzdan tahsilat kalemleri eskiler de geliyor. Sen hepsini create ediyon. 
-                    let kalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk, cuzdanTahsilati); //Transaction yaptiginda burasi duzeltilecek asagidaki gibi
+                    let kalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk, null); //Transaction yaptiginda burasi duzeltilecek asagidaki gibi
                     //bu tahsilattaki tutarlari bul oncekilerle topla kalan tutari sonra kontrol et
-                    if (!kalanTutar) {
+                    if (kalanTutar <= 0) {
                         await this.tahakkukService.tahakkukKapat(tahakkuk);
                     }
                 }
             }
-            return dto.tahsilatlar;
+
         }
+        if (dto.cuzdan) {
+            dto.cuzdan.tahsilatId = yeniTahsilat.id;
+            await this.kisiCuzdanService.createByMeskenKisiId(dto.cuzdan, yeniTahsilat.meskenKisiId);
+        }
+        await this.kisiCuzdanService.eskiKayitlariPasifYapMeskenKisiId(yeniTahsilat.meskenKisiId);
+        return dto.tahsilatlar;
+        // for (const tahsilat of dto.tahsilatlar) {
+        //     let cuzdanTahsilati;
+        //     if (tahsilat.id) {
+        //         cuzdanTahsilati = tahsilat;
+        //         await this.tahsilatService.update(tahsilat.id, tahsilat);
+        //         await this.kisiCuzdanService.eskiKayitlariPasifYap(tahsilat.meskenKisi.kisiId);
+        //     } else {
+        //         tahsilat.durumu = tahsilatDurumu;
+        //         await this.tahsilatService.create(tahsilat);
+        //         let hesapHareketi = new HesapHareketi(tahsilat.odemeTarihi, tahsilat.tutar, dto.hesapId, tahsilat.id);
+        //         if (tahsilat.durumu === TahsilatDurumu.Onaylandi) {
+        //             await this.hesapHareketiService.create(hesapHareketi);
+        //         }
+        //     }
+        //     if (dto.cuzdan) {
+        //         dto.cuzdan.tahsilatId = tahsilat.id;
+        //         await this.kisiCuzdanService.create(dto.cuzdan, tahsilat.meskenKisi.kisiId);
+        //     }
+        //     for (const tk of tahsilat.tahsilatKalems) {
+        //         if (!tk.id) {
+        //             tk.tahsilatId = tahsilat.id;
+        //             await this.tahsilatKalemService.create(tk);
+        //         }
+        //     }
+        //     if (tahsilat.durumu === TahsilatDurumu.Onaylandi) {
+        //         let uniqueTahakkukIds = [...new Set(tahsilat.tahsilatKalems.map(p => p.tahakkukId))];
+        //         let tahakkuks = await this.tahakkukService.findByIds(uniqueTahakkukIds);
+        //         for (const tahakkuk of tahakkuks) {
+        //             //cuzdan tahsilat kalemleri eskiler de geliyor. Sen hepsini create ediyon. 
+        //             let kalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk, cuzdanTahsilati); //Transaction yaptiginda burasi duzeltilecek asagidaki gibi
+        //             //bu tahsilattaki tutarlari bul oncekilerle topla kalan tutari sonra kontrol et
+        //             if (!kalanTutar) {
+        //                 await this.tahakkukService.tahakkukKapat(tahakkuk);
+        //             }
+        //         }
+        //     }
+        //     return dto.tahsilatlar;
+        // }
     }
 
     async tahsilatiOnayla(tahsilatId: string, hesapId: string) {

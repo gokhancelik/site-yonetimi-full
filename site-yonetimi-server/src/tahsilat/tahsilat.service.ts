@@ -10,6 +10,7 @@ import { TahsilatSanalPosLog } from './tahsilat-sanal-pos-log.entity';
 import { TahsilatSanalPosLogRepository } from './tahsilat-sanal-pos-log.repository';
 import { HesapHareketiService } from '../hesap-hareketi/hesap-hareketi.service';
 import { TahsilatKalemService } from '../tahsilat-kalem/tahsilat-kalem.service';
+import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
 
 @Injectable()
 export class TahsilatService extends BaseService<Tahsilat>{
@@ -22,6 +23,7 @@ export class TahsilatService extends BaseService<Tahsilat>{
         private readonly tahsilatSanalPosLogRepository: TahsilatSanalPosLogRepository) {
         super(repository);
     }
+    
     getTahsilatlarByUserId(userId: any): Promise<Tahsilat[]> {
         return this.repository.createQueryBuilder('tahsilat')
             .innerJoin('tahsilat.meskenKisi', 'mk')

@@ -13,8 +13,20 @@ export class KisiCuzdanService {
         await this.repository.save(entity);
         return entity;
     }
+    async createByMeskenKisiId(entity: KisiCuzdan, meskenKisiId: string): Promise<KisiCuzdan> {
+        await this.eskiKayitlariPasifYapMeskenKisiId(meskenKisiId);
+        await this.repository.save(entity);
+        return entity;
+    }
     async eskiKayitlariPasifYap(kisiId: string) {
         let eskiKayit = await this.getCuzdan(kisiId);
+        if (eskiKayit) {
+            eskiKayit.aktifMi = false;
+            await this.repository.save(eskiKayit);
+        }
+    }
+    async eskiKayitlariPasifYapMeskenKisiId(meskenKisiId: string) {
+        let eskiKayit = await this.getCuzdanByMeskenKisiId(meskenKisiId);
         if (eskiKayit) {
             eskiKayit.aktifMi = false;
             await this.repository.save(eskiKayit);

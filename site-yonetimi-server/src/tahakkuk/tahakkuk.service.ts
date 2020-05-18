@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { BaseService } from '../abstract/base.service';
 import { Tahakkuk, AidatDurumu } from './tahakkuk.entity';
 import { TahakkukRepository } from './tahakkuk.repository';
-import { EntityManager } from 'typeorm';
+import { EntityManager, Between, LessThanOrEqual, SelectQueryBuilder } from 'typeorm';
 import { MeskenRepository } from 'src/mesken/mesken.repository';
 import { MeskenService } from 'src/mesken/mesken.service';
 import { MeskenKisiService } from 'src/mesken-kisi/mesken-kisi.service';
 import { BorcService } from 'src/borc/borc.service';
 import { FaizGrubuService } from 'src/faiz-grubu/faiz-grubu.service';
+import { TahsilatDurumu } from '../tahsilat/tahsilat.entity';
 
 @Injectable()
 export class TahakkukService extends BaseService<Tahakkuk> {
@@ -31,31 +32,30 @@ export class TahakkukService extends BaseService<Tahakkuk> {
         //kaydet 
     }
     async getOdenmemisAidatlar(userId): Promise<Tahakkuk[]> {
-        let today = new Date();
-        let gelecekAy = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-        var aidatlar$ = this.repository.createQueryBuilder('tahakkuk')
-            .innerJoinAndSelect('tahakkuk.meskenKisi', 'meskenKisi')
-            .innerJoinAndSelect('tahakkuk.odemeTipi', 'odemeTipi')
-            .where('meskenKisi.kisiId = :userId', { userId })
-            .andWhere('tahakkuk.durumu = 0 AND tahakkuk.vadeTarihi <= :tarih', { tarih: gelecekAy })
-            .orderBy('tahakkuk.vadeTarihi')
-            .getMany();
-        return aidatlar$;
+        return (this.repository as TahakkukRepository).getOdenmemisAidatlar(userId);
     }
     getOdenmisAidatlar(userId: any): Promise<Tahakkuk[]> {
-        var aidatlar$ = this.repository.createQueryBuilder('tahakkuk')
-            .innerJoinAndSelect('tahakkuk.meskenKisi', 'meskenKisi')
-            .innerJoinAndSelect('tahakkuk.odemeTipi', 'odemeTipi')
-            .where('meskenKisi.kisiId = :userId', { userId })
-            .andWhere('tahakkuk.durumu = 1')
-            .orderBy('tahakkuk.vadeTarihi')
-            .getMany();
-        return aidatlar$;
+        return (this.repository as TahakkukRepository).getOdenmisAidatlar(userId);
     }
     findByIds(selectedTahakkuks: string[]): Promise<Tahakkuk[]> {
         return this.repository.findByIds(selectedTahakkuks);
     }
-
+    findAll(): Promise<Tahakkuk[]> {
+        return this.repository.find({
+            join: {
+                alias: 'tahakkuk',
+                innerJoinAndSelect: {
+                    meskenKisi: 'tahakkuk.meskenKisi',
+                    odemeTipi: 'tahakkuk.odemeTipi',
+                    tahsilatKalems: 'tahakkuk.tahsilatKalems',
+                    tahsilat: 'tahsilatKalems.tahsilat'
+                }
+            },
+            order: {
+                vadeTarihi: 'DESC'
+            }
+        });
+    }
     async tahakkuklariOlustur(id: string, tutar: number, vadeTarihi: Date, faizGrubuId?: string): Promise<Tahakkuk[]> {
         var tahakkukList = new Array<Tahakkuk>();
         var faizGrubu = await this.faizGrubuService.findById(faizGrubuId);

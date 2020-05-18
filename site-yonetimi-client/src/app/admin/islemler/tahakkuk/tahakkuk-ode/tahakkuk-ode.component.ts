@@ -3,7 +3,7 @@ import { TahakkukModel } from '../tahakkuk-model';
 import { TahsilatService } from '../../tahsilat/tahsilat-service';
 import { TahakkukService } from '../tahakkuk-service';
 import { OdemeIslemleriService, TahsilatOlusturDto, TahsilatOlusturSonucuDto, KisiCuzdan } from '../../services/odeme-islemleri.service';
-import { TahsilatModel } from '../../tahsilat/tahsilat-model';
+import { TahsilatModel, OdemeYontemi } from '../../tahsilat/tahsilat-model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { HesapTanimiService } from '../../../tanimlamalar/hesap-tanimi/hesap-tanimi.service';
 import { HesapTanimi } from '../../../tanimlamalar/hesap-tanimi/hesap-tanimi.model';
@@ -17,7 +17,7 @@ import { MeskenKisiService } from '../../../tanimlamalar/mesken-kisi/mesken-kisi
 })
 export class TahakkukOdeComponent implements OnInit {
   selectedTahakkuks: TahakkukModel[];
-  tahsilatOlusturDto: TahsilatOlusturDto = {};
+  tahsilatOlusturDto: TahsilatOlusturDto = { odemeYontemi: OdemeYontemi.HavaleEFT };
   tahsilatSonucu: TahsilatOlusturSonucuDto;
   hesapTanimlari: HesapTanimi[];
   seciliTahakkukToplami: number;

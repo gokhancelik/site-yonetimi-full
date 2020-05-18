@@ -1,5 +1,6 @@
 import { GelirGiderTanimi } from './gelir-gider-tanimi.model';
 import { MeskenKisi } from '../../../admin/tanimlamalar/mesken-kisi/mesken-kisi.model';
+import { TahsilatKalem } from './tahsilat.model';
 
 export enum AidatDurumu {
     Odenmedi,
@@ -24,4 +25,5 @@ export interface Tahakkuk {
     meskenKisi: MeskenKisi;
     odenecekTutar: number;
     bankaKomisyonu: number;
+    tahsilatKalems: TahsilatKalem[];
 }
