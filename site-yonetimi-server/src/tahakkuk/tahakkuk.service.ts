@@ -9,13 +9,14 @@ import { MeskenKisiService } from 'src/mesken-kisi/mesken-kisi.service';
 import { BorcService } from 'src/borc/borc.service';
 import { FaizGrubuService } from 'src/faiz-grubu/faiz-grubu.service';
 import { TahsilatDurumu } from '../tahsilat/tahsilat.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class TahakkukService extends BaseService<Tahakkuk> {
 
-    constructor(repository: TahakkukRepository,
+    constructor(@InjectRepository(TahakkukRepository) private _repository: TahakkukRepository,
         private meskenService: MeskenService, private borcService: BorcService, private faizGrubuService: FaizGrubuService) {
-        super(repository);
+        super(_repository);
     }
     async aidatTahakkuklariOlustur() {
         //bagimsiz bolumleri cek;
@@ -32,19 +33,19 @@ export class TahakkukService extends BaseService<Tahakkuk> {
         //kaydet 
     }
     async getOdenmemisAidatlar(userId): Promise<Tahakkuk[]> {
-        return (this.repository as TahakkukRepository).getOdenmemisAidatlar(userId);
+        return this._repository.getOdenmemisAidatlar(userId);
     }
     getOdenmisAidatlar(userId: any): Promise<Tahakkuk[]> {
-        return (this.repository as TahakkukRepository).getOdenmisAidatlar(userId);
+        return this._repository.getOdenmisAidatlar(userId);
     }
     findByIds(selectedTahakkuks: string[]): Promise<Tahakkuk[]> {
-        return this.repository.findByIds(selectedTahakkuks);
+        return this._repository.findByIds(selectedTahakkuks);
     }
     findAll(): Promise<Tahakkuk[]> {
-        return this.repository.find({
+        return this._repository.find({
             join: {
                 alias: 'tahakkuk',
-                innerJoinAndSelect: {
+                leftJoinAndSelect: {
                     meskenKisi: 'tahakkuk.meskenKisi',
                     odemeTipi: 'tahakkuk.odemeTipi',
                     tahsilatKalems: 'tahakkuk.tahsilatKalems',

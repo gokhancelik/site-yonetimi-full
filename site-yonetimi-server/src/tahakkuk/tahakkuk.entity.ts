@@ -39,7 +39,7 @@ export class Tahakkuk extends BaseEntity {
 
     @Expose()
     public get odenenTutar(): number {
-        return this.tahsilatKalems && this.tahsilatKalems.map(p => p.tutar).reduce((p, c) => p + c, 0);
+        return this.tahsilatKalems && this.tahsilatKalems.filter(p=>p.tahsilat.durumu === TahsilatDurumu.Onaylandi).map(p => p.tutar).reduce((p, c) => p + c, 0);
     }
     @Expose()
     public get odenenTutarAnaPara(): number {
@@ -62,8 +62,8 @@ export class Tahakkuk extends BaseEntity {
     }
     @Expose()
     public get sonTahsilat(): Tahsilat {
-        let sonTahsilatKalem = this.tahsilatKalems && this.tahsilatKalems.length ? this.tahsilatKalems.sort((a, b) => b.tahsilat.odemeTarihi.getTime() - a.tahsilat.odemeTarihi.getTime())[0] : null;
-        return sonTahsilatKalem.tahsilat;
+        let sonTahsilatKalem = this.tahsilatKalems && this.tahsilatKalems.length ? this.tahsilatKalems.filter(p=>p.tahsilat.durumu === TahsilatDurumu.Onaylandi).sort((a, b) => b.tahsilat.odemeTarihi.getTime() - a.tahsilat.odemeTarihi.getTime())[0] : null;
+        return sonTahsilatKalem && sonTahsilatKalem.tahsilat;
     }
     @Expose()
     public get faiz(): number {

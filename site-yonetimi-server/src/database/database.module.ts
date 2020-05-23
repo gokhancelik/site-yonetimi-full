@@ -22,6 +22,7 @@ import { KurulTipi } from 'src/kurul-tipi/kurul-tipi.entity';
 import { KurulUye } from 'src/kurul-uye/kurul-uye.entity';
 import { KurulUyeTipi } from 'src/kurul-uye-tipi/kurul-uye-tipi.entity';
 import { KisiCuzdan } from '../kisi-cuzdan/kisi-cuzdan.entity';
+import { OdemeAktarimi } from '../odeme-islemleri/odeme-aktarimi.dto';
 
 @Module({
     imports: [
@@ -63,7 +64,8 @@ import { KisiCuzdan } from '../kisi-cuzdan/kisi-cuzdan.entity';
                 KurulTipi,
                 KurulUye,
                 KurulUyeTipi,
-                KisiCuzdan
+                KisiCuzdan,
+                OdemeAktarimi
             ],
             synchronize: true,
         })

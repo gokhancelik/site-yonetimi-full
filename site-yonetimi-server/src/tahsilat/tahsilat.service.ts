@@ -23,22 +23,36 @@ export class TahsilatService extends BaseService<Tahsilat>{
         private readonly tahsilatSanalPosLogRepository: TahsilatSanalPosLogRepository) {
         super(repository);
     }
-    
+
     getTahsilatlarByUserId(userId: any): Promise<Tahsilat[]> {
         return this.repository.createQueryBuilder('tahsilat')
             .innerJoin('tahsilat.meskenKisi', 'mk')
             .where('mk.kisiId = :userId and durumu = 1', { userId })
             .getMany();
     }
-    getDagitilacakTahsilatlar(): Promise<Tahsilat[]> {
-        return this.repository.createQueryBuilder('tahsilat')
-            .innerJoinAndSelect('tahsilat.meskenKisi', 'mk')
-            .innerJoinAndSelect('tahsilat.tahsilatKalems', 'tk')
-            .innerJoinAndSelect('tk.odemeTipi', 'ot')
-            .where('tahsilat.durumu = 0')
-            .orderBy('tahsilat.odemeTarihi')
-            // .andWhere('tahsilat.odemeYontemi <> 0')
-            .getMany();
+    getDagitilacakTahsilatlar(): Promise<{
+        kisiId,
+        meskenKisiId, ad, soyad, odemeTarihi, toplamtutar, odemeYontemi
+    }[]> {
+        return this.repository.query(`
+        SELECT t.meskenKisiId, k.id kisiId, k.ad, k.soyad, t.odemeTarihi, t.odemeYontemi, sum(t.tutar) as toplamtutar, sum(t.kullanilanTutar) as kullanilanTutar
+        FROM [u8998566_zsity].[dbo]. Tahsilat t
+        join [TahsilatKalem] tk on tk.tahsilatId = t.id
+        join MeskenKisi mk on mk.id = t.meskenKisiId
+        join Kisi k on k.id = mk.kisiId
+        where t.durumu = 0 and t.tutar>0
+        group by t.meskenKisiId, k.id,k.ad, k.soyad, t.odemeTarihi, t.odemeYontemi
+        order by t.meskenKisiId, t.odemeTarihi asc
+        `);
+        // .createQueryBuilder('tahsilat')
+        //     .innerJoinAndSelect('tahsilat.tahsilatKalems', 'tk')
+        //     .innerJoinAndSelect('tahsilat.meskenKisi', 'mk')
+        //     .where('tahsilat.durumu = 0')
+        //     .orderBy('tahsilat.odemeTarihi')
+        //     // .andWhere('tahsilat.odemeYontemi <> 0')
+        //     .groupBy('tahsilat.meskenKisiId')
+        //     .gr('tahsilat.meskenKisiId')
+        //     .getMany();
     }
     getByTahakkukId(tahakkukId: string): Promise<Tahsilat[]> {
         throw new Error("Method not implemented.");

@@ -55,7 +55,7 @@ export class KisiCuzdanService {
         return this.repository.createQueryBuilder('cuzdan')
             .innerJoinAndSelect('cuzdan.tahsilat', 'tahsilat')
             .innerJoinAndSelect('tahsilat.meskenKisi', 'meskenKisi')
-            .innerJoinAndSelect('tahsilat.tahsilatKalems', 'tahsilatKalem')
+            .leftJoinAndSelect('tahsilat.tahsilatKalems', 'tahsilatKalem')
             .where('meskenKisi.id = :meskenKisiId and aktifMi = :aktifMi', { meskenKisiId: meskenKisiId, aktifMi: true })
             .printSql()
             .getOne();

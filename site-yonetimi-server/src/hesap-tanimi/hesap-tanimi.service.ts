@@ -9,4 +9,10 @@ export class HesapTanimiService extends BaseService<HesapTanimi>{
     constructor(repository: HesapTanimiRepository) {
         super(repository);
     }
+    findByAktarimId(aktarimId: string): Promise<HesapTanimi> {
+        return this.repository.createQueryBuilder('ht')
+            .where('ht.aktarimId = :aktarimId ', { aktarimId: aktarimId })
+            .getOne();
+    }
+
 }

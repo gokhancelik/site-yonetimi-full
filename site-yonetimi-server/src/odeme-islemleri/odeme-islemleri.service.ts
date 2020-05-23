@@ -17,6 +17,9 @@ import { TahsilatOlusturDto } from './tahsilat-olustur.dto';
 import { KisiCuzdanService } from '../kisi-cuzdan/kisi-cuzdan.service';
 import { MeskenKisiService } from '../mesken-kisi/mesken-kisi.service';
 import { TahsilatOlusturSonucuDto } from './tahsilat-olustur-sonucu.dto';
+import { OdemeAktarimi } from './odeme-aktarimi.dto';
+import { MeskenKisi } from '../mesken-kisi/mesken-kisi.entity';
+import { HesapTanimiService } from '../hesap-tanimi/hesap-tanimi.service';
 
 @Injectable()
 export class OdemeIslemleriService {
@@ -30,69 +33,96 @@ export class OdemeIslemleriService {
         private hesapHareketiService: HesapHareketiService,
         private tahsilatService: TahsilatService,
         private tahsilatSanalPosLogService: TahsilatSanalPosLogService,
+        private hesapTanimiService: HesapTanimiService,
         private gelirGiderTanimiService: GelirGiderTanimiService) {
     }
-    async odemeleriDagit(sanalPosKomisyonOrani: number) {
-        let tahsilatList = await this.tahsilatService.getDagitilacakTahsilatlar();
-        // let tahsilatList2 = tahsilatList.filter(p => p.meskenKisiId === '2EFFC39A-3882-EA11-80EE-887EF3F77D6E')
-        for (const tahsilat of tahsilatList) {
-            //tahsilat kalemlerini getir
-            //tahsilat kalemiyle ilişkili olabilecek tahakkuklari getir
-            // eskiden başlayarak öde 
-            if (!tahsilat.kullanilanTutar) {
-                tahsilat.kullanilanTutar = 0;
-            }
-            let tahakkuklar = await this.tahakkukService.getOdenmemisAidatlar(tahsilat.meskenKisi.kisiId);
-            for (const tk of tahsilat.tahsilatKalems) {
+    async odemeleriDagit(tahsilatlar: OdemeAktarimi[], sanalPosKomisyonOrani: number) {
+        // const tahsilatlar: { kisiId, meskenKisiId, ad, soyad, odemeTarihi, toplamtutar, odemeYontemi: OdemeYontemi }[] = await this.tahsilatService.getDagitilacakTahsilatlar();
+        let uniqueBagimsizBolumKods = [...new Set(tahsilatlar.map(p => p.bagimsizBolumKod))];
 
-                if (tahsilat.kullanilabilirMiktar === 0) {
-                    break;
+        for (const bagimsizBolumKod of uniqueBagimsizBolumKods) {
+            let kisiTahsilatlar = tahsilatlar.filter(p => p.bagimsizBolumKod === bagimsizBolumKod && p.odenenTutar > 0);
+            let meskenKisi: MeskenKisi = await this.meskenKisiService.getByMeskenKod(bagimsizBolumKod)
+            let uniqueOdemeTarihleri = [...new Set(kisiTahsilatlar.map(p => p.odemeTarihi))];
+            for (const tarih of uniqueOdemeTarihleri) {
+                let kisiTarihTahsilatlari = kisiTahsilatlar.filter(p => p.odemeTarihi === tarih);
+                let uniqueHesapKodlari = [...new Set(kisiTarihTahsilatlari.map(p => p.bankaKodu))];
+                let kalanTutar = 0;
+                for (const hesap of uniqueHesapKodlari) {
+                    let kisiHesapTarihTahsilatlari = kisiTarihTahsilatlari.filter(p => p.bankaKodu === hesap);
+                    let toplamTutar = kisiHesapTarihTahsilatlari.map(p => p.odenenTutar).reduce((p, c) => p + c, 0);
+                    let hesapTanim = await this.hesapTanimiService.findByAktarimId(hesap);
+                    let tahakkuklar = await this.tahakkukService.getOdenmemisAidatlar(meskenKisi.kisiId);
+                    let odemeYontemi = hesap === '08' ? OdemeYontemi.KrediKarti : hesap === 'DEVİR' ? OdemeYontemi.Devir : OdemeYontemi.KrediKarti;
+                    let yeniTahsilatSonucu = await this.tahsilatOlustur({ tahakkuks: tahakkuklar, tutar: toplamTutar + kalanTutar, odemeTarihi: tarih, odemeYontemi: odemeYontemi, komisyon: sanalPosKomisyonOrani });
+                    yeniTahsilatSonucu.hesapId = hesapTanim.id;
+                    let yeniTahsilatlar = await this.tahsilatKaydet(yeniTahsilatSonucu, TahsilatDurumu.Onaylandi);
+                    let yeniTahsilat = yeniTahsilatlar[0];
+                    kalanTutar = toplamTutar - yeniTahsilat.tutar;
                 }
-                let odemeTipis = [];
-                if (tk.odemeTipi.kod === 'FZ') {
-                    odemeTipis.push('01', '02', '03');
-                } else {
-                    odemeTipis.push(tk.odemeTipi.kod);
-                }
-                let iliskiliOlabilecekTahakkuklar = tahakkuklar.filter(tah => odemeTipis.includes(tah.odemeTipi.kod));
-                for (const tahakkuk of iliskiliOlabilecekTahakkuklar) {
-                    let kalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk, null);
-                    if (kalanTutar <= 0) {
-                        tahakkuk.durumu = AidatDurumu.Odendi;
-                        await this.tahakkukService.update(tahakkuk.id, tahakkuk);
-                        continue;
-                    }
-                    // tahakkuk.odemeTarihi = tahsilat.odemeTarihi;
-                    if (tahsilat.kullanilabilirMiktar > 0) {
-                        let odenecekTutar = 0;
-                        if (Math.round(kalanTutar * 100) >= Math.round(tahsilat.kullanilabilirMiktar * 100)) {
-                            odenecekTutar = tahsilat.kullanilabilirMiktar;
-                        }
-                        else {
-                            odenecekTutar = kalanTutar;
-                            tahakkuk.durumu = AidatDurumu.Odendi;
-                        }
-                        if (tahsilat.odemeYontemi === OdemeYontemi.KrediKarti) {
-                            odenecekTutar = odenecekTutar * sanalPosKomisyonOrani;//TODO: sanal pos ayarından gelmesi lazım
-                        }
-                        // tahakkuk.odenenTutar += odenecekTutar;
-                        // tahakkuk.sonTahsilatTarihi = tahsilat.odemeTarihi;
-                        tahsilat.kullanilanTutar += odenecekTutar;
-                        tk.tahakkukId = tahakkuk.id;
-
-                        await this.tahsilatService.update(tahsilat.id, tahsilat);
-                        await this.tahsilatKalemService.update(tk.id, tk);
-                        await this.tahakkukService.update(tahakkuk.id, tahakkuk);
-                    } else {
-                        break;
-                    }
-                }
-            }
-            if (tahsilat.kullanilabilirMiktar === 0) {
-                tahsilat.durumu = TahsilatDurumu.Onaylandi;
-                await this.tahsilatService.update(tahsilat.id, tahsilat);
             }
         }
+
+
+        // let tahsilatList2 = tahsilatList.filter(p => p.meskenKisiId === '2EFFC39A-3882-EA11-80EE-887EF3F77D6E')
+        // for (const tahsilat of tahsilatList) {
+        //     //tahsilat kalemlerini getir
+        //     //tahsilat kalemiyle ilişkili olabilecek tahakkuklari getir
+        //     // eskiden başlayarak öde 
+        //     if (!tahsilat.kullanilanTutar) {
+        //         tahsilat.kullanilanTutar = 0;
+        //     }
+        //     let tahakkuklar = await this.tahakkukService.getOdenmemisAidatlar(tahsilat.meskenKisi.kisiId);
+        //     for (const tk of tahsilat.tahsilatKalems) {
+
+        //         if (tahsilat.kullanilabilirMiktar === 0) {
+        //             break;
+        //         }
+        //         let odemeTipis = [];
+        //         if (tk.odemeTipi.kod === 'FZ') {
+        //             odemeTipis.push('01', '02', '03');
+        //         } else {
+        //             odemeTipis.push(tk.odemeTipi.kod);
+        //         }
+        //         let iliskiliOlabilecekTahakkuklar = tahakkuklar.filter(tah => odemeTipis.includes(tah.odemeTipi.kod));
+        //         for (const tahakkuk of iliskiliOlabilecekTahakkuklar) {
+        //             let kalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk, null);
+        //             if (kalanTutar <= 0) {
+        //                 tahakkuk.durumu = AidatDurumu.Odendi;
+        //                 await this.tahakkukService.update(tahakkuk.id, tahakkuk);
+        //                 continue;
+        //             }
+        //             // tahakkuk.odemeTarihi = tahsilat.odemeTarihi;
+        //             if (tahsilat.kullanilabilirMiktar > 0) {
+        //                 let odenecekTutar = 0;
+        //                 if (Math.round(kalanTutar * 100) >= Math.round(tahsilat.kullanilabilirMiktar * 100)) {
+        //                     odenecekTutar = tahsilat.kullanilabilirMiktar;
+        //                 }
+        //                 else {
+        //                     odenecekTutar = kalanTutar;
+        //                     tahakkuk.durumu = AidatDurumu.Odendi;
+        //                 }
+        //                 if (tahsilat.odemeYontemi === OdemeYontemi.KrediKarti) {
+        //                     odenecekTutar = odenecekTutar * sanalPosKomisyonOrani;//TODO: sanal pos ayarından gelmesi lazım
+        //                 }
+        //                 // tahakkuk.odenenTutar += odenecekTutar;
+        //                 // tahakkuk.sonTahsilatTarihi = tahsilat.odemeTarihi;
+        //                 tahsilat.kullanilanTutar += odenecekTutar;
+        //                 tk.tahakkukId = tahakkuk.id;
+
+        //                 await this.tahsilatService.update(tahsilat.id, tahsilat);
+        //                 await this.tahsilatKalemService.update(tk.id, tk);
+        //                 await this.tahakkukService.update(tahakkuk.id, tahakkuk);
+        //             } else {
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //     if (tahsilat.kullanilabilirMiktar === 0) {
+        //         tahsilat.durumu = TahsilatDurumu.Onaylandi;
+        //         await this.tahsilatService.update(tahsilat.id, tahsilat);
+        //     }
+        // }
     }
     // async tahsilatOnayla(tahsilatId: string, bankaSiparisNo: string, hesapId: string): Promise<Tahsilat> {
     //     let tahsilat = await this.tahsilatService.findById(tahsilatId);
@@ -285,10 +315,10 @@ export class OdemeIslemleriService {
                 tahsilatlar.push(cuzdanTahsilati);
             }
             if (!tutar) {
-                tahsilatlar.push(await this.tahakkuktanTahsilatOlustur(tahakkuklar, odemeTarihi, cuzdanTahsilati, odemeYontemi));
+                tahsilatlar.push(await this.tahakkuktanTahsilatOlustur(tahakkuklar, odemeTarihi, cuzdanTahsilati, odemeYontemi, dto.komisyon));
             }
             else {
-                let tahsilat = await this.tahakkukVeTutardanTahsilatOlustur(tahakkuklar, tutar, odemeTarihi, cuzdanTahsilati, odemeYontemi);
+                let tahsilat = await this.tahakkukVeTutardanTahsilatOlustur(tahakkuklar, tutar, odemeTarihi, cuzdanTahsilati, odemeYontemi, dto.komisyon);
                 if (tahsilat.kullanilabilirMiktar) {
                     sonuc.cuzdan = new KisiCuzdan();
                     sonuc.cuzdan.tutar = tahsilat.kullanilabilirMiktar;
@@ -343,9 +373,8 @@ export class OdemeIslemleriService {
         }
         return tahsilat;
     }
-    async tahakkukVeTutardanTahsilatOlustur(tahakkuklar: Tahakkuk[], tutar: number, odemeTarihi: Date, cuzdanTahsilati: Tahsilat, odemeYontemi: OdemeYontemi): Promise<Tahsilat> {
+    async tahakkukVeTutardanTahsilatOlustur(tahakkuklar: Tahakkuk[], tutar: number, odemeTarihi: Date, cuzdanTahsilati: Tahsilat, odemeYontemi: OdemeYontemi, komisyon: number): Promise<Tahsilat> {
         let tahsilat = new Tahsilat();
-        tahsilat.aciklama = tahakkuklar.map(m => m.aciklama).join(', ') + ' Ödemesi';
         tahsilat.durumu = TahsilatDurumu.Bekliyor;
         tahsilat.guncellemeTarihi = new Date();
         tahsilat.guncelleyen = 'username';
@@ -358,6 +387,12 @@ export class OdemeIslemleriService {
         tahsilat.tahsilatKalems = [];
         tahsilat.tutar = tutar;
         tahsilat.kullanilanTutar = 0;
+        let aciklama = [];
+        if (odemeYontemi === OdemeYontemi.KrediKarti) {
+            let komisyonKalemi = await this.bankaKomisyonuKalemiOlustur(tahsilat.tutar, komisyon);
+            tahsilat.tahsilatKalems.push(komisyonKalemi);
+            tahsilat.kullanilanTutar += komisyonKalemi.tutar;
+        }
         for (const tahakkuk of tahakkuklar) {
             var faizKalemi = await this.faizKalemiOlustur(tahakkuk, tahsilat.odemeTarihi, cuzdanTahsilati);
             if (faizKalemi.tutar > 0) {
@@ -381,6 +416,7 @@ export class OdemeIslemleriService {
                 tahakkukTahsilatKalemi.tutar = gecerliTahakkukKalanTutar;
                 tahsilat.tahsilatKalems.push(tahakkukTahsilatKalemi);
                 tahsilat.kullanilanTutar += tahakkukTahsilatKalemi.tutar;
+                aciklama.push(tahakkuk.aciklama);
             } else {
                 var tahakkukTahsilatKalemi = new TahsilatKalem();
                 tahakkukTahsilatKalemi.odemeTipiId = tahakkuk.odemeTipiId;
@@ -390,17 +426,19 @@ export class OdemeIslemleriService {
                 tahakkukTahsilatKalemi.tutar = tahsilat.kullanilabilirMiktar;
                 tahsilat.tahsilatKalems.push(tahakkukTahsilatKalemi);
                 tahsilat.kullanilanTutar += tahakkukTahsilatKalemi.tutar;
+                aciklama.push(tahakkuk.aciklama);
                 break;
             }
+
         }
+        tahsilat.aciklama = aciklama.join(', ') + ' Ödemesi';
         for (const thk of tahsilat.tahsilatKalems) {
             thk.tahsilatId = tahsilat.id;
         }
         return tahsilat;
     }
-    async tahakkuktanTahsilatOlustur(tahakkuklar: Tahakkuk[], odemeTarihi: Date, cuzdanTahsilati: Tahsilat, odemeYontemi: OdemeYontemi) {
+    async tahakkuktanTahsilatOlustur(tahakkuklar: Tahakkuk[], odemeTarihi: Date, cuzdanTahsilati: Tahsilat, odemeYontemi: OdemeYontemi, komisyon: number) {
         let tahsilat = new Tahsilat();
-        tahsilat.aciklama = tahakkuklar.map(m => m.aciklama).join(', ') + ' Ödemesi';
         tahsilat.durumu = TahsilatDurumu.Bekliyor;
         tahsilat.guncellemeTarihi = new Date();
         tahsilat.guncelleyen = 'username';
@@ -410,6 +448,12 @@ export class OdemeIslemleriService {
         tahsilat.olusturan = 'username';
         tahsilat.olusturmaTarihi = new Date();
         tahsilat.tahsilatKalems = [];
+        if (odemeYontemi === OdemeYontemi.KrediKarti) {
+            let komisyonKalemi = await this.bankaKomisyonuKalemiOlustur(tahsilat.tutar, komisyon);
+            tahsilat.tahsilatKalems.push(komisyonKalemi);
+            tahsilat.kullanilanTutar += komisyonKalemi.tutar;
+        }
+        let aciklama = [];
         for (const tahakkuk of tahakkuklar) {
             var faizKalemi = await this.faizKalemiOlustur(tahakkuk, tahsilat.odemeTarihi, cuzdanTahsilati);
             if (faizKalemi.tutar > 0) {
@@ -423,9 +467,11 @@ export class OdemeIslemleriService {
             tahakkukTahsilatKalemi.tahakkuk = tahakkuk;
             tahakkukTahsilatKalemi.tutar = kalanTutar;
             tahsilat.tahsilatKalems.push(tahakkukTahsilatKalemi);
+            aciklama.push(tahakkuk.aciklama);
         }
         var toplamTutar = tahsilat.tahsilatKalems.map(m => m.tutar).reduce((prev, current) => prev + current, 0);
         tahsilat.tutar = toplamTutar;
+        tahsilat.aciklama = aciklama.join(', ') + ' Ödemesi';
         for (const thk of tahsilat.tahsilatKalems) {
             thk.tahsilatId = tahsilat.id;
         }
@@ -537,7 +583,7 @@ export class OdemeIslemleriService {
     }
 
     async krediKartiTahsilatiOlustur(tahakkuklarDto: Tahakkuk[], komisyon: number): Promise<TahsilatOlusturSonucuDto> {
-        return this.tahsilatOlustur({ tahakkuks: tahakkuklarDto, odemeYontemi: OdemeYontemi.KrediKarti, odemeTarihi: new Date(), tutar: 0 })
+        return this.tahsilatOlustur({ tahakkuks: tahakkuklarDto, odemeYontemi: OdemeYontemi.KrediKarti, odemeTarihi: new Date(), tutar: 0, komisyon })
 
         // let tahakkuklar = await this.tahakkukService.findByIds(tahakkuklarDto.map(p => p.id))
         // return await this.connection.transaction(async manager => {

@@ -7,6 +7,7 @@ import { MeskenRepository } from '../mesken/mesken.repository';
 export class MeskenKisiService extends BaseService<MeskenKisi>{
 
 
+
     constructor(repository: MeskenKisiRepository) {
         super(repository);
     }
@@ -28,5 +29,12 @@ export class MeskenKisiService extends BaseService<MeskenKisi>{
             .innerJoinAndSelect('mk.kisi', 'k')
             .where('mk.meskenId = :meskenId', { meskenId: meskenId })
             .getMany();
+    }
+    async getByMeskenKod(bagimsizBolumKod: string): Promise<MeskenKisi> {
+        return this.repository.createQueryBuilder('mk')
+            .innerJoinAndSelect('mk.mesken', 'm')
+            .innerJoinAndSelect('mk.kisi', 'k')
+            .where('m.kod = :bagimsizBolumKod', { bagimsizBolumKod: bagimsizBolumKod })
+            .getOne();
     }
 }

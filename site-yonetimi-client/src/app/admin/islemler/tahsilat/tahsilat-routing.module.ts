@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { TahsilatComponent } from './tahsilat.component';
 import { TahsilatListComponent } from './tahsilat-list/tahsilat-list.component';
 import { TahsilatDetayComponent } from './tahsilat-detay/tahsilat-detay.component';
+import { TahsilatYukleComponent } from './tahsilat-yukle/tahsilat-yukle.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,10 @@ const routes: Routes = [
       {
         path: ':id/detay',
         component: TahsilatDetayComponent
+      },
+      {
+        path: 'tahsilat-yukle',
+        component: TahsilatYukleComponent
       }
     ]
   }];

@@ -1,6 +1,4 @@
 <data-table [dataSource]="dataSource" [title]="'Tahsilat Listesi'" [columns]="columns" [editMode]="'popup'"
-        [allowUpdating]="false"
-        [allowAdding]="false"
-        [allowDeleting]="false"
-    name="tahsilat" (onRowUpdating)="onRowUpdating($event)">
+    [allowUpdating]="false" [allowAdding]="false" [allowDeleting]="false"
+    (onToolbarPreparing)="onToolbarPreparing($event)" name="tahsilat" (onRowUpdating)="onRowUpdating($event)">
 </data-table>

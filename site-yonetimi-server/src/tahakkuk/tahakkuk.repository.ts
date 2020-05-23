@@ -22,6 +22,7 @@ export class TahakkukRepository extends BaseRepository<Tahakkuk> {
         })
         return aidatlar$;
     }
+
     public async getOdenmemisAidatlar(userId): Promise<Tahakkuk[]> {
         let today = new Date();
         let gelecekAy = new Date(today.getFullYear(), today.getMonth() + 1, 1);
@@ -29,13 +30,13 @@ export class TahakkukRepository extends BaseRepository<Tahakkuk> {
             this.find({
                 join: {
                     alias: 'tahakkuk',
-                    innerJoinAndSelect: {
-                        meskenKisi: 'tahakkuk.meskenKisi',
-                        odemeTipi: 'tahakkuk.odemeTipi',
+                    leftJoinAndSelect: {
                         tahsilatKalems: 'tahakkuk.tahsilatKalems',
                         tahsilat: 'tahsilatKalems.tahsilat',
+                        meskenKisi: 'tahakkuk.meskenKisi',
+                        odemeTipi: 'tahakkuk.odemeTipi',
                         tahsilatKalemOdemeTipi: 'tahsilatKalems.odemeTipi'
-                    }
+                    },
                 },
                 where: (qb: SelectQueryBuilder<Tahakkuk>) => {
                     qb.where({
@@ -43,12 +44,10 @@ export class TahakkukRepository extends BaseRepository<Tahakkuk> {
                         vadeTarihi: LessThanOrEqual(gelecekAy)
                     }).andWhere(
                         'meskenKisi.kisiId = :userId', { userId }
-                    ).andWhere(
-                        'tahsilat.durumu = :tahsilatDurumu', { tahsilatDurumu: TahsilatDurumu.Onaylandi }
                     )
                 },
                 order: {
-                    vadeTarihi: 'DESC'
+                    vadeTarihi: 'ASC'
                 }
             })
         return aidatlar$;

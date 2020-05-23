@@ -4,10 +4,12 @@ import { HesapTanimiService } from './hesap-tanimi.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HesapTanimi } from './hesap-tanimi.entity';
 import { DatabaseModule } from '../database/database.module';
+import { HesapTanimiRepository } from './hesap-tanimi.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([HesapTanimi]), DatabaseModule],
+  imports: [TypeOrmModule.forFeature([HesapTanimiRepository]), DatabaseModule],
   controllers: [HesapTanimiController],
-  providers: [HesapTanimiService]
+  providers: [HesapTanimiService],
+  exports: [HesapTanimiService]
 })
-export class HesapTanimiModule {}
+export class HesapTanimiModule { }

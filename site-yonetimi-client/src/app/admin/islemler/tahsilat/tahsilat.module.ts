@@ -11,9 +11,10 @@ import { NbCardModule } from '@nebular/theme';
 import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
 import { TahsilatKalemListComponent } from './tahsilat-kalem-list/tahsilat-kalem-list.component';
 import { DxPopupModule, DxDateBoxModule, DxSelectBoxModule, DxButtonModule, DxValidatorModule, DxTextBoxModule } from 'devextreme-angular';
+import { TahsilatYukleComponent } from './tahsilat-yukle/tahsilat-yukle.component';
 
 @NgModule({
-  declarations: [TahsilatComponent, TahsilatListComponent, TahsilatDetayComponent, TahsilatKalemListComponent],
+  declarations: [TahsilatComponent, TahsilatListComponent, TahsilatDetayComponent, TahsilatKalemListComponent, TahsilatYukleComponent],
   imports: [
     CommonModule,
     TahsilatRoutingModule,

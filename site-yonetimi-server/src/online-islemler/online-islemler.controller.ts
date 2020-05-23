@@ -1,4 +1,4 @@
-import { Controller, Get, Request, UseGuards, Post, Body, HttpService, HttpException, ClassSerializerInterceptor, UseInterceptors, Res, Param, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards, Post, Body, HttpService, HttpException, ClassSerializerInterceptor, UseInterceptors, Res, Param, ValidationPipe, Bind, UploadedFile } from '@nestjs/common';
 import { Tahakkuk, AidatDurumu } from '../tahakkuk/tahakkuk.entity';
 import { TahakkukService } from '../tahakkuk/tahakkuk.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -12,6 +12,9 @@ import { TahsilatSanalPosLog } from '../tahsilat/tahsilat-sanal-pos-log.entity';
 import { SanalPosService } from '../sanal-pos/sanal-pos.service';
 import { OdemeIslemleriService } from '../odeme-islemleri/odeme-islemleri.service';
 import { TahsilatOlusturSonucuDto } from '../odeme-islemleri/tahsilat-olustur-sonucu.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import xlsx from 'node-xlsx';
+import { OdemeAktarimi } from '../odeme-islemleri/odeme-aktarimi.dto';
 
 @ApiTags('Online İşlemler')
 @Controller('online-islemler')
@@ -73,10 +76,44 @@ export class OnlineIslemlerController {
     }
 
     // @UseGuards(AuthGuard('jwt'))
+    @UseInterceptors(FileInterceptor('file'))
     @Post('odemeleri-dagit')
-    async odemeleriDagit(): Promise<any> {
-        let sanaPos = await this.sanalPosService.getByKod('kuveyt-turk-sanal-pos');
-        this.odemeIslemleriService.odemeleriDagit(sanaPos.komisyon);
+    async odemeleriDagit(@UploadedFile() file): Promise<any> {
+        const workSheetsFromBuffer = xlsx.parse(file.buffer,
+            { raw: false }
+            //     {
+            //     type: 'binary',
+            //     cellDates: true,
+            //     cellNF: false,
+            //     cellText: false
+            // }
+        );
+        const result: OdemeAktarimi[] = [];
+        for (let i = 1; i < workSheetsFromBuffer[0].data.length; i++) {
+            const row: any[] = workSheetsFromBuffer[0].data[i];
+            if (row.length === 0) {
+                continue;
+            }
+            let dateParts = row[3].split('/')
+            let odemeAktarimi = new OdemeAktarimi();
+            odemeAktarimi.aktarimId = row[0],
+                odemeAktarimi.bagimsizBolumKod = row[2],
+                odemeAktarimi.odemeTarihi = new Date(Number('20' + dateParts[2]), dateParts[0] - 1, dateParts[1]),
+                odemeAktarimi.bankaKodu = row[9],
+                odemeAktarimi.aciklama = row[10],
+                odemeAktarimi.odemeSekli = row[8],
+                odemeAktarimi.odemeTipi = row[5],
+                odemeAktarimi.odenenTutar = Number(row[7].replace('.', '').replace(',', '.'))
+            result.push(odemeAktarimi);
+        }
+        await OdemeAktarimi.save(result, { chunk: 100 });
+        // let sanaPos = await this.sanalPosService.getByKod('kuveyt-turk-sanal-pos');
+        // await this.odemeIslemleriService.odemeleriDagit(result, sanaPos.komisyon);
+        // for (let i = 1; i < workSheetsFromBuffer[0].data.length; i++) {
+        //     result.push({
+        //         aktarimId: data[]
+        //     })
+
     }
     @Get(':logId/sanal-pos-log')
     getSanalPosLog(@Param('logId') logId: string): Promise<TahsilatSanalPosLog> {
