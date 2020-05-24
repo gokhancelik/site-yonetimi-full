@@ -95,63 +95,66 @@
         </div>
         <div class="col-6">
             <div class="card" *ngFor="let tahsilat of tahsilatSonucu?.tahsilatlar">
-                <h5 class="card-header">Ödeme Bilgileri</h5>
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Vade Tarihi
-                                </th>
-                                <th>
-                                    Ödeme Tipi
-                                </th>
-                                <th class="text-right">
-                                    Ödenecek Tutar
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <ng-container *ngFor="let tahsilatKalem of tahsilat?.tahsilatKalems">
+                <ng-container *ngIf="!tahsilat.id">
+
+                    <h5 class="card-header">Ödeme Bilgileri</h5>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        {{tahsilatKalem?.tahakkuk?.vadeTarihi|date}}
-                                    </td>
-                                    <td>
-                                        {{tahsilatKalem?.odemeTipi?.ad}}
-                                    </td>
-                                    <td class="text-right">
-                                        {{(tahsilatKalem?.tutar)| currency : 'TRY'}}
+                                    <th>
+                                        Vade Tarihi
+                                    </th>
+                                    <th>
+                                        Ödeme Tipi
+                                    </th>
+                                    <th class="text-right">
+                                        Ödenecek Tutar
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let tahsilatKalem of tahsilat?.tahsilatKalems">
+                                    <tr *ngIf="!tahsilatKalem.id">
+                                        <td>
+                                            {{tahsilatKalem?.tahakkuk?.vadeTarihi|date}}
+                                        </td>
+                                        <td>
+                                            {{tahsilatKalem?.odemeTipi?.ad}}
+                                        </td>
+                                        <td class="text-right">
+                                            {{(tahsilatKalem?.tutar)| currency : 'TRY'}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+
+                            </tbody>
+                            <tfoot>
+
+
+                                <tr>
+                                    <td colspan="2"><b> Kapatılacak Tahakkuk Toplamı:</b></td>
+                                    <td class="text-right"><b>
+                                            {{ tahsilat?.tutar - tahsilatSonucu.cuzdan?.tutar|currency: 'TRY'}}</b>
                                     </td>
                                 </tr>
-                            </ng-container>
+                                <tr class="alert alert-warning">
+                                    <td colspan="2"><b> Yatırılacak Tutar:</b></td>
+                                    <td class="text-right"><b>
+                                            {{ tahsilat?.tutar|currency: 'TRY'}}</b>
+                                    </td>
+                                </tr>
 
-                        </tbody>
-                        <tfoot>
-
-
-                            <tr>
-                                <td colspan="2"><b> Kapatılacak Tahakkuk Toplamı:</b></td>
-                                <td class="text-right"><b>
-                                        {{ tahsilat?.tutar - tahsilatSonucu.cuzdan?.tutar|currency: 'TRY'}}</b>
-                                </td>
-                            </tr>
-                            <tr class="alert alert-warning">
-                                <td colspan="2"><b> Yatırılacak Tutar:</b></td>
-                                <td class="text-right"><b>
-                                        {{ tahsilat?.tutar|currency: 'TRY'}}</b>
-                                </td>
-                            </tr>
-
-                            <tr *ngIf="tahsilatSonucu.cuzdan" class="alert alert-success">
-                                <td colspan="2"><b> Cüzdana Aktarılacak Tutar:</b></td>
-                                <td class="text-right"><b>
-                                        {{ tahsilatSonucu.cuzdan?.tutar|currency: 'TRY'}}</b>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
+                                <tr *ngIf="tahsilatSonucu.cuzdan" class="alert alert-success">
+                                    <td colspan="2"><b> Cüzdana Aktarılacak Tutar:</b></td>
+                                    <td class="text-right"><b>
+                                            {{ tahsilatSonucu.cuzdan?.tutar|currency: 'TRY'}}</b>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </ng-container>
             </div>
             <!-- <div class="alert alert-success" role="alert" *ngIf="tahsilatSonucu?.cuzdan">
                 <p>Cüzdana aktarılacak tutar: {{(tahsilatSonucu.cuzdan?.tutar)| currency : 'TRY'}}</p>

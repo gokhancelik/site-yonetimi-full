@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BaseService } from '../abstract/base.service';
 import { Tahakkuk, AidatDurumu } from './tahakkuk.entity';
 import { TahakkukRepository } from './tahakkuk.repository';
-import { EntityManager, Between, LessThanOrEqual, SelectQueryBuilder } from 'typeorm';
+import { EntityManager, Between, LessThanOrEqual, SelectQueryBuilder, In } from 'typeorm';
 import { MeskenRepository } from 'src/mesken/mesken.repository';
 import { MeskenService } from 'src/mesken/mesken.service';
 import { MeskenKisiService } from 'src/mesken-kisi/mesken-kisi.service';
@@ -39,7 +39,23 @@ export class TahakkukService extends BaseService<Tahakkuk> {
         return this._repository.getOdenmisAidatlar(userId);
     }
     findByIds(selectedTahakkuks: string[]): Promise<Tahakkuk[]> {
-        return this._repository.findByIds(selectedTahakkuks);
+        return this._repository.find({
+            join: {
+                alias: 'tahakkuk',
+                leftJoinAndSelect: {
+                    meskenKisi: 'tahakkuk.meskenKisi',
+                    odemeTipi: 'tahakkuk.odemeTipi',
+                    tahsilatKalems: 'tahakkuk.tahsilatKalems',
+                    tahsilat: 'tahsilatKalems.tahsilat'
+                }
+            },
+            order: {
+                vadeTarihi: 'ASC'
+            },
+            where: {
+                id: In(selectedTahakkuks)
+            }
+        });
     }
     findAll(): Promise<Tahakkuk[]> {
         return this._repository.find({
@@ -53,7 +69,7 @@ export class TahakkukService extends BaseService<Tahakkuk> {
                 }
             },
             order: {
-                vadeTarihi: 'DESC'
+                vadeTarihi: 'ASC'
             }
         });
     }

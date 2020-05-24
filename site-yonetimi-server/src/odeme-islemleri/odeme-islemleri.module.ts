@@ -9,6 +9,7 @@ import { OdemeIslemleriController } from './odeme-islemleri.controller';
 import { KisiCuzdanModule } from '../kisi-cuzdan/kisi-cuzdan.module';
 import { MeskenKisiModule } from '../mesken-kisi/mesken-kisi.module';
 import { HesapTanimiModule } from '../hesap-tanimi/hesap-tanimi.module';
+import { SanalPosModule } from '../sanal-pos/sanal-pos.module';
 
 @Module({
   imports: [

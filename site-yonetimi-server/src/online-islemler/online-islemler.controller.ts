@@ -14,7 +14,7 @@ import { OdemeIslemleriService } from '../odeme-islemleri/odeme-islemleri.servic
 import { TahsilatOlusturSonucuDto } from '../odeme-islemleri/tahsilat-olustur-sonucu.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import xlsx from 'node-xlsx';
-import { OdemeAktarimi } from '../odeme-islemleri/odeme-aktarimi.dto';
+import { OdemeAktarimi } from '../odeme-islemleri/odeme-aktarimi.entity';
 
 @ApiTags('Online İşlemler')
 @Controller('online-islemler')

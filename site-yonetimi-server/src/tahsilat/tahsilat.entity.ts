@@ -52,6 +52,6 @@ export class Tahsilat extends BaseEntity {
 
     @Expose()
     public get kullanilabilirMiktar(): number {
-        return this.tutar - this.kullanilanTutar;
+        return Number(this.tutar.toFixed(3)) - Number(this.kullanilanTutar.toFixed(3));
     }
 }

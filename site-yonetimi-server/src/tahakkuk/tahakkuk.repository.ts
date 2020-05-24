@@ -17,7 +17,7 @@ export class TahakkukRepository extends BaseRepository<Tahakkuk> {
                 }
             },
             order: {
-                vadeTarihi: 'DESC'
+                vadeTarihi: 'ASC'
             },
         })
         return aidatlar$;
@@ -74,7 +74,7 @@ export class TahakkukRepository extends BaseRepository<Tahakkuk> {
                     )
                 },
                 order: {
-                    vadeTarihi: 'DESC'
+                    vadeTarihi: 'ASC'
                 }
             })
         return aidatlar$;

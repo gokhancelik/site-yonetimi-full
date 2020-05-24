@@ -1,5 +1,6 @@
 import { BaseEntity } from "../abstract/base.entity";
 import { Column, PrimaryColumn, Entity } from "typeorm";
+import { Expose } from "class-transformer";
 @Entity({ name: 'OdemeAktarimi' })
 export class OdemeAktarimi extends BaseEntity {
     @Column({ nullable: true })
@@ -16,4 +17,16 @@ export class OdemeAktarimi extends BaseEntity {
     bankaKodu: string;
     @Column({ nullable: true })
     aciklama: string;
+    @Column({ nullable: true })
+    makbuzNo: string;
+    @Column({ type: 'money', nullable: false, default: 0 })
+    islenenTutar: number;
+    @Expose()
+    get kalanTutar(): number {
+        return Number(this.odenenTutar.toFixed(3)) - Number(this.islenenTutar.toFixed(3));
+    }
+    @Expose()
+    get islendiMi(): boolean {
+        return this.kalanTutar <= 0;
+    }
 }

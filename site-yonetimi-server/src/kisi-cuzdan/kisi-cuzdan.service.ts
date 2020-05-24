@@ -8,13 +8,21 @@ export class KisiCuzdanService {
 
     constructor(private repository: KisiCuzdanRepository) {
     }
-    async create(entity: KisiCuzdan, kisiId: string): Promise<KisiCuzdan> {
+    async create(tutar: number, tahsilatId: string, kisiId: string): Promise<KisiCuzdan> {
         await this.eskiKayitlariPasifYap(kisiId);
+        let entity = new KisiCuzdan();
+        entity.tahsilatId = tahsilatId;
+        entity.tutar = tutar;
+        entity.aktifMi = true;
         await this.repository.save(entity);
         return entity;
     }
-    async createByMeskenKisiId(entity: KisiCuzdan, meskenKisiId: string): Promise<KisiCuzdan> {
+    async createByMeskenKisiId(tutar: number, tahsilatId: string, meskenKisiId: string): Promise<KisiCuzdan> {
         await this.eskiKayitlariPasifYapMeskenKisiId(meskenKisiId);
+        let entity = new KisiCuzdan();
+        entity.tahsilatId = tahsilatId;
+        entity.tutar = tutar;
+        entity.aktifMi = true;
         await this.repository.save(entity);
         return entity;
     }
