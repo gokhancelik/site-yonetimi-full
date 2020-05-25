@@ -35,7 +35,6 @@ export class KurulUyeListComponent extends BaseListComponent<KurulUye> implement
         }
       },
       insert: (values) => {
-        console.log(values);
         return this.service.add(values).toPromise();
       },
       update: (key, values) => {

@@ -2,6 +2,7 @@ import { Injector } from '@angular/core';
 import { GelirGiderTanimService } from '../../tanimlamalar/gelir-gider-tanim/gelir-gider-tanim.service';
 import { of } from 'rxjs';
 import { MeskenService } from '../../tanimlamalar/mesken/mesken.service';
+import { FirmaService } from '../../tanimlamalar/firma/firma.service';
 
 export enum BorcDurumu {
     Odenmedi,
@@ -19,6 +20,7 @@ export class Borc {
     durumu: BorcDurumu;
     islemTipiId: string;
     tahakkukOlusturulduMu: boolean;
+    firmaId: string;
 
     colDefs(injector: Injector) {
         return [{
@@ -102,6 +104,26 @@ export class Borc {
                 customParams: {
                     detailKey: 'meskenId',
                     routerLink: ['/admin', 'tanimlamalar', 'mesken', ':meskenId', 'detay']
+                },
+            },
+            cellTemplate: 'detailLink',
+            visible: true,
+        },
+        {
+            key: 'firmaId',
+            name: 'Firma',
+            type: 'select',
+            validators: [{
+                type: 'required',
+                message: 'Firma zorunludur',
+            }],
+            editorOptions: {
+                itemsAsync: injector.get(FirmaService).getList(),
+                displayExpr: 'ad',
+                valueExpr: 'id',
+                customParams: {
+                    detailKey: 'firmaId',
+                    routerLink: ['/admin', 'tanimlamalar', 'firma', ':firmaId', 'detay']
                 },
             },
             cellTemplate: 'detailLink',

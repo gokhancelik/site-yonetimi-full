@@ -28,6 +28,7 @@ import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
     DetayGorunumuModule,
     NbCardModule,
     NgbTabsetModule
-  ]
+  ],
+  exports: [BorcListComponent]
 })
 export class BorcModule { }

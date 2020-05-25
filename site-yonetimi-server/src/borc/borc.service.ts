@@ -9,6 +9,7 @@ import { HareketTipi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entity';
 
 @Injectable()
 export class BorcService extends BaseService<Borc> {
+    
     constructor(repository: BorcRepository,
         private hesapHareketiService: HesapHareketiService) {
         super(repository);
@@ -26,4 +27,9 @@ export class BorcService extends BaseService<Borc> {
         await this.hesapHareketiService.create(hesapHareketi);
         return this.update(id, borc);
     }
-}
+    getBorcByFirmaId(firmaId: string): Promise<Borc[]> {
+        return this.repository.createQueryBuilder('borc')
+        .where('borc.firmaId = :firmaId', { firmaId })
+        .getMany();
+    }
+}       

@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, Input } from '@angular/core';
 import { BaseListComponent } from 'src/app/admin/base-list.component';
 import { Borc, BorcDurumu } from '../borc.model';
 import { BorcService } from '../borc.service';
@@ -8,6 +8,7 @@ import { HesapTanimiService } from 'src/app/admin/tanimlamalar/hesap-tanimi/hesa
 import { TahakkukService } from '../../tahakkuk/tahakkuk-service';
 import { FaizGrubu } from 'src/app/admin/tanimlamalar/faiz-grubu/faiz-grubu.model';
 import { FaizGrubuService } from 'src/app/admin/tanimlamalar/faiz-grubu/faiz-grubu.service';
+import CustomStore from 'devextreme/data/custom_store';
 
 @Component({
   selector: 'app-borc-list',
@@ -15,6 +16,7 @@ import { FaizGrubuService } from 'src/app/admin/tanimlamalar/faiz-grubu/faiz-gru
   styleUrls: ['./borc-list.component.scss']
 })
 export class BorcListComponent extends BaseListComponent<Borc> implements OnInit {
+  @Input() firmaId;
   columns: any[];
   hesaptanimi: any = {};
   hesapTanimlari: HesapTanimi[];
@@ -27,12 +29,12 @@ export class BorcListComponent extends BaseListComponent<Borc> implements OnInit
   popupVisibleOde = false;
   popupVisibleTahakkuk = false;
 
-  constructor(service: BorcService,
+  constructor(private _service: BorcService,
     private hesapTanimiService: HesapTanimiService,
     private tahakkukService: TahakkukService,
     private faizGrupService: FaizGrubuService,
     injector: Injector) {
-    super(service, injector, Borc);
+    super(_service, injector, Borc);
 
     this.hesapTanimiService.getList<HesapTanimi>()
       .subscribe(d => {
@@ -42,6 +44,29 @@ export class BorcListComponent extends BaseListComponent<Borc> implements OnInit
     this.faizGrupService.getList<FaizGrubu>()
     .subscribe(d => {
       this.faizGruplari = d;
+    });
+  }
+  ngOnInit() {
+    this.dataSource = new CustomStore({
+      key: 'id',
+      loadMode: 'raw',
+      load: () => {
+        if (this.firmaId) {
+          return this._service.getBorcByFirmaId(this.firmaId).toPromise();
+        }
+        else{
+          return this._service.getList().toPromise();
+        }
+      },
+      insert: (values) => {
+        return this.service.add(values).toPromise();
+      },
+      update: (key, values) => {
+        return this.service.update(key, values).toPromise();
+      },
+      remove: (key) => {
+        return this.service.delete(key).toPromise();
+      },
     });
   }
 
@@ -85,7 +110,7 @@ export class BorcListComponent extends BaseListComponent<Borc> implements OnInit
   }
 
   ode(e) {
-    (this.service as BorcService).ode(this.selectedBorc.id, this.hesapHareketi)
+    (this._service as BorcService).ode(this.selectedBorc.id, this.hesapHareketi)
       .subscribe(d => {
         this.popupVisibleOde = false;
         this.grid.instance.refresh();
@@ -98,5 +123,10 @@ export class BorcListComponent extends BaseListComponent<Borc> implements OnInit
         this.popupVisibleTahakkuk = false;
         this.grid.instance.refresh();
       })
+  }
+  onInitNewRow(e) {
+    if(this.firmaId){
+      (e.data as Borc).firmaId = this.firmaId;
+    }
   }
 }

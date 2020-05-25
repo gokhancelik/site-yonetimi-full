@@ -22,6 +22,9 @@ import { KurulUyeComponent } from './kurul-uye/kurul-uye.component';
 import { KurulUyeListComponent } from './kurul-uye/kurul-uye-list/kurul-uye-list.component';
 import { KurulUyeTipiComponent } from './kurul-uye-tipi/kurul-uye-tipi.component';
 import { KurulUyeTipiListComponent } from './kurul-uye-tipi/kurul-uye-tipi-list/kurul-uye-tipi-list.component';
+import { FirmaComponent } from './firma/firma.component';
+import { FirmaListComponent } from './firma/firma-list/firma-list.component';
+import { FirmaDetayComponent } from './firma/firma-detay/firma-detay.component';
 
 const routes: Routes = [
   {
@@ -132,6 +135,20 @@ const routes: Routes = [
       }
     ]
   },
+  {
+    path: 'firma',
+    component: FirmaComponent,
+    children: [
+      {
+        path: 'list',
+        component: FirmaListComponent
+      },
+      {
+        path: ':id/detay',
+        component: FirmaDetayComponent
+      }
+    ]
+  }
 ];
 
 @NgModule({

@@ -8,12 +8,13 @@ import { Borc } from './borc.model';
   providedIn: 'root'
 })
 export class BorcService extends BaseCrudService {
-
-
   constructor(http: HttpClient) {
     super(http, 'borc');
   }
   ode(id: string, hesapHareketi: { tutar?: number; odemeTarihi?: Date; hesapId?: string; }): Observable<Borc> {
     return this.http.put<Borc>(`${this.baseUrl}${this.path}/${id}/ode`, hesapHareketi);
+  }
+  getBorcByFirmaId(firmaId: string): Observable<Borc[]> {
+    return this.http.get<Borc[]>(`${this.baseUrl}${this.path}/${firmaId}/borcs`);
   }
 }

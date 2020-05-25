@@ -1,0 +1,24 @@
+<nb-card *ngIf="model">
+    <nb-card-header>
+        <div class="row">
+            <div class="col-6">
+                <span>{{model?.ad}}-{{model?.kod}}</span>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <detay-gorunumu [colDefs]="columns" [model]="model" [readOnly]="true"></detay-gorunumu>
+    </nb-card-body>
+</nb-card>
+<nb-card>
+    <nb-card-header></nb-card-header>
+    <nb-card-body>
+        <ngb-tabset>
+            <ngb-tab title="Borç Listesi">
+                <ng-template ngbTabContent>
+                    <app-borc-list [firmaId]="id"></app-borc-list>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
+    </nb-card-body>
+</nb-card>

@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { BaseEntity } from "../abstract/base.entity";
 import { Mesken } from "../mesken/mesken.entity";
+import { Firma } from "src/firma/firma.entity";
 
 export enum BorcDurumu {
     Odenmedi,
@@ -40,4 +41,10 @@ export class Borc extends BaseEntity {
     
     @Column({  default: false })
     tahakkukOlusturulduMu: boolean;
+
+    @Column({ type: 'uuid', nullable: true })
+    firmaId?: string;
+
+    @ManyToOne(type => Firma)
+    firma?: Firma;
 }

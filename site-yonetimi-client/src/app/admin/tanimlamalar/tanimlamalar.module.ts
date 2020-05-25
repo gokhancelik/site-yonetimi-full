@@ -33,14 +33,20 @@ import { KurulUyeComponent } from './kurul-uye/kurul-uye.component';
 import { KurulUyeListComponent } from './kurul-uye/kurul-uye-list/kurul-uye-list.component';
 import { KurulUyeTipiComponent } from './kurul-uye-tipi/kurul-uye-tipi.component';
 import { KurulUyeTipiListComponent } from './kurul-uye-tipi/kurul-uye-tipi-list/kurul-uye-tipi-list.component';
+import { FirmaComponent } from './firma/firma.component';
+import { FirmaListComponent } from './firma/firma-list/firma-list.component';
+import { FirmaDetayComponent } from './firma/firma-detay/firma-detay.component';
+import { BorcModule } from '../islemler/borc/borc.module';
 
 
 @NgModule({
   declarations: [ AidatGrubuComponent, AidatGrubuListComponent,
     MeskenComponent,MeskenListComponent, MeskenKisiListComponent, MeskenDetayComponent,
     HesapTanimiComponent, HesapTanimiListComponent, KisiComponent, KisiListComponent,
-    FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent,KisiDetayComponent, OdenmemisTahakkukListComponent, OdenmisTahakkukListComponent, TahsilatListComponent, 
-    KurulTipiComponent, KurulTipiListComponent, KurulUyeComponent, KurulUyeListComponent,PersonelComponent,PersonelListComponent, KurulUyeTipiComponent, KurulUyeTipiListComponent
+    FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent,
+    KisiDetayComponent, OdenmemisTahakkukListComponent, OdenmisTahakkukListComponent, TahsilatListComponent, 
+    KurulTipiComponent, KurulTipiListComponent, KurulUyeComponent, KurulUyeListComponent,PersonelComponent,PersonelListComponent, KurulUyeTipiComponent, KurulUyeTipiListComponent,
+    FirmaComponent, FirmaListComponent, FirmaDetayComponent
     ],
   imports: [
     CommonModule,
@@ -55,7 +61,8 @@ import { KurulUyeTipiListComponent } from './kurul-uye-tipi/kurul-uye-tipi-list/
     FormsModule,
     DetayGorunumuModule,
     NbCardModule,
-    NgbTabsetModule
+    NgbTabsetModule,
+    BorcModule
   ]
 })
 export class TanimlamalarModule { }

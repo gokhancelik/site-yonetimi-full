@@ -26,6 +26,7 @@ import { KurulUyeModule } from './kurul-uye/kurul-uye.module';
 import { KurulUyeTipiModule } from './kurul-uye-tipi/kurul-uye-tipi.module';
 import { OdemeIslemleriModule } from './odeme-islemleri/odeme-islemleri.module';
 import { KisiCuzdanModule } from './kisi-cuzdan/kisi-cuzdan.module';
+import { FirmaModule } from './firma/firma.module';
 @Module({
   imports: [DatabaseModule,
     BorcModule,
@@ -50,7 +51,8 @@ import { KisiCuzdanModule } from './kisi-cuzdan/kisi-cuzdan.module';
     KurulUyeModule,
     KurulUyeTipiModule,
     OdemeIslemleriModule,
-    KisiCuzdanModule
+    KisiCuzdanModule,
+    FirmaModule
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],
