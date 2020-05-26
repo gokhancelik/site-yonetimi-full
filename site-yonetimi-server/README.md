@@ -73,3 +73,15 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
   Nest is [MIT licensed](LICENSE).
+
+## Docker build
+
+docker build -t registry.gitlab.com/zelektronik/site-yonetimi-applications/site-yonetimi-full/server:latest .
+
+## Docker Push Gitlab
+
+docker push registry.gitlab.com/zelektronik/site-yonetimi-applications/site-yonetimi-full/server
+
+## Docker virtual host
+
+docker run -d --name aidat-takip-demo-api --expose 80 --net nginx-proxy -e VIRTUAL_HOST=aidattakip.site registry.gitlab.com/zelektronik/site-yonetimi-applications/site-yonetimi-full/server:latest
