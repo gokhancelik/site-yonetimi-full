@@ -5,11 +5,13 @@ import { WebSiteRoutingModule } from './web-site-routing.module';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModule } from '../auth/auth.module';
 import { DataTableModule } from '../data-table/data-table.module';
+import { AnaSayfaComponent } from './ana-sayfa/ana-sayfa.component';
+import { DuyurularComponent } from './ana-sayfa/duyurular/duyurular.component';
 
 
 
 @NgModule({
-  declarations: [WebSiteComponent],
+  declarations: [WebSiteComponent, AnaSayfaComponent, DuyurularComponent],
   imports: [
     CommonModule,
     WebSiteRoutingModule,

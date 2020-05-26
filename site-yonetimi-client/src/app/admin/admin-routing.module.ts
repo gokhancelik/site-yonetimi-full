@@ -21,6 +21,11 @@ const routes: Routes = [{
       path: 'sistem-ayarlari',
       loadChildren: () => import('./sistem-ayarlari/sistem-ayarlari.module')
         .then(m => m.SistemAyarlariModule),
+    },
+    {
+      path: 'icerik-yonetimi',
+      loadChildren: () => import('./icerik-yonetimi/icerik-yonetimi.module')
+        .then(m => m.IcerikYonetimiModule),
     }
   ]
 }];

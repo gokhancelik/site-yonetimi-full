@@ -27,6 +27,19 @@ export class AdminComponent implements OnInit {
       ]
     },
     {
+      title: 'İçerik Yönetimi',
+      icon: 'cog',
+      children: [
+        {
+          title: 'Duyurular',
+          link: '/admin/icerik-yonetimi/duyurular/list',
+          icon: {
+            icon: '',
+          },
+        }
+      ]
+    },
+    {
       title: 'Tanımlamalar',
       icon: 'cog',
       children: [
