@@ -9,6 +9,7 @@ import { map } from 'rxjs/internal/operators/map';
 })
 export class HesapHareketleriService extends BaseCrudService {
 
+
   constructor(http: HttpClient) {
     super(http, 'hesapHareketi');
   }
@@ -16,6 +17,9 @@ export class HesapHareketleriService extends BaseCrudService {
     return this.http.get<Array<HesapHareketi>>(`${this.baseUrl}${this.path}/withInnerModel`).pipe(map(d => {
       return d;
     }));
+  }
+  transfer(dto: any) {
+    return this.http.post<any>(`${this.baseUrl}${this.path}/transfer`, dto);
   }
   upload(file: { data: File, fileName: string }): Observable<any> {
     const content_ = new FormData();

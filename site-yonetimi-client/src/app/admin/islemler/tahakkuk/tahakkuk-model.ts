@@ -58,6 +58,55 @@ export class TahakkukModel {
                 format: {
                     type: 'currency',
                 },
+                readOnly: true
+            },
+        },
+        {
+            key: 'kalanAnaPara',
+            name: 'Kalan Ana Para',
+            type: 'number',
+            visible: true,
+            format: {
+                type: 'currency',
+                precision: 2
+            },
+            editorOptions: {
+                format: {
+                    type: 'currency',
+                },
+                readOnly: true
+            },
+        },
+        {
+            key: 'faiz',
+            name: 'Kalan Faiz',
+            type: 'number',
+            visible: true,
+            format: {
+                type: 'currency',
+                precision: 2
+            },
+            editorOptions: {
+                format: {
+                    type: 'currency',
+                },
+                readOnly: true
+            },
+        },
+        {
+            key: 'odenenFaiz',
+            name: 'Ödenen Faiz',
+            type: 'number',
+            visible: true,
+            format: {
+                type: 'currency',
+                precision: 2
+            },
+            editorOptions: {
+                format: {
+                    type: 'currency',
+                },
+                readOnly: true
             },
         },
         {

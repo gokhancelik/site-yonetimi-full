@@ -15,7 +15,7 @@ export class AdminComponent implements OnInit {
   menu: NbMenuItem[] = [
     {
       title: 'Sistem Ayarları',
-      icon: 'cog',
+      icon: 'tools',
       children: [
         {
           title: 'Sanal Pos',
@@ -28,7 +28,7 @@ export class AdminComponent implements OnInit {
     },
     {
       title: 'İçerik Yönetimi',
-      icon: 'cog',
+      icon: 'file-alt',
       children: [
         {
           title: 'Duyurular',
@@ -69,7 +69,7 @@ export class AdminComponent implements OnInit {
         {
           title: 'Personel',
           link: '/admin/tanimlamalar/personel/list',
-          icon: 'user'
+          icon: 'user-tag'
         },
         {
           title: 'Aidat Grupları',
@@ -99,17 +99,17 @@ export class AdminComponent implements OnInit {
         {
           title: 'Kurul Uye',
           link: '/admin/tanimlamalar/kurul-uye/list',
-          icon: 'user'
+          icon: 'user-tie'
         },
         {
           title: 'Kurul Uye Tipi',
           link: '/admin/tanimlamalar/kurul-uye-tipi/list',
-          icon: 'user'
+          icon: 'users'
         },
         {
           title: 'Firma',
           link: '/admin/tanimlamalar/firma/list',
-          icon: 'user'
+          icon: 'building'
         },
       ]
     },

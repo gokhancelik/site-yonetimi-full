@@ -106,13 +106,8 @@ export class OnlineIslemlerController {
                 odemeAktarimi.odenenTutar = Number(row[7].replace('.', '').replace(',', '.'))
             result.push(odemeAktarimi);
         }
-        await OdemeAktarimi.save(result, { chunk: 100 });
-        // let sanaPos = await this.sanalPosService.getByKod('kuveyt-turk-sanal-pos');
-        // await this.odemeIslemleriService.odemeleriDagit(result, sanaPos.komisyon);
-        // for (let i = 1; i < workSheetsFromBuffer[0].data.length; i++) {
-        //     result.push({
-        //         aktarimId: data[]
-        //     })
+        await OdemeAktarimi.save(result, { chunk: 1000 });
+        // return result;
 
     }
     @Get(':logId/sanal-pos-log')

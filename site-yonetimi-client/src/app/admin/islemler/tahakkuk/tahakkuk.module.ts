@@ -7,7 +7,7 @@ import { TahakkukListComponent } from './tahakkuk-list/tahakkuk-list.component';
 import { DataTableModule } from 'src/app/data-table/data-table.module';
 import { DetayGorunumuModule } from '../../../detay-gorunumu/detay-gorunumu.module';
 import { NbCardModule } from '@nebular/theme';
-import { NgbTabsetModule, NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTabsetModule, NgbDatepickerModule, NgbModule, NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { DxPopupModule, DxDateBoxModule, DxSelectBoxModule, DxButtonModule, DxValidatorModule, DxTextBoxModule, DxNumberBoxModule } from 'devextreme-angular';
 import { FormsModule } from '@angular/forms';
 import { TahakkukOdeComponent } from './tahakkuk-ode/tahakkuk-ode.component';
@@ -17,7 +17,7 @@ import { TahakkukOdeComponent } from './tahakkuk-ode/tahakkuk-ode.component';
   declarations: [TahakkukComponent, TahakkukListComponent, TahakkukOdeComponent],
   imports: [
     CommonModule,
-    TahakkukRoutingModule, 
+    TahakkukRoutingModule,
     DataTableModule,
     DetayGorunumuModule,
     NbCardModule,
@@ -32,6 +32,9 @@ import { TahakkukOdeComponent } from './tahakkuk-ode/tahakkuk-ode.component';
     FormsModule,
     NgbDatepickerModule,
     NgbModule
+  ],
+  providers: [
+    { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }
   ]
 })
 export class TahakkukModule { }

@@ -38,8 +38,16 @@
             <form #form="ngForm" novalidate>
                 <div class="form-group">
                     <label for="odemeTarihi">Ödeme Tarihi</label>
-                    <input type="date" class="form-control" id="odemeTarihi" name="odemeTarihi" required
-                        [(ngModel)]="tahsilatOlusturDto.odemeTarihi">
+                    <div class="input-group">
+                        <input type="text" ngbDatepicker #d="ngbDatepicker" placeholder="yyyy-aa-gg"
+                            class="form-control" id="odemeTarihi" name="odemeTarihi" required
+                            [(ngModel)]="tahsilatOlusturDto.odemeTarihi">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="form-group">
                     <label for="tutar">Tutar</label>
@@ -130,8 +138,6 @@
 
                             </tbody>
                             <tfoot>
-
-
                                 <tr>
                                     <td colspan="2"><b> Kapatılacak Tahakkuk Toplamı:</b></td>
                                     <td class="text-right"><b>

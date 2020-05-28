@@ -4,5 +4,5 @@ import { BaseRepository } from 'typeorm-transactional-cls-hooked';
 
 @EntityRepository(HesapHareketi)
 export class HesapHareketiRepository extends BaseRepository<HesapHareketi> {
-
+    
 }

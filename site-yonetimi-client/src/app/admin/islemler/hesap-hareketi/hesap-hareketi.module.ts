@@ -7,19 +7,28 @@ import { HesapHareketiListComponent } from './hesap-hareketi-list/hesap-hareketi
 import { DataTableModule } from 'src/app/data-table/data-table.module';
 import { DetayGorunumuModule } from '../../../detay-gorunumu/detay-gorunumu.module';
 import { NbCardModule } from '@nebular/theme';
-import { NgbTabsetModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTabsetModule, NgbDatepickerModule, NgbDateAdapter, NgbDateNativeAdapter, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HesapHareketiYukleComponent } from './hesap-hareketi-yukle/hesap-hareketi-yukle.component';
+import { HesaplarArasiTransferComponent } from './hesaplar-arasi-transfer/hesaplar-arasi-transfer.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [HesapHareketiComponent, HesapHareketiListComponent, HesapHareketiYukleComponent],
+  declarations: [HesapHareketiComponent, HesapHareketiListComponent, HesapHareketiYukleComponent, HesaplarArasiTransferComponent],
   imports: [
     CommonModule,
     HesapHareketiRoutingModule,
     DataTableModule,
     DetayGorunumuModule,
     NbCardModule,
-    NgbTabsetModule
-  ]
+    NgbTabsetModule,
+    FormsModule,
+    NgbDatepickerModule,
+    NgbModule
+  ],
+  providers: [
+    { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }
+  ],
+  entryComponents: [HesaplarArasiTransferComponent]
 })
 export class HesapHareketiModule { }

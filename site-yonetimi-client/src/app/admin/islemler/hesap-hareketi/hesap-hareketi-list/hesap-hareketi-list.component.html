@@ -1,4 +1,4 @@
 <data-table [dataSource]="dataSource" [title]="'Hesap Hareketleri'" [columns]="columns" [editMode]="'popup'"
     name="hesapHareketleri" (onRowUpdating)="onRowUpdating($event)" (onToolbarPreparing)="onToolbarPreparing($event)"
-    [allowAdding]="false" [allowDeleting]="false" [allowUpdating]="false">
+    [allowAdding]="false" [allowDeleting]="false" (dxGridReady)="gridReady($event)" [allowUpdating]="false">
 </data-table>

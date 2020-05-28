@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UseInterceptors, Bind, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, UseInterceptors, Bind, UploadedFile, Body } from '@nestjs/common';
 import { BaseController } from '../abstract/base.controller';
 import { HesapHareketi } from './hesap-hareketi.entity';
 import { HesapHareketiService } from './hesap-hareketi.service';
@@ -15,6 +15,10 @@ export class HesapHareketiController extends BaseController<HesapHareketi, Hesap
     @Get('/withInnerModel')
     getListWithInnerModel(): Promise<HesapHareketi[]> {
         return this.service.getListWithInnerModel();
+    }
+    @Post('transfer')
+    transfer(@Body() dto: { toHesapId: string, fromHesapId: string, tutar: number, islemTarihi: Date }): Promise<HesapHareketi[]> {
+        return this.service.transfer(dto);
     }
     @Post('/upload')
     @UseInterceptors(FileInterceptor('file'))

@@ -4,6 +4,9 @@ import { HesapHareketi } from '../hesap-hareketi.model';
 import { BaseListComponent } from 'src/app/admin/base-list.component';
 import CustomStore from 'devextreme/data/custom_store';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HesaplarArasiTransferComponent } from '../hesaplar-arasi-transfer/hesaplar-arasi-transfer.component';
+import { DxDataGridComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-hesap-hareketi-list',
@@ -11,7 +14,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./hesap-hareketi-list.component.scss']
 })
 export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi> implements OnInit {
+  grid: DxDataGridComponent;
   constructor(service: HesapHareketleriService,
+    private modal: NgbModal,
     private injector: Injector) {
     super(service, injector, HesapHareketi);
   }
@@ -44,8 +49,25 @@ export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi>
         hint: 'Hesap Hareketi Yükle',
         onClick: () => this.injector.get(Router).navigate(['/admin', 'islemler', 'hesap-hareketi', 'hesap-hareketi-yukle']),
         visible: true
+      }
+    });
+    e.toolbarOptions.items.unshift({
+      location: 'after',
+      widget: 'dxButton',
+      options: {
+        icon: 'fa fa-exchange-alt',
+        hint: 'Para Transferi',
+        onClick: () => {
+          let modalRef = this.modal.open(HesaplarArasiTransferComponent, { size: 'md' });
+          modalRef.result.then(() => {
+            this.grid.instance.refresh();
+          })
+        },
+        visible: true,
       },
     });
   }
-
+  gridReady(e: DxDataGridComponent) {
+    this.grid = e;
+  }
 }

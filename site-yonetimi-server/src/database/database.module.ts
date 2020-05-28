@@ -72,6 +72,7 @@ import { Duyurular } from 'src/duyurular/duyurular.entity';
                 Duyurular
             ],
             synchronize: true,
+            // logging: ""
         })
     ],
     exports: []

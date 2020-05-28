@@ -43,17 +43,26 @@ export class Tahakkuk extends BaseEntity {
         return Number(odenenTutar.toFixed(3));
     }
     @Expose()
-    public get odenenTutarAnaPara(): number {
-        let odenenTutarAnaPara = this.odenenTutar - this.faizHaricOdenenTutar;
-        return Number(odenenTutarAnaPara.toFixed(3));
+    public get odenenFaiz(): number {
+        let odenenFaiz = this.tahsilatKalems.filter(p => {
+            return p.odemeTipi && p.odemeTipi.kod === GelirGiderTanimi.Faiz;
+        }).map(p => p.tutar)
+            .reduce((p, c) => p + c, 0);
+        return Number(odenenFaiz.toFixed(3));
     }
+    // @Expose()
+    // public get odenenTutarAnaPara(): number {
+    //     let odenenTutarAnaPara = this.odenenTutar - this.faizHaricOdenenTutar;
+    //     return Number(odenenTutarAnaPara.toFixed(3));
+    // }
     @Expose()
     public get kalanAnaPara(): number {
         let kalanAnaPara = this.tutar - this.odenenTutarAnaPara;
+        kalanAnaPara = kalanAnaPara > 0 && this.durumu === AidatDurumu.Odenmedi ? kalanAnaPara : 0;
         return Number(kalanAnaPara.toFixed(3));
     }
     @Expose()
-    public get faizHaricOdenenTutar(): number {
+    public get odenenTutarAnaPara(): number {
         let faizHaricOdenenTutar = this.tahsilatKalems.filter(p => {
             return p.odemeTipi && p.odemeTipi.kod !== GelirGiderTanimi.Faiz && p.odemeTipi.kod !== GelirGiderTanimi.BankaKomisyonu;
         }).map(p => p.tutar)
@@ -81,6 +90,7 @@ export class Tahakkuk extends BaseEntity {
         var gunSayisi = ((this.odemeTarihi.getTime() - tarih.getTime()) / (1000 * 3600 * 24));
         var ay = Math.floor(gunSayisi) / 30;
         faiz = (this.kalanAnaPara) * this.faizOrani * (ay > 0 ? ay : 0);
+        faiz = faiz > 0 && this.durumu === AidatDurumu.Odenmedi ? faiz : 0;
         return Number(faiz.toFixed(3));
     }
     /**

@@ -39,39 +39,10 @@ export class TahakkukService extends BaseService<Tahakkuk> {
         return this._repository.getOdenmisAidatlar(userId);
     }
     findByIds(selectedTahakkuks: string[]): Promise<Tahakkuk[]> {
-        return this._repository.find({
-            join: {
-                alias: 'tahakkuk',
-                leftJoinAndSelect: {
-                    meskenKisi: 'tahakkuk.meskenKisi',
-                    odemeTipi: 'tahakkuk.odemeTipi',
-                    tahsilatKalems: 'tahakkuk.tahsilatKalems',
-                    tahsilat: 'tahsilatKalems.tahsilat'
-                }
-            },
-            order: {
-                vadeTarihi: 'ASC'
-            },
-            where: {
-                id: In(selectedTahakkuks)
-            }
-        });
+        return this._repository.findByIds(selectedTahakkuks);
     }
     findAll(): Promise<Tahakkuk[]> {
-        return this._repository.find({
-            join: {
-                alias: 'tahakkuk',
-                leftJoinAndSelect: {
-                    meskenKisi: 'tahakkuk.meskenKisi',
-                    odemeTipi: 'tahakkuk.odemeTipi',
-                    tahsilatKalems: 'tahakkuk.tahsilatKalems',
-                    tahsilat: 'tahsilatKalems.tahsilat'
-                }
-            },
-            order: {
-                vadeTarihi: 'ASC'
-            }
-        });
+        return this._repository.findAll();
     }
     async tahakkuklariOlustur(id: string, tutar: number, vadeTarihi: Date, faizGrubuId?: string): Promise<Tahakkuk[]> {
         var tahakkukList = new Array<Tahakkuk>();

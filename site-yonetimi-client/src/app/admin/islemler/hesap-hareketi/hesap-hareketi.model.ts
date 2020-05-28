@@ -31,9 +31,29 @@ export class HesapHareketi {
             name: 'Tutar',
             type: 'number',
             visible: true,
+            format: {
+                type: 'currency',
+                precision: 2
+            },
             editorOptions: {
-                displayExpr: 'tutar',
-                placeholder: 'Para'
+                format: {
+                    type: 'currency',
+                },
+            },
+        },
+        {
+            key: 'bakiye',
+            name: 'Bakiye',
+            type: 'number',
+            visible: true,
+            format: {
+                type: 'currency',
+                precision: 2
+            },
+            editorOptions: {
+                format: {
+                    type: 'currency',
+                },
             },
         },
         {

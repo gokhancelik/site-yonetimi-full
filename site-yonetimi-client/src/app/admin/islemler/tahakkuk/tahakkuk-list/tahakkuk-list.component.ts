@@ -20,6 +20,7 @@ export class TahakkukListComponent extends BaseListComponent<TahakkukModel> impl
   grid: DxDataGridComponent;
   popupVisible: boolean;
   hesapTanimlari: HesapTanimi[];
+  btnOdeInstance: any;
   constructor(service: TahakkukService,
     hesapTanimiService: HesapTanimiService,
     private modal: NgbModal,
@@ -38,19 +39,33 @@ export class TahakkukListComponent extends BaseListComponent<TahakkukModel> impl
         icon: 'fa fa-credit-card',
         hint: 'Öde',
         onClick: this.openOdeModal.bind(this),
-        visible: true
+        visible: true,
+        onInitialized: (args: any) => {
+          this.btnOdeInstance = args.component;
+          console.log(args)
+        }
       },
+
     });
   }
   openOdeModal(e) {
     this.popupVisible = true;
     let modalRef = this.modal.open(TahakkukOdeComponent, { size: 'xl' });
     modalRef.componentInstance.selectedTahakkuks = this.grid.instance.getSelectedRowsData().filter(d => d.durumu === AidatDurumu.Odenmedi);
-
+    modalRef.result.then(() => {
+      this.grid.instance.refresh();
+    })
   }
   gridReady(e: DxDataGridComponent) {
     this.grid = e;
   }
-
+  onSelectionChanged(e) {
+    console.log(e)
+    let odenmemislerLength = this.grid.instance.getSelectedRowsData().filter(d => d.durumu === AidatDurumu.Odenmedi).length;
+    let uniqueKisi = [...new Set(this.grid.instance.getSelectedRowsData().map(d=>d.meskenKisiId))]
+    this.btnOdeInstance.option({
+      disabled: !(odenmemislerLength && uniqueKisi.length === 1)
+    })
+  }
 }
 

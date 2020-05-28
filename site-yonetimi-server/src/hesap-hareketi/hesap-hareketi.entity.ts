@@ -25,6 +25,9 @@ export class HesapHareketi extends BaseEntity {
     @Column({ type: 'money' })
     tutar: number;
 
+    @Column({ type: 'money', default: 0, insert: false, readonly: true, select: false })
+    bakiye: number;
+
     @Column({ type: 'uuid', nullable: false })
     hesapTanimiId!: string;
 
@@ -34,7 +37,12 @@ export class HesapHareketi extends BaseEntity {
     @Column({ nullable: true })
     aciklama: string;
 
-    constructor(islemTarihi:Date, tutar: number, hesapTanimiId: string, tahsilatId?:string, borcId?:string){
+    static async olustur(islemTarihi: Date, tutar: number, hesapTanimiId: string, tahsilatId?: string, borcId?: string): Promise<HesapHareketi> {
+        let hesapHareketi = new HesapHareketi(islemTarihi, tutar, hesapTanimiId, tahsilatId, borcId);
+        return hesapHareketi.save();
+    }
+
+    constructor(islemTarihi: Date, tutar: number, hesapTanimiId: string, tahsilatId?: string, borcId?: string) {
         super();
         this.islemTarihi = islemTarihi;
         this.tutar = tutar;

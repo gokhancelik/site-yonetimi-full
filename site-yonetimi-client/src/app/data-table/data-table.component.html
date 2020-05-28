@@ -7,7 +7,7 @@
   <nb-card-body>
     <dx-data-grid *ngIf="isBrowser" id="{{name}}GridContainer" [wordWrapEnabled]="true"
       (onInitialized)="onInitialized.emit($event)" (onEditorPreparing)="onEditorPreparing.emit($event)"
-      (onToolbarPreparing)="onToolbarPreparing.emit($event)" (onEditingStart)="onEditingStart.emit($event)"
+      (onToolbarPreparing)="onToolbarPreparing.emit($event)" (onSelectionChanged)="onSelectionChanged.emit($event)" (onEditingStart)="onEditingStart.emit($event)"
       [errorRowEnabled]="false" [dataSource]="dataSource" (onRowUpdating)="onRowUpdating.next($event)"
       (onInitNewRow)="onInitNewRow.next($event)" [allowColumnReordering]="true" [showColumnLines]="true"
       [showRowLines]="true" [showBorders]="true" [rowAlternationEnabled]="true" [allowColumnResizing]="true"

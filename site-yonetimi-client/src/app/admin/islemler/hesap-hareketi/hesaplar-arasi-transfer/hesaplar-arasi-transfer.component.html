@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <h4 class="modal-title">Tahakkuk Ödeme</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+
+    <div class="row">
+        <div class="col">
+            <form #form="ngForm" novalidate>
+                <div class="form-group">
+                    <label for="fromHesapId">Hesaptan</label>
+                    <select class="form-control" [(ngModel)]="dto.fromHesapId" name="fromHesapId">
+                        <option *ngFor="let hesap of hesapTanimlari" [value]="hesap.id">{{hesap.ad}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="toHesapId">Hesaba</label>
+                    <select class="form-control" [(ngModel)]="dto.toHesapId" name="toHesapId">
+                        <option *ngFor="let hesap of hesapTanimlari" [value]="hesap.id">{{hesap.ad}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="islemTarihi">İşlem Tarihi</label>
+                    <div class="input-group">
+                        <input type="text" ngbDatepicker #d="ngbDatepicker" placeholder="yyyy-aa-gg"
+                            class="form-control" id="islemTarihi" name="islemTarihi" required
+                            [(ngModel)]="dto.islemTarihi">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()"
+                                type="button"></button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label for="tutar">Tutar</label>
+                    <input type="number" class="form-control" id="tutar" name="tutar" required [(ngModel)]="dto.tutar">
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Kapat</button>
+    <button type="button" class="btn btn-succes" (click)="transfer()">Kaydet</button>
+</div>

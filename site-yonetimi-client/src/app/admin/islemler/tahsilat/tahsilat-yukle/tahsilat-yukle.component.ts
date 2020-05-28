@@ -23,15 +23,18 @@ export class TahsilatYukleComponent implements OnInit {
   }
   dosyaYuklendi(e: FileList) {
     this.file = e[0];
-    this.service.upload({ data: this.file, fileName: this.file.name })
-      .subscribe(event => {
-        this.topuYukleProgress = 100;
-        this.topluYukleSonucu = event;
-        this.yukleniyor = false;
-      });
   }
   dosyaSil() {
     this.file = null;
     this.fileInput.nativeElement.value = '';
+  }
+  kaydet() {
+    this.service.upload({ data: this.file, fileName: this.file.name })
+      .subscribe(event => {
+        console.log(event)
+        this.topuYukleProgress = 100;
+        this.topluYukleSonucu = event;
+        this.yukleniyor = false;
+      });
   }
 }

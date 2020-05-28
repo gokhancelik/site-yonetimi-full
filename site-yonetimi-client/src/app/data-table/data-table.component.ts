@@ -16,6 +16,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   @Output() onEditorPreparing: EventEmitter<any> = new EventEmitter();
   @Output() onInitialized: EventEmitter<any> = new EventEmitter();
   @Output() dxGridReady: EventEmitter<any> = new EventEmitter();
+  @Output() onSelectionChanged: EventEmitter<any> = new EventEmitter();
   @Input() dataSource: any;
   @Input() columns: any[];
   @Input() buttons: any[];

@@ -1,20 +1,15 @@
 import { Component, OnInit, ViewChild, Directive, ElementRef } from '@angular/core';
-import { OdemeService } from '../odeme.service';
 import { Tahakkuk } from '../models/tahakkuk.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OnlineIslemlerService } from '../online-islemler.service';
-import { Tahsilat, OdemeYontemi } from '../models/tahsilat.model';
-import { SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import { Tahsilat } from '../models/tahsilat.model';
+import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OdemeGatewayComponent } from '../odeme-gateway/odeme-gateway.component';
 import { TahsilatService } from '../../../admin/islemler/tahsilat/tahsilat-service';
-import { TahsilatOlusturSonucuDto, KisiCuzdan } from '../../../admin/islemler/services/odeme-islemleri.service';
-import { MeskenKisiService } from '../../../admin/tanimlamalar/mesken-kisi/mesken-kisi.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreditCardValidators } from 'angular-cc-library';
-import { KisiService } from '../../../admin/tanimlamalar/kisi/kisi.service';
+import { KisiCuzdan } from '../../../admin/islemler/services/odeme-islemleri.service';
+import { FormGroup } from '@angular/forms';
 import { Kisi } from '../../../admin/tanimlamalar/kisi/kisi.model';
-import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-odeme',
@@ -45,13 +40,11 @@ export class OdemeComponent implements OnInit {
     return this.seciliTahakkuklar.map(t => t.odenecekTutar)
   }
   @ViewChild('iFrameRef', { static: true }) iFrameRef;
-  constructor(private odemeService: OdemeService,
-    private tahsilatService: TahsilatService,
+  constructor(private tahsilatService: TahsilatService,
     private modalService: NgbModal,
     private onlineIslemlerService: OnlineIslemlerService,
     protected sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
-    private authService: AuthService,
     private router: Router) {
     this.aylar = Array.from(Array(12).keys()).map(x => {
       const y = x + 1;
