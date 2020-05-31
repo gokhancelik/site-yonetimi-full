@@ -33,6 +33,7 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   @Input() columnChooser = true;
   @Input() export = true;
   @Input() groupPanel = true;
+  @Input() remoteOperations = false;
   totalSummaryColumns: any[];
 
   public get isBrowser(): boolean {

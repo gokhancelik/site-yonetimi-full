@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, Input } from '@angular/core';
 import { HesapHareketleriService } from '../hesap-hareketi.service';
 import { HesapHareketi } from '../hesap-hareketi.model';
 import { BaseListComponent } from 'src/app/admin/base-list.component';
@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HesaplarArasiTransferComponent } from '../hesaplar-arasi-transfer/hesaplar-arasi-transfer.component';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { HesapTanimiService } from '../../../tanimlamalar/hesap-tanimi/hesap-tanimi.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-hesap-hareketi-list',
@@ -15,17 +17,37 @@ import { DxDataGridComponent } from 'devextreme-angular';
 })
 export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi> implements OnInit {
   grid: DxDataGridComponent;
+  @Input() hesapTanimiId: string;
   constructor(service: HesapHareketleriService,
     private modal: NgbModal,
+    private hesapTanimiService: HesapTanimiService,
     private injector: Injector) {
     super(service, injector, HesapHareketi);
   }
   ngOnInit() {
     this.dataSource = new CustomStore({
       key: 'id',
-      loadMode: 'raw',
-      load: () => {
-        return (this.service as HesapHareketleriService).getListWithInnerModel().toPromise();
+      loadMode: 'processed',
+      load: (loadOptions: any) => {
+        console.log(loadOptions)
+        if (this.hesapTanimiId) {
+          return (this.hesapTanimiService).getHesapHareketleri(this.hesapTanimiId)
+            .pipe(map(data => {
+              return {
+                data: data,
+                totalCount: data.length,
+              }
+            })).toPromise();
+        }
+        else {
+          return (this.service as HesapHareketleriService).getListWithInnerModel(loadOptions)
+            .pipe(map(data => {
+              return {
+                data: data[0],
+                totalCount: data[1],
+              }
+            })).toPromise();
+        }
       },
       insert: (values) => {
         console.log(values)
@@ -69,5 +91,10 @@ export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi>
   }
   gridReady(e: DxDataGridComponent) {
     this.grid = e;
+  }
+  onInitNewRow(e) {
+    if (this.hesapTanimiId) {
+      (e.data as HesapHareketi).hesapTanimiId = this.hesapTanimiId;
+    }
   }
 }

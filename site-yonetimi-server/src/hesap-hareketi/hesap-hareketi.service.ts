@@ -7,11 +7,12 @@ import { Connection } from 'typeorm';
 @Injectable()
 export class HesapHareketiService extends BaseService<HesapHareketi> {
 
+
     constructor(repository: HesapHareketiRepository,
         private connection: Connection) {
         super(repository);
     }
-    getListWithInnerModel(): Promise<HesapHareketi[]> {
+    getListWithInnerModel(take?: number, skip?: number): Promise<[HesapHareketi[], number]> {
         //return this.repository.find();
         return this.repository.createQueryBuilder('hh')
             .addSelect('SUM (hh.tutar) OVER (PARTITION BY hh.hesapTanimiId ORDER BY hh.islemTarihi, hh.id)', 'hh_bakiye')
@@ -19,6 +20,18 @@ export class HesapHareketiService extends BaseService<HesapHareketi> {
             .leftJoinAndSelect('hh.borc', 'b')
             .leftJoinAndSelect('hh.tahsilat', 't')
             .orderBy('hh.id', 'DESC')
+            .take(take)
+            .skip(skip)
+            .getManyAndCount();
+    }
+    getHesapHareketleriByHesapId(hesapTanimiId: string): Promise<HesapHareketi[]> {
+        return this.repository.createQueryBuilder('hh')
+            .addSelect('SUM (hh.tutar) OVER (PARTITION BY hh.hesapTanimiId ORDER BY hh.islemTarihi, hh.id)', 'hh_bakiye')
+            .leftJoinAndSelect('hh.hesapTanimi', 'ht')
+            .leftJoinAndSelect('hh.borc', 'b')
+            .leftJoinAndSelect('hh.tahsilat', 't')
+            .orderBy('hh.id', 'DESC')
+            .where('hh.hesapTanimiId = :hesapTanimiId', { hesapTanimiId })
             .getMany();
     }
     async transfer(dto: { toHesapId: string, fromHesapId: string; tutar: number, islemTarihi: Date }): Promise<HesapHareketi[]> {

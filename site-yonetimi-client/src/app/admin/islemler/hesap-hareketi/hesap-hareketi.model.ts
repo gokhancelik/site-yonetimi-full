@@ -54,7 +54,7 @@ export class HesapHareketi {
                 format: {
                     type: 'currency',
                 },
-            },
+            }
         },
         {
             key: 'islemTarihi',

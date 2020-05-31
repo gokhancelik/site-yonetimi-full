@@ -11,6 +11,7 @@ import { NgbTabsetModule, NgbDatepickerModule, NgbDateAdapter, NgbDateNativeAdap
 import { HesapHareketiYukleComponent } from './hesap-hareketi-yukle/hesap-hareketi-yukle.component';
 import { HesaplarArasiTransferComponent } from './hesaplar-arasi-transfer/hesaplar-arasi-transfer.component';
 import { FormsModule } from '@angular/forms';
+import { DxDataGridModule } from 'devextreme-angular';
 
 
 @NgModule({
@@ -24,11 +25,13 @@ import { FormsModule } from '@angular/forms';
     NgbTabsetModule,
     FormsModule,
     NgbDatepickerModule,
-    NgbModule
+    NgbModule,
+    DxDataGridModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }
   ],
-  entryComponents: [HesaplarArasiTransferComponent]
+  entryComponents: [HesaplarArasiTransferComponent],
+  exports: [HesapHareketiListComponent]
 })
 export class HesapHareketiModule { }

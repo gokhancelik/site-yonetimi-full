@@ -37,6 +37,8 @@ import { FirmaComponent } from './firma/firma.component';
 import { FirmaListComponent } from './firma/firma-list/firma-list.component';
 import { FirmaDetayComponent } from './firma/firma-detay/firma-detay.component';
 import { BorcModule } from '../islemler/borc/borc.module';
+import { HesapTanimiDetayComponent } from './hesap-tanimi/hesap-tanimi-detay/hesap-tanimi-detay.component';
+import { HesapHareketiModule } from '../islemler/hesap-hareketi/hesap-hareketi.module';
 
 
 @NgModule({
@@ -46,7 +48,7 @@ import { BorcModule } from '../islemler/borc/borc.module';
     FaizGrubuComponent, FaizGrubuListComponent, GelirGiderTanimComponent, GelirGiderTanimListComponent,
     KisiDetayComponent, OdenmemisTahakkukListComponent, OdenmisTahakkukListComponent, TahsilatListComponent, 
     KurulTipiComponent, KurulTipiListComponent, KurulUyeComponent, KurulUyeListComponent,PersonelComponent,PersonelListComponent, KurulUyeTipiComponent, KurulUyeTipiListComponent,
-    FirmaComponent, FirmaListComponent, FirmaDetayComponent
+    FirmaComponent, FirmaListComponent, FirmaDetayComponent, HesapTanimiDetayComponent
     ],
   imports: [
     CommonModule,
@@ -62,7 +64,8 @@ import { BorcModule } from '../islemler/borc/borc.module';
     DetayGorunumuModule,
     NbCardModule,
     NgbTabsetModule,
-    BorcModule
+    BorcModule,
+    HesapHareketiModule
   ]
 })
 export class TanimlamalarModule { }

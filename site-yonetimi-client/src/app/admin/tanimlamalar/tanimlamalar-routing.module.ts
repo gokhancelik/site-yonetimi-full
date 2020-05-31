@@ -25,6 +25,7 @@ import { KurulUyeTipiListComponent } from './kurul-uye-tipi/kurul-uye-tipi-list/
 import { FirmaComponent } from './firma/firma.component';
 import { FirmaListComponent } from './firma/firma-list/firma-list.component';
 import { FirmaDetayComponent } from './firma/firma-detay/firma-detay.component';
+import { HesapTanimiDetayComponent } from './hesap-tanimi/hesap-tanimi-detay/hesap-tanimi-detay.component';
 
 const routes: Routes = [
   {
@@ -82,6 +83,10 @@ const routes: Routes = [
       {
         path: 'list',
         component: HesapTanimiListComponent
+      },
+      {
+        path: ':id/detay',
+        component: HesapTanimiDetayComponent
       }
     ]
   },

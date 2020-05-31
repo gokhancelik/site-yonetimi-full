@@ -1,6 +1,6 @@
 <data-table [dataSource]="dataSource" [title]="'Tahakkuk Listesi'" [columns]="columns" [editMode]="'popup'"
-    name="tahakkuk" (onRowUpdating)="onRowUpdating($event)" (onSelectionChanged)="onSelectionChanged($event)" (onToolbarPreparing)="onToolbarPreparing($event)"
-    (dxGridReady)="gridReady($event)">
+    name="tahakkuk" (onRowUpdating)="onRowUpdating($event)" (onSelectionChanged)="onSelectionChanged($event)"
+    (onToolbarPreparing)="onToolbarPreparing($event)" (dxGridReady)="gridReady($event)" [remoteOperations]="true">
 </data-table>
 <!-- <dx-popup [showTitle]="true" title="Öde" [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="popupVisible">
     <div *dxTemplate="let data of 'content'">

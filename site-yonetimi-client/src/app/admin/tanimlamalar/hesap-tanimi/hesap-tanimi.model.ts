@@ -34,6 +34,14 @@ export class HesapTanimi {
                 message: 'Ad zorunludur',
             }],
             visible: true,
+            cellTemplate: 'detailLink',
+            editorOptions: {
+              readOnly: true,
+              customParams: {
+                detailKey: 'id',
+                routerLink: ['/admin', 'tanimlamalar', 'hesap-tanimi', ':id', 'detay']
+              },
+            }
         },
         {
             key: 'aciklama',

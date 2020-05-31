@@ -1,0 +1,24 @@
+<nb-card *ngIf="model">
+    <nb-card-header>
+        <div class="row">
+            <div class="col-6">
+                <span>{{model?.ad}}</span>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <detay-gorunumu [colDefs]="columns" [model]="model" [readOnly]="true"></detay-gorunumu>
+    </nb-card-body>
+</nb-card>
+<nb-card>
+    <nb-card-header></nb-card-header>
+    <nb-card-body>
+        <ngb-tabset>
+            <ngb-tab title="Hesap Hareketleri">
+                <ng-template ngbTabContent>
+                    <app-hesap-hareketi-list [hesapTanimiId]="id"></app-hesap-hareketi-list>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
+    </nb-card-body>
+</nb-card>

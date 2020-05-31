@@ -13,11 +13,14 @@ export class HesapHareketleriService extends BaseCrudService {
   constructor(http: HttpClient) {
     super(http, 'hesapHareketi');
   }
-  getListWithInnerModel<HesapHareketi>(): Observable<Array<HesapHareketi>> {
-    return this.http.get<Array<HesapHareketi>>(`${this.baseUrl}${this.path}/withInnerModel`).pipe(map(d => {
-      return d;
-    }));
+  getListWithInnerModel<HesapHareketi>(params): Observable<[Array<HesapHareketi>, number]> {
+    const searchParams = new URLSearchParams(params);
+    // if (params) {
+    //   Object.keys(params).forEach(key => searchParams.append(key, params[key]));
+    // }
+    return this.http.get<[Array<HesapHareketi>, number]>(`${this.baseUrl}${this.path}/withInnerModel?${searchParams}`);
   }
+
   transfer(dto: any) {
     return this.http.post<any>(`${this.baseUrl}${this.path}/transfer`, dto);
   }

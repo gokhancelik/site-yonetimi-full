@@ -18,7 +18,8 @@ export abstract class BaseListComponent<T extends { colDefs(injector?: Injector)
         this.dataSource = new CustomStore({
             key: 'id',
             loadMode: 'raw',
-            load: () => {
+            load: (loadOptions: any) => {
+                console.log(loadOptions)
                 return this.service.getList().toPromise();
             },
             insert: (values) => {

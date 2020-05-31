@@ -1,10 +1,49 @@
-import { Controller, Get, Post, UseInterceptors, Bind, UploadedFile, Body } from '@nestjs/common';
+import { Controller, Get, Post, UseInterceptors, Bind, UploadedFile, Body, Param, Query, ParseIntPipe, ValidationPipe } from '@nestjs/common';
 import { BaseController } from '../abstract/base.controller';
 import { HesapHareketi } from './hesap-hareketi.entity';
 import { HesapHareketiService } from './hesap-hareketi.service';
 import { ApiTags } from '@nestjs/swagger';
 import { AnyFilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import xlsx from 'node-xlsx';
+import { IsArray, IsOptional, IsNumber, IsNumberString } from "class-validator";
+import { Type, Transform } from 'class-transformer';
+export class QueryDto {
+    @IsOptional()
+    @IsNumber()
+    @Type(() => Number)
+    take: number;
+
+    @IsOptional()
+    @IsNumber()
+    @Type(() => Number)
+    skip: number;
+
+    @IsOptional()
+    @IsArray()
+    @Type(() => String)
+    @Transform((value: string) => value.split(','))
+    filter: any[];
+
+    @IsOptional()
+    @IsArray()
+    @Type(() => String)
+    @Transform((value: string) => value.split(','))
+    group: any[];
+
+    @IsOptional()
+    @IsArray()
+    @Type(() => SortDto)
+    @Transform((value: string) => value.split(','))
+    sort: SortDto[];
+
+}
+export class SortDto {
+    @IsOptional()
+    @Type(() => String)
+    selector: string;
+    @Type(() => Boolean)
+    desc: boolean;
+}
 @ApiTags('Hesap Hareketi')
 @Controller('HesapHareketi')
 export class HesapHareketiController extends BaseController<HesapHareketi, HesapHareketiService> {
@@ -13,9 +52,10 @@ export class HesapHareketiController extends BaseController<HesapHareketi, Hesap
     }
 
     @Get('/withInnerModel')
-    getListWithInnerModel(): Promise<HesapHareketi[]> {
-        return this.service.getListWithInnerModel();
+    getListWithInnerModel(@Query(new ValidationPipe({ transform: true })) query: QueryDto): Promise<[HesapHareketi[], number]> {
+        return this.service.getListWithInnerModel(query.take, query.skip);
     }
+
     @Post('transfer')
     transfer(@Body() dto: { toHesapId: string, fromHesapId: string, tutar: number, islemTarihi: Date }): Promise<HesapHareketi[]> {
         return this.service.transfer(dto);
@@ -33,6 +73,7 @@ export class HesapHareketiController extends BaseController<HesapHareketi, Hesap
     }
 
 }
+
 export class BankaHesapHareketi {
     tarih: Date;
     aciklama: string;
