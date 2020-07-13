@@ -28,6 +28,8 @@ import { OdemeIslemleriModule } from './odeme-islemleri/odeme-islemleri.module';
 import { KisiCuzdanModule } from './kisi-cuzdan/kisi-cuzdan.module';
 import { FirmaModule } from './firma/firma.module';
 import { DuyurularModule } from './duyurular/duyurular.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 @Module({
   imports: [DatabaseModule,
     BorcModule,
@@ -54,7 +56,12 @@ import { DuyurularModule } from './duyurular/duyurular.module';
     OdemeIslemleriModule,
     KisiCuzdanModule,
     FirmaModule,
-    DuyurularModule
+    DuyurularModule,
+    GraphQLModule.forRoot({
+      installSubscriptionHandlers: true,
+      autoSchemaFile: 'schema.gql',
+      include: [TahakkukModule]
+    }),
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],

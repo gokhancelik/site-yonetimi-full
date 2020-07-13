@@ -9,12 +9,15 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TahakkukService extends BaseCrudService {
-  
+
   constructor(http: HttpClient) {
     super(http, 'tahakkuk');
   }
 
-  tahakkuklariOlustur(id: string, borc: { tutar?: number, vadeTarihi?: Date, faizGrubuId?: string}) : Observable<TahakkukModel[]> {
+  tahakkuklariOlustur(id: string, borc: { tutar?: number, vadeTarihi?: Date, faizGrubuId?: string }): Observable<TahakkukModel[]> {
     return this.http.post<TahakkukModel[]>(`${this.baseUrl}${this.path}/${id}/tahakkukOlustur`, borc);
+  }
+  getQuery(query): Observable<[Array<TahakkukModel>, number]> {
+    return this.http.post<[Array<TahakkukModel>, number]>(`${this.baseUrl}${this.path}/query`, query);
   }
 }

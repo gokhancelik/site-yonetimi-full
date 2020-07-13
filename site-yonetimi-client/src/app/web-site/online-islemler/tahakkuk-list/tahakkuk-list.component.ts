@@ -88,7 +88,8 @@ export class TahakkukListComponent implements OnInit {
       format: {
         type: 'currency',
         precision: 2
-      }
+      },
+      sort: false,
     }
     ];
   }

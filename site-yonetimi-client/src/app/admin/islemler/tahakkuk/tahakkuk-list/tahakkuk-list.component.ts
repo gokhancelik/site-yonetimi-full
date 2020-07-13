@@ -10,6 +10,8 @@ import { TahsilatService } from '../../tahsilat/tahsilat-service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalWindow } from '@ng-bootstrap/ng-bootstrap/modal/modal-window';
 import { TahakkukOdeComponent } from '../tahakkuk-ode/tahakkuk-ode.component';
+import CustomStore from 'devextreme/data/custom_store';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tahakkuk-list',
@@ -30,6 +32,33 @@ export class TahakkukListComponent extends BaseListComponent<TahakkukModel> impl
       .subscribe(d => {
         this.hesapTanimlari = d;
       });
+  }
+  ngOnInit() {
+    this.dataSource = new CustomStore({
+      key: 'id',
+      loadMode: 'processed',
+      load: (loadOptions: any) => {
+        console.log(loadOptions)
+        return (this.service as TahakkukService).getQuery(loadOptions)
+          .pipe(map(data => {
+            return {
+              data: data[0],
+              totalCount: data[1],
+            }
+          })).toPromise();
+      },
+      insert: (values) => {
+        console.log(values)
+        return this.service.add(values).toPromise();
+      },
+      update: (key, values) => {
+        console.log(values)
+        return this.service.update(key, values).toPromise();
+      },
+      remove: (key) => {
+        return this.service.delete(key).toPromise();
+      },
+    });
   }
   onToolbarPreparing(e) {
     e.toolbarOptions.items.unshift({
@@ -62,7 +91,7 @@ export class TahakkukListComponent extends BaseListComponent<TahakkukModel> impl
   onSelectionChanged(e) {
     console.log(e)
     let odenmemislerLength = this.grid.instance.getSelectedRowsData().filter(d => d.durumu === AidatDurumu.Odenmedi).length;
-    let uniqueKisi = [...new Set(this.grid.instance.getSelectedRowsData().map(d=>d.meskenKisiId))]
+    let uniqueKisi = [...new Set(this.grid.instance.getSelectedRowsData().map(d => d.meskenKisiId))]
     this.btnOdeInstance.option({
       disabled: !(odenmemislerLength && uniqueKisi.length === 1)
     })

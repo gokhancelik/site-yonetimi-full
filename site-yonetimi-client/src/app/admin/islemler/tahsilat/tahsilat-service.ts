@@ -11,7 +11,6 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class TahsilatService extends BaseCrudService {
-
   constructor(http: HttpClient) {
     super(http, 'tahsilat');
   }
@@ -25,5 +24,8 @@ export class TahsilatService extends BaseCrudService {
     return this.http.post<any>(`${this.baseUrl}online-islemler/odemeleri-dagit`, content_).pipe(map(d => {
       return d;
     }));
+  }
+  getQuery(query): Observable<[Array<TahsilatModel>, number]> {
+    return this.http.post<[Array<TahsilatModel>, number]>(`${this.baseUrl}${this.path}/query`, query);
   }
 }

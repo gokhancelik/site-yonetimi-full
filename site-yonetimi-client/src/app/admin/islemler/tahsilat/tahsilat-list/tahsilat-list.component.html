@@ -1,4 +1,5 @@
 <data-table [dataSource]="dataSource" [title]="'Tahsilat Listesi'" [columns]="columns" [editMode]="'popup'"
-    [allowUpdating]="false" [allowAdding]="false" [allowDeleting]="false"
-    (onToolbarPreparing)="onToolbarPreparing($event)" name="tahsilat" (onRowUpdating)="onRowUpdating($event)">
+    [groupPanel]="false" [allowUpdating]="false" [allowAdding]="false" [allowDeleting]="false" [headerFilter]="false"
+    [searchPanel]="false" (onToolbarPreparing)="onToolbarPreparing($event)" name="tahsilat"
+    (onRowUpdating)="onRowUpdating($event)" [remoteOperations]="true">
 </data-table>

@@ -11,11 +11,12 @@ import { TahsilatSanalPosLogRepository } from './tahsilat-sanal-pos-log.reposito
 import { HesapHareketiService } from '../hesap-hareketi/hesap-hareketi.service';
 import { TahsilatKalemService } from '../tahsilat-kalem/tahsilat-kalem.service';
 import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
+import { QueryDto } from '../hesap-hareketi/hesap-hareketi.controller';
+import { buildFindCondition, buildOrder } from '../abstract/query-helper';
 
 @Injectable()
 export class TahsilatService extends BaseService<Tahsilat>{
-
-
+    
 
     constructor(repository: TahsilatRepository,
         private readonly tahakkukService: TahakkukService,
@@ -57,4 +58,15 @@ export class TahsilatService extends BaseService<Tahsilat>{
     getByTahakkukId(tahakkukId: string): Promise<Tahsilat[]> {
         throw new Error("Method not implemented.");
     }
+    findAllQuery(query: QueryDto): Promise<[Tahsilat[], number]> {
+        let whereCondition = buildFindCondition(query.filter);
+        let result = Tahsilat.findAndCount<Tahsilat>({
+            where: whereCondition,
+            take: query.take,
+            skip: query.skip,
+            order: buildOrder(query.sort)
+        });
+        return result;
+    }
+
 }

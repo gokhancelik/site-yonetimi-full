@@ -27,7 +27,7 @@ export class TahakkukModel {
             name: 'Id',
             type: 'string',
             editorOptions: { readOnly: true, visible: true },
-            visible: false,
+            visible: false
         },
         {
             key: 'tutar',
@@ -41,9 +41,8 @@ export class TahakkukModel {
             editorOptions: {
                 format: {
                     type: 'currency',
-                },
-                placeholder: 'Para'
-            },
+                }
+            }
         },
         {
             key: 'odenenTutar',
@@ -60,6 +59,8 @@ export class TahakkukModel {
                 },
                 readOnly: true
             },
+            sort: false,
+            filter: false
         },
         {
             key: 'kalanAnaPara',
@@ -76,6 +77,8 @@ export class TahakkukModel {
                 },
                 readOnly: true
             },
+            sort: false,
+            filter: false
         },
         {
             key: 'faiz',
@@ -92,6 +95,8 @@ export class TahakkukModel {
                 },
                 readOnly: true
             },
+            sort: false,
+            filter: false
         },
         {
             key: 'odenenFaiz',
@@ -108,6 +113,8 @@ export class TahakkukModel {
                 },
                 readOnly: true
             },
+            sort: false,
+            filter: false
         },
         {
             key: 'durumu',

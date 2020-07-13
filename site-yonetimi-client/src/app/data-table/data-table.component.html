@@ -51,7 +51,7 @@
         <!-- <dxi-button hint="reddet" icon="fa fa-ban" style="color: red" [onClick]="reddet"></dxi-button> -->
       </dxi-column>
       <ng-container *ngFor="let col of columns">
-        <dxi-column [fixed]="col.fixed" [formItem]="col.formItem" [encodeHtml]="false" [dataField]="col.key"
+        <dxi-column [fixed]="col.fixed" [allowFiltering]="col.filter === undefined ? true : col.filter" [allowSorting]="col.sort === undefined ? true : col.sort" [formItem]="col.formItem" [encodeHtml]="false" [dataField]="col.key"
           [visible]="col.visible" [editCellTemplate]="col.editCellTemplate" [editorOptions]="col.editorOptions"
           [cellTemplate]="col.cellTemplate" [format]="col.format" [caption]="col.name" [dataType]="col.type"
           [validationRules]="col.validators">

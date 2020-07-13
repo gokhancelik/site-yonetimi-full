@@ -9,10 +9,11 @@ import { MeskenModule } from 'src/mesken/mesken.module';
 import { BorcModule } from 'src/borc/borc.module';
 import { FaizGrubuModule } from 'src/faiz-grubu/faiz-grubu.module';
 import { TahakkukRepository } from './tahakkuk.repository';
+import { TahakkuksResolver } from './tahakkuk.resolver';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TahakkukRepository]), HesapHareketiModule, MeskenModule, BorcModule, FaizGrubuModule, DatabaseModule, GelirGiderTanimiModule],
-  providers: [TahakkukService],
+  providers: [TahakkukService, TahakkuksResolver],
   controllers: [TahakkukController],
   exports: [TahakkukService]
 })

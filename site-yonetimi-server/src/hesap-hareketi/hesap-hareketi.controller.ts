@@ -62,7 +62,7 @@ export class HesapHareketiController extends BaseController<HesapHareketi, Hesap
 
     @Post('/withInnerModel')
     getListWithInnerModel(@Body(new ValidationPipe({ transform: true })) query: QueryDto): Promise<[HesapHareketi[], number]> {
-        return this.service.getListWithInnerModel(query.take, query.skip);
+        return this.service.getListWithInnerModel(query);
     }
 
     @Post('transfer')

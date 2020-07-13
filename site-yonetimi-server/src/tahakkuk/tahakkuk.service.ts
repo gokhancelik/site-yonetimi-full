@@ -10,9 +10,13 @@ import { BorcService } from 'src/borc/borc.service';
 import { FaizGrubuService } from 'src/faiz-grubu/faiz-grubu.service';
 import { TahsilatDurumu } from '../tahsilat/tahsilat.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { buildWhereQuery, buildFindCondition, buildOrder } from '../abstract/query-helper';
+import { QueryDto } from '../hesap-hareketi/hesap-hareketi.controller';
+import { TahakkuksArgs } from './dto/tahakkuk.args';
 
 @Injectable()
 export class TahakkukService extends BaseService<Tahakkuk> {
+   
 
     constructor(@InjectRepository(TahakkukRepository) private _repository: TahakkukRepository,
         private meskenService: MeskenService, private borcService: BorcService, private faizGrubuService: FaizGrubuService) {
@@ -41,8 +45,25 @@ export class TahakkukService extends BaseService<Tahakkuk> {
     findByIds(selectedTahakkuks: string[]): Promise<Tahakkuk[]> {
         return this._repository.findByIds(selectedTahakkuks);
     }
-    findAll(): Promise<Tahakkuk[]> {
-        return this._repository.findAll();
+    findAllQuery(query: QueryDto): Promise<[Tahakkuk[], number]> {
+        let whereCondition = buildFindCondition(query.filter);
+        let result = Tahakkuk.findAndCount<Tahakkuk>({
+            where: whereCondition,
+            take: query.take,
+            skip: query.skip,
+            order: buildOrder(query.sort)
+        });
+        return result;
+    }
+    findAllByQuery(query: TahakkuksArgs): Promise<Tahakkuk[]> {
+        // let whereCondition = buildFindCondition(query.filter);
+        let result = Tahakkuk.find<Tahakkuk>({
+            // where: whereCondition,
+            take: query.take,
+            skip: query.skip,
+            // order: buildOrder(query.sort)
+        });
+        return result;
     }
     async tahakkuklariOlustur(id: string, tutar: number, vadeTarihi: Date, faizGrubuId?: string): Promise<Tahakkuk[]> {
         var tahakkukList = new Array<Tahakkuk>();

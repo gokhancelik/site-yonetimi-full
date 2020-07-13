@@ -1,0 +1,54 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Tahakkuk {
+  vadeTarihi: DateTime!
+  aciklama: String!
+  tutar: Float!
+  faizOrani: Float!
+  odemeTipiId: String!
+  meskenKisiId: String!
+  durumu: Float!
+  odenenTutar: Float!
+  odenenFaiz: Float!
+  kalanAnaPara: Float!
+  odenenTutarAnaPara: Float!
+  sonTahsilatTarihi: DateTime
+  faiz: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input NewTahakkuk {
+  vadeTarihi: DateTime!
+  aciklama: String!
+  tutar: Float!
+  faizOrani: Float!
+  odemeTipiId: String!
+  meskenKisiId: String!
+  durumu: Float!
+  odenenTutar: Float = 0
+  odenenFaiz: Float = 0
+  kalanAnaPara: Float = 0
+  odenenTutarAnaPara: Float = 0
+  sonTahsilatTarihi: DateTime = null
+  faiz: Float = 0
+}
+
+type Query {
+  tahakkuk(id: String!): Tahakkuk!
+  tahakkuks(skip: Int = 0, take: Int = 25): [Tahakkuk!]!
+}
+
+type Mutation {
+  addTahakkuk(newTahakkuk: NewTahakkuk!): Tahakkuk!
+  removeTahakkuk(id: String!): Boolean!
+}
+
+type Subscription {
+  tahakkukAdded: Tahakkuk!
+}
