@@ -84,7 +84,7 @@ export class HesapHareketi {
             name: 'Açıklama',
             type: 'textarea',
             editorOptions: {
-                itemsAsync: injector.get(HesapHareketleriService).getListWithInnerModel(),
+                itemsAsync: injector.get(HesapHareketleriService).getListWithInnerModel({}),
                 displayExpr: (item) => {
                     if (item)
                         return item.borc ? item.borc.aciklama : (item.tahsilat ? item.tahsilat.aciklama : "");
@@ -128,7 +128,7 @@ export class BankaHesapHareketi {
                 name: 'Açıklama',
                 type: 'textarea',
                 editorOptions: {
-                    itemsAsync: injector.get(HesapHareketleriService).getListWithInnerModel(),
+                    itemsAsync: injector.get(HesapHareketleriService).getListWithInnerModel({}),
                     displayExpr: (item) => {
                         if (item)
                             return item.borc ? item.borc.aciklama : (item.tahsilat ? item.tahsilat.aciklama : "");

@@ -21,19 +21,28 @@ export class QueryDto {
     @IsOptional()
     @IsArray()
     @Type(() => String)
-    @Transform((value: string) => value.split(','))
+    @Transform((value: string) => {
+        console.log(value)
+        return value;
+    })
     filter: any[];
 
     @IsOptional()
     @IsArray()
     @Type(() => String)
-    @Transform((value: string) => value.split(','))
+    @Transform((value: string) => {
+        console.log(value)
+        return value;
+    })
     group: any[];
 
     @IsOptional()
     @IsArray()
     @Type(() => SortDto)
-    @Transform((value: string) => value.split(','))
+    @Transform((value: string) => {
+        console.log(value)
+        return value;
+    })
     sort: SortDto[];
 
 }
@@ -51,8 +60,8 @@ export class HesapHareketiController extends BaseController<HesapHareketi, Hesap
         super(service);
     }
 
-    @Get('/withInnerModel')
-    getListWithInnerModel(@Query(new ValidationPipe({ transform: true })) query: QueryDto): Promise<[HesapHareketi[], number]> {
+    @Post('/withInnerModel')
+    getListWithInnerModel(@Body(new ValidationPipe({ transform: true })) query: QueryDto): Promise<[HesapHareketi[], number]> {
         return this.service.getListWithInnerModel(query.take, query.skip);
     }
 

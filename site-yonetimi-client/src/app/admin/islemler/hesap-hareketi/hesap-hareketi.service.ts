@@ -18,7 +18,7 @@ export class HesapHareketleriService extends BaseCrudService {
     // if (params) {
     //   Object.keys(params).forEach(key => searchParams.append(key, params[key]));
     // }
-    return this.http.get<[Array<HesapHareketi>, number]>(`${this.baseUrl}${this.path}/withInnerModel?${searchParams}`);
+    return this.http.post<[Array<HesapHareketi>, number]>(`${this.baseUrl}${this.path}/withInnerModel`, params);
   }
 
   transfer(dto: any) {
