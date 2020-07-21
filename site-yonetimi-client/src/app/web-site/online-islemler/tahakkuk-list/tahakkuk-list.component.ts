@@ -9,6 +9,7 @@ import { OdemeService } from '../odeme.service';
 import { Router } from '@angular/router';
 import { MeskenKisiService } from '../../../admin/tanimlamalar/mesken-kisi/mesken-kisi.service';
 import { KisiCuzdan } from '../../../admin/islemler/services/odeme-islemleri.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tahakkuk-list',
@@ -18,9 +19,10 @@ import { KisiCuzdan } from '../../../admin/islemler/services/odeme-islemleri.ser
 export class TahakkukListComponent implements OnInit {
   columns: any[];
   dataSource: CustomStore;
-  seciliTahakkuklar: Tahakkuk[];
+  seciliTahakkuklar: Tahakkuk[] = [];
   grid: DxDataGridComponent;
   cuzdan: KisiCuzdan;
+  dataSource$: Observable<Tahakkuk[]>;
   ngOnInit(): void {
     this.meskenKisiService.getCurrentUserCuzdan()
       .subscribe(d => {
@@ -33,11 +35,12 @@ export class TahakkukListComponent implements OnInit {
     private odemeService: OdemeService,
     gelirGiderTanimiService: GelirGiderTanimService
   ) {
+    this.dataSource$ = service.getOdenmemisAidatlar();
     this.dataSource = new CustomStore({
       key: 'id',
       loadMode: 'raw',
       load: () => {
-        return this.service.getOdenmemisAidatlar().toPromise();
+        return this.dataSource$.toPromise();
       },
     });
     this.columns = [{
@@ -81,7 +84,19 @@ export class TahakkukListComponent implements OnInit {
     },
     {
       key: 'odenenTutar',
-      name: 'Ödeneen Tutar',
+      name: 'Ödenen Tutar',
+      totalSummaryType: 'sum',
+      type: 'number',
+      visible: true,
+      format: {
+        type: 'currency',
+        precision: 2
+      },
+      sort: false,
+    },
+    {
+      key: 'kalanAnaPara',
+      name: 'Kalan Tutar',
       totalSummaryType: 'sum',
       type: 'number',
       visible: true,
@@ -103,5 +118,17 @@ export class TahakkukListComponent implements OnInit {
       .subscribe(d => {
         this.router.navigate(['online-islemler', 'odeme', d.id])
       });
+  }
+  selectAll() {
+  }
+  select(tahakkuk) {
+    if (this.isSelected(tahakkuk)) {
+      this.seciliTahakkuklar.splice(this.seciliTahakkuklar.indexOf(tahakkuk), 1);
+    } else {
+      this.seciliTahakkuklar.push(tahakkuk);
+    }
+  }
+  isSelected(tahakkuk) {
+    return this.seciliTahakkuklar.indexOf(tahakkuk) > -1
   }
 }

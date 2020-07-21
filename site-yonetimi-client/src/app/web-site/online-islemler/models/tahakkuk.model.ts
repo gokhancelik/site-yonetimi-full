@@ -16,7 +16,7 @@ export interface Tahakkuk {
     odemeTipiId: string;
     meskenKisiId: string;
     durumu: AidatDurumu;
-    kalanTutar: number;
+    kalanAnaPara: number;
     faiz: number;
     odemeTipi: GelirGiderTanimi;
     id: string;

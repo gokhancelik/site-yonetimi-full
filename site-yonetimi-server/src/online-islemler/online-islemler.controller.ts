@@ -106,7 +106,7 @@ export class OnlineIslemlerController {
                 odemeAktarimi.odenenTutar = Number(row[7].replace('.', '').replace(',', '.'))
             result.push(odemeAktarimi);
         }
-        await OdemeAktarimi.save(result, { chunk: 1000 });
+        await OdemeAktarimi.save(result, { chunk: 100 });
         // return result;
 
     }

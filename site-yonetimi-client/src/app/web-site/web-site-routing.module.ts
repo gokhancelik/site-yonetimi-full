@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { WebSiteComponent } from './web-site.component';
 import { LoggedInGuard } from '../auth/guards/logged-in.guard';
 import { AnaSayfaComponent } from './ana-sayfa/ana-sayfa.component';
+import { MevzuatComponent } from './mevzuat/mevzuat.component';
 
 
 const routes: Routes = [
@@ -13,6 +14,10 @@ const routes: Routes = [
       {
         path: '',
         component: AnaSayfaComponent
+      },
+      {
+        path: 'mevzuat',
+        component: MevzuatComponent
       },
       {
         path: 'online-islemler',

@@ -78,7 +78,7 @@ export class Tahakkuk extends BaseEntity {
     @Expose()
     public get odenenTutarAnaPara(): number {
         let faizHaricOdenenTutar = this.tahsilatKalems?.filter(p => {
-            return p.odemeTipi && p.odemeTipi.kod !== GelirGiderTanimi.Faiz && p.odemeTipi.kod !== GelirGiderTanimi.BankaKomisyonu;
+            return p.tahsilat && p.tahsilat.durumu === TahsilatDurumu.Onaylandi && p.odemeTipi && p.odemeTipi.kod !== GelirGiderTanimi.Faiz && p.odemeTipi.kod !== GelirGiderTanimi.BankaKomisyonu;
         }).map(p => p.tutar)
             .reduce((p, c) => p + c, 0);
         return Number(faizHaricOdenenTutar ? faizHaricOdenenTutar.toFixed(3) : 0);

@@ -7,11 +7,12 @@ import { AuthModule } from '../auth/auth.module';
 import { DataTableModule } from '../data-table/data-table.module';
 import { AnaSayfaComponent } from './ana-sayfa/ana-sayfa.component';
 import { DuyurularComponent } from './ana-sayfa/duyurular/duyurular.component';
+import { MevzuatComponent } from './mevzuat/mevzuat.component';
 
 
 
 @NgModule({
-  declarations: [WebSiteComponent, AnaSayfaComponent, DuyurularComponent],
+  declarations: [WebSiteComponent, AnaSayfaComponent, DuyurularComponent, MevzuatComponent],
   imports: [
     CommonModule,
     WebSiteRoutingModule,
