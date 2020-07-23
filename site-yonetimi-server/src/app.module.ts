@@ -30,6 +30,7 @@ import { FirmaModule } from './firma/firma.module';
 import { DuyurularModule } from './duyurular/duyurular.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+import { PaymentGatewayModule } from './payment-gateway/payment-gateway.module';
 @Module({
   imports: [DatabaseModule,
     BorcModule,
@@ -62,6 +63,7 @@ import { join } from 'path';
       autoSchemaFile: 'schema.gql',
       include: [TahakkukModule]
     }),
+    PaymentGatewayModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],

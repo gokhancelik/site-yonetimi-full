@@ -39,11 +39,11 @@ import { Duyurular } from 'src/duyurular/duyurular.entity';
             options: {
                 encrypt: false
             },
-            host: '94.73.146.4',
+            host: '94.73.146.3',
             port: 1433,
-            username: 'u8998566_u_nlfr',
-            password: 'CHph90C2NDwu37H',
-            database: 'u8998566_sy_nlfr',
+            username: 'u8998566_sy_cgdm',
+            password: 'QKah55X1CMwc47I',
+            database: 'u8998566_sy_cgdm',
             entities: [
                 Borc,
                 AidatGrubu,

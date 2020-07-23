@@ -36,8 +36,9 @@
                     <th>Ödeme Tipi</th>
                     <th>Açıklama</th>
                     <th>Tutar</th>
+                    <th>Faiz</th>
                     <th>Ödenen Tutar</th>
-                    <th>Kalan Tutar</th>
+                    <th>Ödenmesi Gereken Tutar</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,6 +48,7 @@
                     <td>{{tahakkuk.odemeTipi.ad}}</td>
                     <td>{{tahakkuk.aciklama}}</td>
                     <td>{{tahakkuk.tutar|currency:'TRY'}}</td>
+                    <td>{{tahakkuk.faiz|currency:'TRY'}}</td>
                     <td>{{tahakkuk.odenenTutar|currency:'TRY'}}</td>
                     <td>{{tahakkuk.kalanAnaPara|currency:'TRY'}}</td>
                 </tr>
