@@ -1,0 +1,8 @@
+<script src="https://www.paytr.com/js/iframeResizer.min.js"></script>
+<iframe #payment_iframe (load)="paymentResult(payment_iframe)" *ngIf="result && result.token" visible="true"
+    runat="server" id="paytriframe" frameborder="0" scrolling="no" style="border:none; width:100%; height: 100%;"
+    [src]="url|safe"></iframe>
+<script>
+    iFrameResize({}, '#paytriframe');
+
+</script>

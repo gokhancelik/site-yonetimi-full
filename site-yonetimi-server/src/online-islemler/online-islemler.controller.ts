@@ -1,5 +1,5 @@
-import { Controller, Get, Request, UseGuards, Post, Body, HttpService, HttpException, ClassSerializerInterceptor, UseInterceptors, Res, Param, ValidationPipe, Bind, UploadedFile } from '@nestjs/common';
-import { Tahakkuk, AidatDurumu } from '../tahakkuk/tahakkuk.entity';
+import { Controller, Get, Request, UseGuards, Post, Body, ClassSerializerInterceptor, UseInterceptors, Res, Param, ValidationPipe, UploadedFile } from '@nestjs/common';
+import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
 import { TahakkukService } from '../tahakkuk/tahakkuk.service';
 import { AuthGuard } from '@nestjs/passport';
 import { TahsilatService } from '../tahsilat/tahsilat.service';
@@ -11,7 +11,6 @@ import { TahsilatSanalPosLogService } from '../tahsilat/tahsilat-sanal-pos-log.s
 import { TahsilatSanalPosLog } from '../tahsilat/tahsilat-sanal-pos-log.entity';
 import { SanalPosService } from '../sanal-pos/sanal-pos.service';
 import { OdemeIslemleriService } from '../odeme-islemleri/odeme-islemleri.service';
-import { TahsilatOlusturSonucuDto } from '../odeme-islemleri/tahsilat-olustur-sonucu.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import xlsx from 'node-xlsx';
 import { OdemeAktarimi } from '../odeme-islemleri/odeme-aktarimi.entity';
@@ -26,7 +25,6 @@ export class OnlineIslemlerController {
         private tahsilatService: TahsilatService,
         private sanalPosService: SanalPosService,
         private odemeIslemleriService: OdemeIslemleriService,
-        private tahsilatKalemService: TahsilatKalemService,
         private readonly kuveytTurkSanalPosService: KuveytTurkSanalPosService,
         private tahsilatSanalPosLog: TahsilatSanalPosLogService) {
     }
@@ -52,10 +50,11 @@ export class OnlineIslemlerController {
     @Post('tahsilat-olustur')
     @UseInterceptors(ClassSerializerInterceptor)
     async tahsilatOlustur(@Body(new ValidationPipe({ transform: true })) seciliTahakkuklar: Tahakkuk[]): Promise<Tahsilat> {
-        let sanaPos = await this.sanalPosService.getByKod('kuveyt-turk-sanal-pos');
-        let tahsilatSonucu = await this.odemeIslemleriService.krediKartiTahsilatiOlustur(seciliTahakkuklar, sanaPos.komisyon);
+        let sanaPos = await this.sanalPosService.getAktif();
+        let tahsilatSonucu = await this.odemeIslemleriService.krediKartiTahsilatiOlustur(seciliTahakkuklar, sanaPos);
         let tahsilatlar = await this.odemeIslemleriService.tahsilatKaydet(tahsilatSonucu, TahsilatDurumu.Bekliyor);
-        return tahsilatlar.find(p => p.odemeYontemi === OdemeYontemi.KrediKarti);
+        let krediKartiTahsilati = tahsilatlar.find(p => p.odemeYontemi === OdemeYontemi.KrediKarti);
+        return krediKartiTahsilati;
     }
     @Post('odeme-basarili')
     async odemeBasarili(@Body(new ValidationPipe({ transform: true })) model: any, @Res() res): Promise<any> {

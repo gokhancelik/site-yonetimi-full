@@ -24,7 +24,7 @@ export class OdemeIslemleriController {
     }
     @Post('odemeleri-dagit')
     async odemeleriDagit(): Promise<void> {
-        let sanalPos = await SanalPos.findOne();
-        return this.odemeIslemleriService.odemeleriDagit(sanalPos ? sanalPos.komisyon : 0);
+        let sanalPos = await SanalPos.findOne({ where: { aktifMi: true } });
+        return this.odemeIslemleriService.odemeleriDagit(sanalPos);
     }
 }

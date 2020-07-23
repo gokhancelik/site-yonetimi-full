@@ -8,11 +8,12 @@ import { DataTableModule } from '../data-table/data-table.module';
 import { AnaSayfaComponent } from './ana-sayfa/ana-sayfa.component';
 import { DuyurularComponent } from './ana-sayfa/duyurular/duyurular.component';
 import { MevzuatComponent } from './mevzuat/mevzuat.component';
+import { BankaHesaplariComponent } from './banka-hesaplari/banka-hesaplari.component';
 
 
 
 @NgModule({
-  declarations: [WebSiteComponent, AnaSayfaComponent, DuyurularComponent, MevzuatComponent],
+  declarations: [WebSiteComponent, AnaSayfaComponent, DuyurularComponent, MevzuatComponent, BankaHesaplariComponent],
   imports: [
     CommonModule,
     WebSiteRoutingModule,

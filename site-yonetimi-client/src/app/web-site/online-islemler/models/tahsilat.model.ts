@@ -19,6 +19,7 @@ export interface Tahsilat {
     aciklama: string;
     tutar: number;
     meskenKisiId: string;
+    sanalPosKod: string;
     durumu: TahsilatDurumu;
     odemeYontemi: OdemeYontemi;
     bankaSiparisNo: string;

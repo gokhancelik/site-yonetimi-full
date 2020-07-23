@@ -1,5 +1,5 @@
 <data-table [dataSource]="dataSource" [title]="'Hesap Hareketleri'" [columns]="columns" [editMode]="'popup'"
     name="hesapHareketleri" (onRowUpdating)="onRowUpdating($event)" (onToolbarPreparing)="onToolbarPreparing($event)"
     (onInitNewRow)="onInitNewRow($event)" [allowAdding]="false" [allowDeleting]="false"
-    (dxGridReady)="gridReady($event)" [allowUpdating]="false" [remoteOperations]="true">
+    (dxGridReady)="gridReady($event)" [allowUpdating]="false" [remoteOperations]="remoteOperations">
 </data-table>

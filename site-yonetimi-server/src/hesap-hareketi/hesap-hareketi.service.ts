@@ -13,7 +13,7 @@ export class HesapHareketiService extends BaseService<HesapHareketi> {
         private connection: Connection) {
         super(repository);
     }
-    
+
     getListWithInnerModel(query: QueryDto): Promise<[HesapHareketi[], number]> {
         //return this.repository.find();
         let result = this.repository.createQueryBuilder('hh')
@@ -44,15 +44,18 @@ export class HesapHareketiService extends BaseService<HesapHareketi> {
             .skip(query.skip)
             .getManyAndCount();
     }
-    getHesapHareketleriByHesapId(hesapTanimiId: string): Promise<HesapHareketi[]> {
-        return this.repository.createQueryBuilder('hh')
+    getHesapHareketleriByHesapId(hesapTanimiId: string, query: QueryDto): Promise<[HesapHareketi[], number]> {
+        let result = this.repository.createQueryBuilder('hh')
             .addSelect('SUM (hh.tutar) OVER (PARTITION BY hh.hesapTanimiId ORDER BY hh.islemTarihi, hh.id)', 'hh_bakiye')
             .leftJoinAndSelect('hh.hesapTanimi', 'ht')
             .leftJoinAndSelect('hh.borc', 'b')
             .leftJoinAndSelect('hh.tahsilat', 't')
             .orderBy('hh.id', 'DESC')
-            .where('hh.hesapTanimiId = :hesapTanimiId', { hesapTanimiId })
-            .getMany();
+            .where('hh.hesapTanimiId = :hesapTanimiId', { hesapTanimiId });
+        result = buildWhereQuery(result, query.filter);
+        return result.take(query.take)
+            .skip(query.skip)
+            .getManyAndCount();
     }
     async transfer(dto: { toHesapId: string, fromHesapId: string; tutar: number, islemTarihi: Date }): Promise<HesapHareketi[]> {
         const queryRunner = this.connection.createQueryRunner();

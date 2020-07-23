@@ -1,0 +1,11 @@
+::ng-deep .dx-datagrid-headers {
+    font-weight: bolder;
+    color: black;
+}
+::ng-deep .dx-datagrid-table {
+    font-size: 1rem;
+}
+
+::ng-deep .dx-datagrid .dx-row > td {
+    padding: 0.75rem;
+}

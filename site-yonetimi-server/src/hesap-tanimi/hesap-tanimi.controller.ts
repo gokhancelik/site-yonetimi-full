@@ -1,10 +1,11 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, ValidationPipe } from '@nestjs/common';
 import { BaseController } from '../abstract/base.controller';
 import { HesapTanimi } from './hesap-tanimi.entity';
 import { HesapTanimiService } from './hesap-tanimi.service';
 import { ApiTags } from '@nestjs/swagger';
 import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
 import { HesapHareketiService } from '../hesap-hareketi/hesap-hareketi.service';
+import { QueryDto } from '../hesap-hareketi/hesap-hareketi.controller';
 
 @ApiTags('Hesap Tanımı')
 @Controller('hesap-tanimi')
@@ -13,8 +14,8 @@ export class HesapTanimiController extends BaseController<HesapTanimi, HesapTani
         private hesapHareketiService: HesapHareketiService) {
         super(service);
     }
-    @Get(':id/hesap-hareketleri')
-    getHesapHareketleri(@Param('id') id: string): Promise<HesapHareketi[]> {
-        return this.hesapHareketiService.getHesapHareketleriByHesapId(id);
+    @Post(':id/hesap-hareketleri')
+    getHesapHareketleri(@Param('id') id: string, @Body(new ValidationPipe({ transform: true })) query: QueryDto): Promise<[HesapHareketi[], number]> {
+        return this.hesapHareketiService.getHesapHareketleriByHesapId(id, query);
     }
 }

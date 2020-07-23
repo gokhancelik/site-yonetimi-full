@@ -1,0 +1,12 @@
+<ng-container *ngFor="let hesap of hesaplar$|async">
+
+    <div class="card" style="width: 18rem;" *ngIf="hesap.sitedeGoster">
+        <div class="card-body">
+            <h5 class="card-title">{{hesap.ad}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{hesap.hesapAdi}}</h6>
+            <!-- <p class="card-text">Hesap No: {{hesap.bankaId}}</p>
+            <p class="card-text">Hesap No: {{hesap.hesapNo}}</p> -->
+            <p class="card-text">IBAN: {{hesap.iban}}</p>
+        </div>
+    </div>
+</ng-container>

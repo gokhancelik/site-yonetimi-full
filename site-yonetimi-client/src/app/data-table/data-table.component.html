@@ -2,7 +2,7 @@
 </data-table> -->
 <nb-card>
   <nb-card-header>
-    {{title || name}}
+    <h6>{{title || name}}</h6>
   </nb-card-header>
   <nb-card-body>
     <dx-data-grid *ngIf="isBrowser" id="{{name}}GridContainer" [wordWrapEnabled]="true"
@@ -23,7 +23,7 @@
       <dxo-selection [selectAllMode]="'allPages'" [showCheckBoxesMode]="'always'" mode="multiple"></dxo-selection>
       <dxo-export [enabled]="export" [fileName]="name" [allowExportSelectedData]="true"></dxo-export>
       <dxo-paging [enabled]="true"></dxo-paging>
-      <dxo-state-storing [enabled]="true" type="localStorage" storageKey="{{name}}Grid"></dxo-state-storing>
+      <dxo-state-storing [enabled]="false" type="localStorage" storageKey="{{name}}Grid"></dxo-state-storing>
       <dxo-pager [showPageSizeSelector]="true" [showNavigationButtons]="true" [allowedPageSizes]="[5, 10, 15, 20]">
       </dxo-pager>
       <dxo-editing [mode]="editMode" [allowAdding]="allowAdding" [allowUpdating]="allowUpdating"
@@ -51,10 +51,11 @@
         <!-- <dxi-button hint="reddet" icon="fa fa-ban" style="color: red" [onClick]="reddet"></dxi-button> -->
       </dxi-column>
       <ng-container *ngFor="let col of columns">
-        <dxi-column [fixed]="col.fixed" [allowFiltering]="col.filter === undefined ? true : col.filter" [allowSorting]="col.sort === undefined ? true : col.sort" [formItem]="col.formItem" [encodeHtml]="false" [dataField]="col.key"
-          [visible]="col.visible" [editCellTemplate]="col.editCellTemplate" [editorOptions]="col.editorOptions"
-          [cellTemplate]="col.cellTemplate" [format]="col.format" [caption]="col.name" [dataType]="col.type"
-          [validationRules]="col.validators">
+        <dxi-column [fixed]="col.fixed" [allowFiltering]="col.filter === undefined ? true : col.filter"
+          [allowSorting]="col.sort === undefined ? true : col.sort" [formItem]="col.formItem" [encodeHtml]="false"
+          [dataField]="col.key" [visible]="col.visible" [editCellTemplate]="col.editCellTemplate"
+          [editorOptions]="col.editorOptions" [cellTemplate]="col.cellTemplate" [format]="col.format"
+          [caption]="col.name" [dataType]="col.type" [validationRules]="col.validators">
           <dxo-lookup *ngIf="col.type==='select'"
             [dataSource]="col.editorOptions.items || (col.editorOptions.itemsAsync|async)"
             [displayExpr]="col.editorOptions.displayExpr" [valueExpr]="col.editorOptions.valueExpr">

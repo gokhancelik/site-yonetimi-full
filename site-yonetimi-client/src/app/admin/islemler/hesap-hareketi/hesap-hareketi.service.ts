@@ -14,10 +14,6 @@ export class HesapHareketleriService extends BaseCrudService {
     super(http, 'hesapHareketi');
   }
   getListWithInnerModel<HesapHareketi>(params): Observable<[Array<HesapHareketi>, number]> {
-    const searchParams = new URLSearchParams(params);
-    // if (params) {
-    //   Object.keys(params).forEach(key => searchParams.append(key, params[key]));
-    // }
     return this.http.post<[Array<HesapHareketi>, number]>(`${this.baseUrl}${this.path}/withInnerModel`, params);
   }
 

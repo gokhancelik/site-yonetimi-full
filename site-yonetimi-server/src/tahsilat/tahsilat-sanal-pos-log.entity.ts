@@ -1,6 +1,7 @@
 import { Entity, Column, ManyToOne } from "typeorm";
 import { BaseEntity } from "../abstract/base.entity";
 import { Tahsilat } from "./tahsilat.entity";
+import { SanalPos } from "../sanal-pos/sanal-pos.entity";
 
 @Entity({ name: 'TahsilatSanalPosLog' })
 export class TahsilatSanalPosLog extends BaseEntity {

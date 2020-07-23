@@ -15,5 +15,11 @@ export class SanalPosService extends BaseService<SanalPos>{
             .where('sanalPos.kod = :kod', { kod })
             .getOne();
     }
-
+    async getAktif(): Promise<SanalPos> {
+        return SanalPos.findOne({
+            where: {
+                aktifMi: true
+            }
+        });
+    }
 }

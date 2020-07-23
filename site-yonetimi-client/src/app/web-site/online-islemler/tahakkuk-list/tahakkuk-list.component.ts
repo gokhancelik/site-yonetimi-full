@@ -109,8 +109,8 @@ export class TahakkukListComponent implements OnInit {
     ];
   }
   onGridReady(e: DxDataGridComponent) {
-    e.onSelectionChanged.subscribe(d => {
-    });
+    // e.onSelectionChanged.subscribe(d => {
+    // });
     this.grid = e;
   }
   odemeYap() {
@@ -118,17 +118,5 @@ export class TahakkukListComponent implements OnInit {
       .subscribe(d => {
         this.router.navigate(['online-islemler', 'odeme', d.id])
       });
-  }
-  selectAll() {
-  }
-  select(tahakkuk) {
-    if (this.isSelected(tahakkuk)) {
-      this.seciliTahakkuklar.splice(this.seciliTahakkuklar.indexOf(tahakkuk), 1);
-    } else {
-      this.seciliTahakkuklar.push(tahakkuk);
-    }
-  }
-  isSelected(tahakkuk) {
-    return this.seciliTahakkuklar.indexOf(tahakkuk) > -1
   }
 }

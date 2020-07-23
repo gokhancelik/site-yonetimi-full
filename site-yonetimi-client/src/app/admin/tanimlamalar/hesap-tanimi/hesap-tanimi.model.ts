@@ -16,6 +16,7 @@ export class HesapTanimi {
     subeKodu?: string;
     hesapNo?: string;
     iban?: string;
+    sitedeGoster: boolean;
 
     colDefs(injector: Injector) {
         return [{
@@ -100,6 +101,12 @@ export class HesapTanimi {
                 displayExpr: 'name',
                 valueExpr: 'id'
             }
+        },
+        {
+            key: 'sitedeGoster',
+            name: 'Sitede Göster',
+            type: 'boolean',
+            visible: true,
         }];
     }
 }

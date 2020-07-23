@@ -5,6 +5,7 @@ import { HesapTanimiService } from '../../tanimlamalar/hesap-tanimi/hesap-tanimi
 export class SanalPos extends BaseModel {
     ad: string;
     kod: string;
+    aktifMi: boolean;
     ayarlar: string;
     colDefs(injector: Injector) {
         return [{
@@ -48,6 +49,11 @@ export class SanalPos extends BaseModel {
             key: 'ayarlar',
             name: 'Ayarlar',
             type: 'string',
+        },
+        {
+            key: 'aktifMi',
+            name: 'Aktif Mi',
+            type: 'boolean',
         },
         {
             key: 'komisyon',

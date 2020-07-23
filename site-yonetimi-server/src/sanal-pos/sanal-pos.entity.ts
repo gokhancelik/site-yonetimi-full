@@ -21,7 +21,12 @@ export class SanalPos extends BaseEntity {
     ayarlar: string;
     @Expose()
     get ayarlarParsed() {
-        return JSON.parse(this.ayarlar);
+        try {
+            return JSON.parse(this.ayarlar);
+        }
+        catch (error) {
+            return this.ayarlar;
+        }
     }
 
     @Column({ type: 'decimal', nullable: true, scale: 5, precision: 5 })
@@ -32,4 +37,7 @@ export class SanalPos extends BaseEntity {
 
     @Column({ type: 'uuid', nullable: true })
     hesapId?: string;
+
+    @Column({ type: 'bit', nullable: false, default: false })
+    aktifMi: boolean;
 }

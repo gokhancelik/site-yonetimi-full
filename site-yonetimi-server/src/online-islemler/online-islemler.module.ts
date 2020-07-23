@@ -7,9 +7,10 @@ import { KuveytTurkSanalPosService } from '../sanal-pos/servisler/kuveyt-turk/ku
 import { TahsilatKalemModule } from '../tahsilat-kalem/tahsilat-kalem.module';
 import { SanalPosModule } from '../sanal-pos/sanal-pos.module';
 import { OdemeIslemleriModule } from '../odeme-islemleri/odeme-islemleri.module';
+import { PaymentGatewayController } from './payment-gateway/payment-gateway.controller';
 
 @Module({
-  controllers: [OnlineIslemlerController],
+  controllers: [OnlineIslemlerController, PaymentGatewayController],
   providers: [OnlineIslemlerService, KuveytTurkSanalPosService],
   imports: [TahakkukModule, TahsilatModule, TahsilatKalemModule, HttpModule, SanalPosModule, OdemeIslemleriModule]
 })

@@ -40,4 +40,7 @@ export class HesapTanimi extends BaseEntity {
 
     @Column({ length: 50, nullable: true })
     iban?: string;
+
+    @Column({ default: false })
+    sitedeGoster?: boolean;
 }

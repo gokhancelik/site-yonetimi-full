@@ -4,13 +4,14 @@ import { WebSiteComponent } from './web-site.component';
 import { LoggedInGuard } from '../auth/guards/logged-in.guard';
 import { AnaSayfaComponent } from './ana-sayfa/ana-sayfa.component';
 import { MevzuatComponent } from './mevzuat/mevzuat.component';
+import { BankaHesaplariComponent } from './banka-hesaplari/banka-hesaplari.component';
 
 
 const routes: Routes = [
   {
     path: '',
     component: WebSiteComponent,
-    children: [      
+    children: [
       {
         path: '',
         component: AnaSayfaComponent
@@ -18,6 +19,10 @@ const routes: Routes = [
       {
         path: 'mevzuat',
         component: MevzuatComponent
+      },
+      {
+        path: 'banka-hesaplari',
+        component: BankaHesaplariComponent
       },
       {
         path: 'online-islemler',

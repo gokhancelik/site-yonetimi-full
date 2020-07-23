@@ -17,6 +17,7 @@ import { map } from 'rxjs/operators';
 })
 export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi> implements OnInit {
   grid: DxDataGridComponent;
+  remoteOperations: boolean = true;
   @Input() hesapTanimiId: string;
   constructor(service: HesapHareketleriService,
     private modal: NgbModal,
@@ -31,11 +32,11 @@ export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi>
       load: (loadOptions: any) => {
         console.log(loadOptions)
         if (this.hesapTanimiId) {
-          return (this.hesapTanimiService).getHesapHareketleri(this.hesapTanimiId)
+          return (this.hesapTanimiService).getHesapHareketleri(this.hesapTanimiId, loadOptions)
             .pipe(map(data => {
               return {
-                data: data,
-                totalCount: data.length,
+                data: data[0],
+                totalCount: data[1],
               }
             })).toPromise();
         }

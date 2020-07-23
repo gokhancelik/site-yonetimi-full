@@ -1,16 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BaseService } from '../abstract/base.service';
-import { Tahsilat, TahsilatDurumu, OdemeYontemi } from './tahsilat.entity';
+import { Tahsilat } from './tahsilat.entity';
 import { TahsilatRepository } from './tahsilat.repository';
-import { Connection } from 'typeorm';
-import { TahsilatKalem } from '../tahsilat-kalem/tahsilat-kalem.entity';
-import { GelirGiderTanimiService } from '../gelir-gider-tanimi/gelir-gider-tanimi.service';
-import { TahakkukService } from '../tahakkuk/tahakkuk.service';
-import { TahsilatSanalPosLog } from './tahsilat-sanal-pos-log.entity';
-import { TahsilatSanalPosLogRepository } from './tahsilat-sanal-pos-log.repository';
-import { HesapHareketiService } from '../hesap-hareketi/hesap-hareketi.service';
-import { TahsilatKalemService } from '../tahsilat-kalem/tahsilat-kalem.service';
-import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
 import { QueryDto } from '../hesap-hareketi/hesap-hareketi.controller';
 import { buildFindCondition, buildOrder } from '../abstract/query-helper';
 
@@ -18,10 +9,7 @@ import { buildFindCondition, buildOrder } from '../abstract/query-helper';
 export class TahsilatService extends BaseService<Tahsilat>{
     
 
-    constructor(repository: TahsilatRepository,
-        private readonly tahakkukService: TahakkukService,
-        private readonly tahsilatKalemService: TahsilatKalemService,
-        private readonly tahsilatSanalPosLogRepository: TahsilatSanalPosLogRepository) {
+    constructor(repository: TahsilatRepository) {
         super(repository);
     }
 
@@ -55,7 +43,7 @@ export class TahsilatService extends BaseService<Tahsilat>{
         //     .gr('tahsilat.meskenKisiId')
         //     .getMany();
     }
-    getByTahakkukId(tahakkukId: string): Promise<Tahsilat[]> {
+    getByTahakkukId(): Promise<Tahsilat[]> {
         throw new Error("Method not implemented.");
     }
     findAllQuery(query: QueryDto): Promise<[Tahsilat[], number]> {
