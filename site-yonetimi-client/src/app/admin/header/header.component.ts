@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { NbSidebarService, NbMenuService, NbThemeService, NbMediaBreakpointsService } from '@nebular/theme';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -34,12 +35,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'default';
 
-  userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
+  userMenu = [
+    { title: 'Profile' },
+    {
+      title: 'Log out',
+      click: () => {
+        alert('')
+      }
+    }];
 
   constructor(private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
     private themeService: NbThemeService,
-    private breakpointService: NbMediaBreakpointsService) {
+    private breakpointService: NbMediaBreakpointsService,
+    private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -48,7 +57,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // this.userService.getUsers()
     //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((users: any) => this.user = users.nick);
-
+    this.user = this.authService.getUser();
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
       .pipe(

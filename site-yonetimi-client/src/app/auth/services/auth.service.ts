@@ -7,6 +7,11 @@ import { isPlatformBrowser } from '@angular/common';
 export interface Token {
   username: string,
   sub: string,
+  ad: string,
+  oyad: string,
+  tamAd: string,
+  roles: [
+  ],
   iat: number,
   exp: number
 }
@@ -29,15 +34,24 @@ export class AuthService {
     }
     return '';
   }
-  
+
   getUser(): Token {
     if (this.isBrowser) {
       let token = this.getToken();
       if (token) {
-        return JSON.parse(atob(token.split('.')[1]));
+        return JSON.parse(this.decodeToken(token.split('.')[1]));
       }
     }
     return null;
+  }
+  decodeToken(base64IdToken){
+    return decodeURIComponent(atob(base64IdToken).replace(/(.)/g, function (m, p) {
+      var code = p.charCodeAt(0).toString(16).toUpperCase();
+      if (code.length < 2) {
+        code = '0' + code;
+      }
+      return '%' + code;
+    })); // jshint ignore:line
   }
   logout() {
     if (this.isBrowser) {

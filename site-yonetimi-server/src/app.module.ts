@@ -31,6 +31,8 @@ import { DuyurularModule } from './duyurular/duyurular.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { PaymentGatewayModule } from './payment-gateway/payment-gateway.module';
+import { RolModule } from './rol/rol.module';
+import { KisiRolModule } from './kisi-rol/kisi-rol.module';
 @Module({
   imports: [DatabaseModule,
     BorcModule,
@@ -64,6 +66,8 @@ import { PaymentGatewayModule } from './payment-gateway/payment-gateway.module';
       include: [TahakkukModule]
     }),
     PaymentGatewayModule,
+    RolModule,
+    KisiRolModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],

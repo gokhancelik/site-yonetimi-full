@@ -25,25 +25,30 @@ export class TahsilatListComponent implements OnInit {
     });
     this.columns = [
       {
-        key: 'odemeTarihi',
-        name: 'Ödeme Tarihi',
-        type: 'date',
+        key: 'tahsilatNo',
+        name: 'Tahsilat No',
+        type: 'number',
       },
-      {
-        key: 'odemeTipiId',
-        name: 'Ödeme Tipi',
-        type: 'select',
-        editorOptions: {
-          itemsAsync: this.gelirGiderTanimiService.getList(),
-          displayExpr: 'ad',
-          valueExpr: 'id'
-        },
-        visible: true,
-      },
+      // {
+      //   key: 'odemeTipiId',
+      //   name: 'Ödeme Tipi',
+      //   type: 'select',
+      //   editorOptions: {
+      //     itemsAsync: this.gelirGiderTanimiService.getList(),
+      //     displayExpr: 'ad',
+      //     valueExpr: 'id'
+      //   },
+      //   visible: true,
+      // },
       {
         key: 'aciklama',
         name: 'Açıklama',
         type: 'textarea',
+      },
+      {
+        key: 'odemeTarihi',
+        name: 'Ödeme Tarihi',
+        type: 'datetime',
       },
       {
         key: 'tutar',

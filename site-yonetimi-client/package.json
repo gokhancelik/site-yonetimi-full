@@ -34,6 +34,7 @@
     "devextreme-angular": "^19.2.7",
     "devextreme-schematics": "^1.1.13",
     "eva-icons": "^1.1.2",
+    "ng-bootstrap-form-validation": "^5.0.0",
     "rxjs": "~6.5.4",
     "swagger-angular-generator": "^4.2.1",
     "tslib": "^1.10.0",

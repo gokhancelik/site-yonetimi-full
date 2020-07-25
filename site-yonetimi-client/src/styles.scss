@@ -1,4 +1,4 @@
-@import '~bootstrap/dist/css/bootstrap.css';
+@import '~bootstrap/scss/bootstrap.scss';
 @import '~@nebular/theme/styles/theming';
 @import '~@nebular/theme/styles/themes/default';
 
@@ -24,4 +24,6 @@ $nb-themes: nb-register-theme((
 @include nb-install() {
   @include nb-theme-global();
 };
-/* You can add global styles to this file, and also import other style files */
+.ng-touched.ng-invalid {
+  @extend .is-invalid;
+}

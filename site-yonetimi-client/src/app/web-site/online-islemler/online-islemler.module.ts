@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OnlineIslemlerComponent } from './online-islemler.component';
 import { OnlineIslemlerRoutingModule } from './online-islemler-routing.module';
-import { NgbTabsetModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTabsetModule, NgbModalModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { TahakkukListComponent } from './tahakkuk-list/tahakkuk-list.component';
 import { DataTableModule } from '../../data-table/data-table.module';
 import { OdemeComponent, RunScriptsDirective } from './odeme/odeme.component';
@@ -15,10 +15,11 @@ import { TahsilatListComponent } from './tahsilat-list/tahsilat-list.component';
 import { OdemeSonucuComponent } from './odeme-sonucu/odeme-sonucu.component';
 import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { PaytrGatewayComponent, SafePipe } from './paytr-gateway/paytr-gateway.component';
+import { KimlikBilgileriComponent } from './kimlik-bilgileri/kimlik-bilgileri.component';
 @NgModule({
   declarations: [OnlineIslemlerComponent, TahakkukListComponent, OdemeComponent,
     SafePipe,
-    OdemeGatewayComponent, RunScriptsDirective, OdenmisTahakkuklarComponent, TahsilatListComponent, OdemeSonucuComponent, PaytrGatewayComponent],
+    OdemeGatewayComponent, RunScriptsDirective, OdenmisTahakkuklarComponent, TahsilatListComponent, OdemeSonucuComponent, PaytrGatewayComponent, KimlikBilgileriComponent],
   imports: [
     CommonModule,
     OnlineIslemlerRoutingModule,
@@ -32,7 +33,8 @@ import { PaytrGatewayComponent, SafePipe } from './paytr-gateway/paytr-gateway.c
     DxValidatorModule,
     DxButtonModule,
     PipesModule,
-    CreditCardDirectivesModule
+    CreditCardDirectivesModule,
+    NgbAlertModule
   ],
   entryComponents: [
     OdemeGatewayComponent

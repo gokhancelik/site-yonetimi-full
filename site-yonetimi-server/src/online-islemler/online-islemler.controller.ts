@@ -59,12 +59,12 @@ export class OnlineIslemlerController {
     @Post('odeme-basarili')
     async odemeBasarili(@Body(new ValidationPipe({ transform: true })) model: any, @Res() res): Promise<any> {
         let provisionResult = await this.kuveytTurkSanalPosService.provision(model);
-        res.redirect('http://localhost:4200/online-islemler/odeme-sonucu?sonucId=' + provisionResult.id);
+        res.redirect('http://cigdemadasi.turkuazvadisi.com/online-islemler/odeme-sonucu?sonucId=' + provisionResult.id);
     }
     @Post('odeme-hatali')
     async odemeHatali(@Body(new ValidationPipe({ transform: true })) model: any, @Res() res): Promise<any> {
         let result = await this.kuveytTurkSanalPosService.error(model);
-        res.redirect('http://localhost:4200/online-islemler/odeme-sonucu?sonucId=' + result.id);
+        res.redirect('http://cigdemadasi.turkuazvadisi.com/online-islemler/odeme-sonucu?sonucId=' + result.id);
     }
 
     @UseGuards(AuthGuard('jwt'))

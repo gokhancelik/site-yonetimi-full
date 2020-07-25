@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinTable } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinTable, Generated } from "typeorm";
 import { GelirGiderTanimi } from "../gelir-gider-tanimi/gelir-gider-tanimi.entity";
 import { TahsilatKalem } from "../tahsilat-kalem/tahsilat-kalem.entity";
 import { BaseEntity } from "../abstract/base.entity";
@@ -54,6 +54,10 @@ export class Tahsilat extends BaseEntity {
 
     @Column({ length: 50, nullable: true })
     bankaSiparisNo: string;
+
+    @Column({ nullable: false })
+    @Generated('increment')
+    tahsilatNo: number;
 
     @OneToMany(type => TahsilatKalem, t => t.tahsilat, { nullable: true, eager: true })
     @JoinTable()

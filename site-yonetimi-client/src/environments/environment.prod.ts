@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://api.aidattakip.site/'
+  apiUrl: 'https://api.cigdemadasi.turkuazvadisi.com/'
 };

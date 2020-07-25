@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Request, UseInterceptors, ClassSerializerInterceptor, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Request, UseInterceptors, ClassSerializerInterceptor, UseGuards, Put, Body } from '@nestjs/common';
 import { BaseController } from '../abstract/base.controller';
 import { Kisi } from './kisi.entity';
 import { KisiService } from './kisi.service';
@@ -49,6 +49,11 @@ export class KisiController extends BaseController<Kisi, KisiService> {
     @Get('current-user')
     getCurrentUser(@Request() request): Promise<Kisi> {
         return this.service.findById(request.user.userId);
+    }
+    @UseGuards(AuthGuard('jwt'))
+    @Put('current-user')
+    putCurrentUser(@Request() request, @Body() model: { telefon: string, cepTelefon: string, adres: string, eposta: string, tcKimlikNo: string }): Promise<Kisi> {
+        return this.service.updateCurrentUser(request.user.userId, model);
     }
     @Get(':id/cuzdan')
     getKisiCuzdan(@Param('id') id: string): Promise<KisiCuzdan> {

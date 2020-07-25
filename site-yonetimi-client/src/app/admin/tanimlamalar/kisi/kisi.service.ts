@@ -31,6 +31,9 @@ export class KisiService extends BaseCrudService {
   getCurrentUser(): Observable<Kisi> {
     return this.http.get<Kisi>(`${this.baseUrl}${this.path}/current-user`);
   }
+  putCurrentUser(data: Kisi): Observable<Kisi> {
+    return this.http.put<Kisi>(`${this.baseUrl}${this.path}/current-user`, data);
+  }
   getCuzdan(id: string): Observable<KisiCuzdan> {
     return this.http.get<KisiCuzdan>(`${this.baseUrl}${this.path}/${id}/cuzdan`);
   }

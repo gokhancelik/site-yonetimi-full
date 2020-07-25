@@ -25,6 +25,8 @@ import { KisiCuzdan } from '../kisi-cuzdan/kisi-cuzdan.entity';
 import { OdemeAktarimi } from '../odeme-islemleri/odeme-aktarimi.entity';
 import { Firma } from 'src/firma/firma.entity';
 import { Duyurular } from 'src/duyurular/duyurular.entity';
+import { KisiRol } from '../kisi-rol/kisi-rol.entity';
+import { Rol } from '../rol/rol.entity';
 
 @Module({
     imports: [
@@ -69,7 +71,9 @@ import { Duyurular } from 'src/duyurular/duyurular.entity';
                 KisiCuzdan,
                 OdemeAktarimi,
                 Firma,
-                Duyurular
+                Duyurular,
+                KisiRol,
+                Rol
             ],
             synchronize: true,
             // logging: ""

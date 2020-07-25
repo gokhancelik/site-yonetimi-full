@@ -7,17 +7,42 @@ import { buildFindCondition, buildOrder } from '../abstract/query-helper';
 
 @Injectable()
 export class TahsilatService extends BaseService<Tahsilat>{
-    
+    findByTahsilatNo(tahsilatNo: string): Promise<Tahsilat> {
+        return Tahsilat.findOne({
+            where: {
+                tahsilatNo: tahsilatNo
+            }
+        });
+    }
+
 
     constructor(repository: TahsilatRepository) {
         super(repository);
     }
 
     getTahsilatlarByUserId(userId: any): Promise<Tahsilat[]> {
-        return this.repository.createQueryBuilder('tahsilat')
-            .innerJoin('tahsilat.meskenKisi', 'mk')
-            .where('mk.kisiId = :userId and durumu = 1', { userId })
-            .getMany();
+        return Tahsilat.find({
+            join: {
+                alias: 'tahsilat',
+                innerJoinAndSelect: {
+                    meskenKisi: 'tahsilat.meskenKisi',
+                    tahsilatKalems: 'tahsilat.tahsilatKalems'
+                }
+            },
+            where: {
+                meskenKisi: {
+                    kisiId: userId
+                },
+                durumu: 1
+            },
+            order: {
+                odemeTarihi: 'DESC'
+            }
+        });
+        // this.repository.createQueryBuilder('tahsilat')
+        //     .innerJoin('tahsilat.meskenKisi', 'mk')
+        //     .where('mk.kisiId = :userId and durumu = 1', { userId })
+        //     .getMany();
     }
     getDagitilacakTahsilatlar(): Promise<{
         kisiId,

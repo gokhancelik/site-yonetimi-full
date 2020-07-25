@@ -1,0 +1,83 @@
+<div class="row mt-4 justify-content-md-center">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Kimlik Bilgileri</h5>
+
+                <form [formGroup]="form" (ngSubmit)="submit()" class="needs-validation" novalidate>
+                    <div class="form-group">
+                        <label for="tcKimlikNo">T.C. Kimlik No *</label>
+                        <input maxlength="11" type="text" class="form-control" formControlName="tcKimlikNo"
+                            id="tcKimlikNo">
+                        <div class="invalid-feedback" *ngIf="form.controls.tcKimlikNo.hasError('required')">
+                            T.C. Kimlik No zorunludur
+                        </div>
+                        <div class="invalid-feedback" *ngIf="form.controls.tcKimlikNo.hasError('maxlength')">
+                            T.C. Kimlik No 11 hane olmalıdır
+                        </div>
+                        <div class="invalid-feedback" *ngIf="form.controls.tcKimlikNo.hasError('minlength')">
+                            T.C. Kimlik No 11 hane olmalıdır
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ad">Ad *</label>
+                        <input type="text" class="form-control" formControlName="ad" id="ad">
+                        <div class="invalid-feedback" *ngIf="form.controls.ad.hasError('required')">
+                            Ad zorunludur
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="soyad">Soyad *</label>
+                        <input type="text" class="form-control" formControlName="soyad" id="soyad">
+                        <div class="invalid-feedback" *ngIf="form.controls.soyad.hasError('required')">
+                            Soyad zorunludur
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefon">Telefon</label>
+                        <input type="tel" maxlength="10" class="form-control" formControlName="telefon" id="telefon">
+                        <div class="invalid-feedback" *ngIf="form.controls.telefon.hasError('pattern')">
+                            Telefon geçerli değil Ör: 5051234567
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cepTelefon">Cep Telefon *</label>
+                        <input type="tel" maxlength="10" class="form-control" formControlName="cepTelefon"
+                            id="cepTelefon">
+                        <div class="invalid-feedback" *ngIf="form.controls.cepTelefon.hasError('required')">
+                            Cep Telefon zorunludur
+                        </div>
+                        <div class="invalid-feedback" *ngIf="form.controls.cepTelefon.hasError('pattern')">
+                            Cep Telefon geçerli değil Ör: 5051234567
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eposta">Eposta *</label>
+                        <input type="email" class="form-control" formControlName="eposta" id="eposta">
+                        <div class="invalid-feedback" *ngIf="form.controls.eposta.hasError('required')">
+                            Eposta zorunludur
+                        </div>
+                        <div class="invalid-feedback" *ngIf="form.controls.eposta.hasError('email')">
+                            Eposta geçerli değil
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="adres">Adres *</label>
+                        <textarea row="3" class="form-control" formControlName="adres" id="adres"></textarea>
+                        <div class="invalid-feedback" *ngIf="form.controls.adres.hasError('required')">
+                            Adres zorunludur
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                            <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Kaydet</button>
+                        </div>
+                        <div class="col" *ngIf="guncellemeBasarili">
+                            <ngb-alert type="success">Güncelleme Başarılı</ngb-alert>
+                            </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

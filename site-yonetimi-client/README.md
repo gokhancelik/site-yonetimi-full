@@ -37,3 +37,5 @@ docker push registry.gitlab.com/zelektronik/site-yonetimi-applications/site-yone
 ## Docker virtual host
 
 docker run -d --name aidat-takip-demo-client --expose 80 --net nginx-proxy -e VIRTUAL_HOST=aidattakip.site registry.gitlab.com/zelektronik/site-yonetimi-applications/site-yonetimi-full/client:latest
+
+docker run --detach --name cigdem-adasi-client --env "VIRTUAL_HOST=cigdemadasi.turkuazvadisi.com" --env "LETSENCRYPT_HOST=cigdemadasi.turkuazvadisi.com" --expose 80 registry.gitlab.com/zelektronik/site-yonetimi-applications/site-yonetimi-full/client:latest
