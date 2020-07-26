@@ -84,4 +84,4 @@ docker push registry.gitlab.com/zelektronik/site-yonetimi-applications/site-yone
 
 ## Docker virtual host
 
-docker run -d --name cigdem-adasi-api --expose 80 --net bridge -e "VIRTUAL_HOST=api.cigdemadasi.turkuazvadisi.com" --env "LETSENCRYPT_HOST=api.cigdemadasi.turkuazvadisi.com" registry.gitlab.com/zelektronik/site-yonetimi-applications/site-yonetimi-full/server:latest
+docker run -d --name cigdem-adasi-api --expose 4000 --net bridge -e "VIRTUAL_HOST=api.cigdemadasi.turkuazvadisi.com" --env "LETSENCRYPT_HOST=api.cigdemadasi.turkuazvadisi.com" registry.gitlab.com/zelektronik/site-yonetimi-applications/site-yonetimi-full/server:latest

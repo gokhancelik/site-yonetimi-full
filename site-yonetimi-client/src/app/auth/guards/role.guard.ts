@@ -13,7 +13,8 @@ export class RoleGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     let user = this.authService.getUser();
-    return next.data && user && user.roles.some(p => next.data.roles.includes(p));
+    let isGranted = next.data && user && user.roles.some(p => next.data.roles.includes(p));
+    return isGranted;
   }
 
 }

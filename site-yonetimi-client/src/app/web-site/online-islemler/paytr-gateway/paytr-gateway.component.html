@@ -1,8 +1,86 @@
-<script src="https://www.paytr.com/js/iframeResizer.min.js"></script>
+<script src="https://www.paytr.com/js/iframeResizer.min.js" crossorigin="anonymous" SameSite="none Secure"></script>
 <iframe #payment_iframe (load)="paymentResult(payment_iframe)" *ngIf="result && result.token" visible="true"
-    runat="server" id="paytriframe" frameborder="0" scrolling="no" style="border:none; width:100%; height: 100%;"
-    [src]="url|safe"></iframe>
+    id="paytriframe" frameborder="0" scrolling="no" style="border:none; width:100%; height: 100%;"
+    [src]="url|safe:'url'"></iframe>
 <script>
-    iFrameResize({}, '#paytriframe');
+    // iFrameResize({}, '#paytriframe');
 
 </script>
+
+<!-- 
+<div class="row" *ngIf="tahsilat">
+    <div class="col">
+        <div id="paytr_taksit_tablosu"></div>
+        <script
+            src="https://www.paytr.com/odeme/taksit-tablosu/v2?token=e22f78523d721773a8e5f5129afcbe29a7fc48330cadbb641ece220c7d8752b2&merchant_id=164697&amount=100&taksit=0&tumu=0"></script>
+    </div>
+</div>
+<style>
+    #paytr_taksit_tablosu {
+        clear: both;
+        font-size: 12px;
+        max-width: 1200px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+
+    #paytr_taksit_tablosu::before {
+        display: table;
+        content: " ";
+    }
+
+    #paytr_taksit_tablosu::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    .taksit-tablosu-wrapper {
+        margin: 5px;
+        width: 280px;
+        padding: 12px;
+        cursor: default;
+        text-align: center;
+        display: inline-block;
+        border: 1px solid #e1e1e1;
+    }
+
+    .taksit-logo img {
+        max-height: 28px;
+        padding-bottom: 10px;
+    }
+
+    .taksit-tutari-text {
+        float: left;
+        width: 126px;
+        color: #a2a2a2;
+        margin-bottom: 5px;
+    }
+
+    .taksit-tutar-wrapper {
+        display: inline-block;
+        background-color: #f7f7f7;
+    }
+
+    .taksit-tutar-wrapper:hover {
+        background-color: #e8e8e8;
+    }
+
+    .taksit-tutari {
+        float: left;
+        width: 126px;
+        padding: 6px 0;
+        color: #474747;
+        border: 2px solid #ffffff;
+    }
+
+    .taksit-tutari-bold {
+        font-weight: bold;
+    }
+
+    @media all and (max-width: 600px) {
+        .taksit-tablosu-wrapper {
+            margin: 5px 0;
+        }
+    }
+</style> -->

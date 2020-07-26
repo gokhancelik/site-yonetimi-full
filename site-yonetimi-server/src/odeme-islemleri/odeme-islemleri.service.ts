@@ -21,6 +21,7 @@ import { OdemeAktarimi } from './odeme-aktarimi.entity';
 import { MeskenKisi } from '../mesken-kisi/mesken-kisi.entity';
 import { HesapTanimiService } from '../hesap-tanimi/hesap-tanimi.service';
 import { SanalPos } from '../sanal-pos/sanal-pos.entity';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class OdemeIslemleriService {
@@ -37,37 +38,19 @@ export class OdemeIslemleriService {
         private hesapTanimiService: HesapTanimiService,
         private gelirGiderTanimiService: GelirGiderTanimiService) {
     }
-    async odemeleriDagit(sanalPos: SanalPos) {
+    async odemeleriDagit() {
+        let sanalPos = await SanalPos.findOne({ where: { aktifMi: true } });
         let butunOdemeler = await OdemeAktarimi.createQueryBuilder()
             .where('odenenTutar > islenenTutar and odenenTutar > 0 and bagimsizBolumKod is not null')
             .orderBy('odemeTarihi', 'ASC')
             .getMany();
         let uniqueBagimsizBolumKods = [...new Set(butunOdemeler.map(p => p.bagimsizBolumKod))];
-        // [
-        //     'AK3002',
-        //     'AK3003',
-        //     'AK3004',
-        //     'AK3005',
-        //     'AK3006',
-        //     'AK3007',
-        //     // 'B24023',
-        //     // 'B24233',
-        //     // 'AK3003',
-        //     // 'AK3015',
-        //     // 'AK3017',
-        //     // 'B24309',
-        //     // 'B24314',
-        //     // 'B24334',
-        //     // 'B24405'
-        // ] //= [...new Set(butunOdemeler.map(p => p.bagimsizBolumKod))];
         let islemler = [];
         for (const bagimsizBolumKod of uniqueBagimsizBolumKods) {
             let odemeler = butunOdemeler.filter(p => p.bagimsizBolumKod === bagimsizBolumKod);
             let aktarim = this.aktarimYap(odemeler, bagimsizBolumKod, sanalPos);
             await aktarim;
-            //islemler.push(aktarim);
         }
-        // await Promise.all(islemler);
     }
     private async aktarimYap(odemeler: OdemeAktarimi[], bagimsizBolumKod: string, sanalPos: SanalPos): Promise<void> {
         let meskenKisi: MeskenKisi = await this.meskenKisiService.getByMeskenKod(bagimsizBolumKod);

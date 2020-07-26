@@ -29,11 +29,11 @@ export class TahsilatService extends BaseService<Tahsilat>{
                     tahsilatKalems: 'tahsilat.tahsilatKalems'
                 }
             },
-            where: {
-                meskenKisi: {
-                    kisiId: userId
-                },
-                durumu: 1
+            where: qb => {
+                qb.where({
+                    durumu: 1
+                })
+                .andWhere('meskenKisi.kisiId = :userId', { userId: userId })
             },
             order: {
                 odemeTarihi: 'DESC'

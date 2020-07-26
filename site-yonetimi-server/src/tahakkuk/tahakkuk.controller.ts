@@ -13,7 +13,7 @@ export class TahakkukController extends BaseController<Tahakkuk, TahakkukService
     }
     @Post(':id/tahakkukOlustur')
     tahakkuklariOlustur(@Param('id') id: string, @Body() params: { tutar?: number, vadeTarihi?: Date, faizGrubuId?: string}): Promise<Tahakkuk[]> {
-        return (this.service as TahakkukService).tahakkuklariOlustur(id, params.tutar, params.vadeTarihi, params.faizGrubuId);
+        return (this.service as TahakkukService).borctanTahakkukOlustur(id, params.tutar, params.vadeTarihi, params.faizGrubuId);
     }
     @Post('query')
     @UseInterceptors(ClassSerializerInterceptor)

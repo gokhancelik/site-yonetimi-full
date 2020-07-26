@@ -4,8 +4,6 @@ import { OdemeIslemleriService } from './odeme-islemleri.service';
 import { Tahakkuk } from '../tahakkuk/tahakkuk.entity';
 import { TahsilatOlusturDto } from './tahsilat-olustur.dto';
 import { TahsilatOlusturSonucuDto } from './tahsilat-olustur-sonucu.dto';
-import { SanalPosService } from '../sanal-pos/sanal-pos.service';
-import { SanalPos } from '../sanal-pos/sanal-pos.entity';
 
 @Controller('odeme-islemleri')
 export class OdemeIslemleriController {
@@ -24,7 +22,6 @@ export class OdemeIslemleriController {
     }
     @Post('odemeleri-dagit')
     async odemeleriDagit(): Promise<void> {
-        let sanalPos = await SanalPos.findOne({ where: { aktifMi: true } });
-        return this.odemeIslemleriService.odemeleriDagit(sanalPos);
+        return this.odemeIslemleriService.odemeleriDagit();
     }
 }

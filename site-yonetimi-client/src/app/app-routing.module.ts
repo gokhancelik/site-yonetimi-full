@@ -24,6 +24,11 @@ const routes: Routes = [
     loadChildren: () => import('./web-site/web-site.module')
       .then(m => m.WebSiteModule),
   },
+  {
+    path: '**',
+    loadChildren: () => import('./web-site/web-site.module')
+      .then(m => m.WebSiteModule),
+  },
   // {
   //   path: 'auth',
   //   component: NbAuthComponent,

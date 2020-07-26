@@ -76,6 +76,7 @@ import { Rol } from '../rol/rol.entity';
                 Rol
             ],
             synchronize: true,
+            // logging: 'all'
             // logging: ""
         })
     ],

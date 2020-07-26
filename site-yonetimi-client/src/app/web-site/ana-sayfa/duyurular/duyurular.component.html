@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{duyuru?.baslik}}</h5>
-                <p class="card-text" [innerHTML]="duyuru?.icerik"></p>
+                <p class="card-text" [innerHTML]="duyuru?.icerik|safe:'html'"></p>
                 <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
             </div>
         </div>

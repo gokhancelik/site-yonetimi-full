@@ -18,7 +18,7 @@ export class PaymentGatewayController {
     async config(@Param('tahsilatId') tahsilatId: string, @Req() req): Promise<any> {
         let tahsilat = await this.tahsilatService.findById(tahsilatId);
         let kisi = await Kisi.findOne(tahsilat.meskenKisi.kisiId);
-        let buff = new Buffer(JSON.stringify(tahsilat.tahsilatKalems.map(s => { return { ProductName: s.odemeTipi.aciklama, Price: s.tutar, quantity: 1 } })));
+        let buff = new Buffer(JSON.stringify(tahsilat.tahsilatKalems.map(s => { return [s.odemeTipi.ad + ' Tahsilatı', s.tutar.toString(), 1] })));
         let base64data = buff.toString('base64');
         let body = {
             merchant_id: tahsilat.sanalPos.ayarlarParsed.merchant_id,

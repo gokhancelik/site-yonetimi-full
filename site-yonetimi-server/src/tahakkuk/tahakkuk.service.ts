@@ -16,7 +16,7 @@ import { TahakkuksArgs } from './dto/tahakkuk.args';
 
 @Injectable()
 export class TahakkukService extends BaseService<Tahakkuk> {
-   
+
 
     constructor(@InjectRepository(TahakkukRepository) private _repository: TahakkukRepository,
         private meskenService: MeskenService, private borcService: BorcService, private faizGrubuService: FaizGrubuService) {
@@ -28,13 +28,6 @@ export class TahakkukService extends BaseService<Tahakkuk> {
         //aidat grubunun mktarini ve vade tarihini kullnarak tahakkuk entity olustur
         //kaydet
 
-    }
-    async borctanTahakkukOlustur() {
-        //borcu cek
-        //borcun blogunun bagimsiz bolumleri cek;
-        //herbir meskene tutari paylastirarak tahakkuk olustur.
-        //vade tarihini borcun vade tarihiyle set et.
-        //kaydet 
     }
     async getOdenmemisAidatlar(userId): Promise<Tahakkuk[]> {
         return this._repository.getOdenmemisAidatlar(userId);
@@ -51,6 +44,16 @@ export class TahakkukService extends BaseService<Tahakkuk> {
             where: whereCondition,
             take: query.take,
             skip: query.skip,
+            join: {
+                alias: 'tahakkuk',
+                leftJoinAndSelect: {
+                    tahsilatKalems: 'tahakkuk.tahsilatKalems',
+                    tahsilat: 'tahsilatKalems.tahsilat',
+                    meskenKisi: 'tahakkuk.meskenKisi',
+                    odemeTipi: 'tahakkuk.odemeTipi',
+                    tahsilatKalemOdemeTipi: 'tahsilatKalems.odemeTipi'
+                },
+            },
             order: buildOrder(query.sort)
         });
         return result;
@@ -65,10 +68,10 @@ export class TahakkukService extends BaseService<Tahakkuk> {
         });
         return result;
     }
-    async tahakkuklariOlustur(id: string, tutar: number, vadeTarihi: Date, faizGrubuId?: string): Promise<Tahakkuk[]> {
+    async borctanTahakkukOlustur(borcId: string, tutar: number, vadeTarihi: Date, faizGrubuId?: string): Promise<Tahakkuk[]> {
         var tahakkukList = new Array<Tahakkuk>();
         var faizGrubu = await this.faizGrubuService.findById(faizGrubuId);
-        var borc = await this.borcService.findById(id);
+        var borc = await this.borcService.findById(borcId);
         var meskenList = await this.meskenService.findByUstMeskenId(borc.meskenId);
         var meskenCount = meskenList.length;
         var tahakkukTutari = tutar / meskenCount;

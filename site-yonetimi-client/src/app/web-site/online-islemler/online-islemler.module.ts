@@ -14,11 +14,10 @@ import { OdenmisTahakkuklarComponent } from './odenmis-tahakkuklar/odenmis-tahak
 import { TahsilatListComponent } from './tahsilat-list/tahsilat-list.component';
 import { OdemeSonucuComponent } from './odeme-sonucu/odeme-sonucu.component';
 import { CreditCardDirectivesModule } from 'angular-cc-library';
-import { PaytrGatewayComponent, SafePipe } from './paytr-gateway/paytr-gateway.component';
+import { PaytrGatewayComponent } from './paytr-gateway/paytr-gateway.component';
 import { KimlikBilgileriComponent } from './kimlik-bilgileri/kimlik-bilgileri.component';
 @NgModule({
   declarations: [OnlineIslemlerComponent, TahakkukListComponent, OdemeComponent,
-    SafePipe,
     OdemeGatewayComponent, RunScriptsDirective, OdenmisTahakkuklarComponent, TahsilatListComponent, OdemeSonucuComponent, PaytrGatewayComponent, KimlikBilgileriComponent],
   imports: [
     CommonModule,
