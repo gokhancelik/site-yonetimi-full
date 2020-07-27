@@ -25,7 +25,7 @@ export class PaymentGatewayController {
             user_ip: req.ip,
             merchant_oid: tahsilat.tahsilatNo,
             email: kisi.eposta || 'cigdemadasi@turkuazvadisi.com',
-            payment_amount: Math.ceil(tahsilat.tutar * 100),
+            payment_amount: Math.round(tahsilat.tutar * 100),
             user_basket: base64data,
             paytr_token: '',
             no_installment: tahsilat.sanalPos.ayarlarParsed.no_installment || '0',

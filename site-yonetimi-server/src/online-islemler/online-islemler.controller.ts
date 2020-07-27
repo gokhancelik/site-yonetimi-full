@@ -113,4 +113,9 @@ export class OnlineIslemlerController {
     getSanalPosLog(@Param('logId') logId: string): Promise<TahsilatSanalPosLog> {
         return (this.tahsilatSanalPosLog).findById(logId);
     }
+    @UseGuards(AuthGuard('jwt'))
+    @Get('son-sanal-pos-log/:durum')
+    getSonSanalPosLog(@Param('durum') durum: string, @Request() request): Promise<TahsilatSanalPosLog> {
+        return (this.tahsilatSanalPosLog).getSonSanalPosLogByDurum(durum === 'basarili', request.user.userId);
+    }
 }

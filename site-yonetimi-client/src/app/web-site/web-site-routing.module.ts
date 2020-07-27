@@ -5,6 +5,7 @@ import { LoggedInGuard } from '../auth/guards/logged-in.guard';
 import { AnaSayfaComponent } from './ana-sayfa/ana-sayfa.component';
 import { MevzuatComponent } from './mevzuat/mevzuat.component';
 import { BankaHesaplariComponent } from './banka-hesaplari/banka-hesaplari.component';
+import { DilekOneriSikayetComponent } from './dilek-oneri-sikayet/dilek-oneri-sikayet.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,10 @@ const routes: Routes = [
       {
         path: 'banka-hesaplari',
         component: BankaHesaplariComponent
+      },
+      {
+        path: 'dilek-oneri-sikayet',
+        component: DilekOneriSikayetComponent
       },
       {
         path: 'online-islemler',

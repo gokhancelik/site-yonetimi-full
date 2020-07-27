@@ -36,7 +36,7 @@
                         </tbody>
                         <tfoot>
                             <tr class="alert alert-warning">
-                                <td ><b> Yatırılacak Tutar:</b></td>
+                                <td><b> Yatırılacak Tutar:</b></td>
                                 <td class="text-right"><b>
                                         {{ tahsilat?.tutar|currency: 'TRY'}}</b>
                                 </td>
@@ -49,7 +49,7 @@
             <p>Cüzdana aktarılacak tutar: {{(tahsilatSonucu.cuzdan?.tutar)| currency : 'TRY'}}</p>
         </div> -->
         </div>
-        <div class="col" style="height: 1200px;">
+        <div class="col">
             <app-paytr-gateway *ngIf="tahsilat?.sanalPosKod==='paytr'" [tahsilat]="tahsilat"></app-paytr-gateway>
             <!-- <div class="card">
             <h5 class="card-header">Kart Bilgileri</h5>
@@ -132,7 +132,7 @@
             </div>
         </div> -->
         </div>
-      
+
     </div>
     <div class="row">
 

@@ -9,7 +9,7 @@ import { TahsilatSanalPosLog } from '../models/tahsilat-sanal-pos-log.model';
   styleUrls: ['./odeme-sonucu.component.scss']
 })
 export class OdemeSonucuComponent implements OnInit {
-  sonucId: any;
+  durum: 'basarili' | 'hatali';
   sonuc: TahsilatSanalPosLog;
   mesaj: any;
 
@@ -17,12 +17,13 @@ export class OdemeSonucuComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.sonucId = this.route.snapshot.queryParams['sonucId'];
-    this.onlineIslemlerService.getSanalPosLog(this.sonucId)
-    .subscribe(d=>{
-      this.sonuc = d;
-      this.mesaj = JSON.parse(this.sonuc.mesaj) || this.sonuc.mesaj;
-    })
+    this.durum = this.route.snapshot.params['durum'];
+    // this.sonucId = this.route.snapshot.queryParams['sonucId'];
+    this.onlineIslemlerService.getSonSanalPosLog(this.durum)
+      .subscribe(d => {
+        this.sonuc = d;
+        this.mesaj = JSON.parse(this.sonuc.mesaj) || this.sonuc.mesaj;
+      })
   }
 
 }

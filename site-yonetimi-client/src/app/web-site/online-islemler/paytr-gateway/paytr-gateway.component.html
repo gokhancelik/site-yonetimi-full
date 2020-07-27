@@ -1,7 +1,9 @@
 <script src="https://www.paytr.com/js/iframeResizer.min.js" crossorigin="anonymous" SameSite="none Secure"></script>
-<iframe #payment_iframe (load)="paymentResult(payment_iframe)" *ngIf="result && result.token" visible="true"
-    id="paytriframe" frameborder="0" scrolling="no" style="border:none; width:100%; height: 100%;"
-    [src]="url|safe:'url'"></iframe>
+<div style="height: 1620px;">
+    <iframe #payment_iframe (load)="paymentResult(payment_iframe)" *ngIf="result && result.token" visible="true"
+        id="paytriframe" frameborder="0" scrolling="no" style="border:none; width:100%; height: 100%;"
+        [src]="url|safe:'resourceUrl'"></iframe>
+</div>
 <script>
     // iFrameResize({}, '#paytriframe');
 

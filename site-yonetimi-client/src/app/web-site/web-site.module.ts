@@ -10,8 +10,9 @@ import { DuyurularComponent } from './ana-sayfa/duyurular/duyurular.component';
 import { MevzuatComponent } from './mevzuat/mevzuat.component';
 import { BankaHesaplariComponent } from './banka-hesaplari/banka-hesaplari.component';
 import { PipesModule } from '../pipes/pipes.module';
+import { DilekOneriSikayetComponent } from './dilek-oneri-sikayet/dilek-oneri-sikayet.component';
 @NgModule({
-  declarations: [WebSiteComponent, AnaSayfaComponent, DuyurularComponent, MevzuatComponent, BankaHesaplariComponent],
+  declarations: [WebSiteComponent, AnaSayfaComponent, DuyurularComponent, MevzuatComponent, BankaHesaplariComponent, DilekOneriSikayetComponent],
   imports: [
     CommonModule,
     WebSiteRoutingModule,

@@ -1,10 +1,10 @@
 <div class="alert alert-success" role="alert" *ngIf="sonuc?.durum">
     <h4 class="alert-heading">Ödeme Başarılı</h4>
-    <p></p>
-    <p class="mb-0">Banka Sipariş Numarası: {{mesaj?.orderId}}</p>
+    <a [routerLink]="['/online-islemler']">Listeye dön</a>
 </div>
 <div class="alert alert-danger" role="alert" *ngIf="!sonuc?.durum">
     <h4 class="alert-heading">Ödeme Alınamadı</h4>
     <p></p>
-    <p class="mb-0">Hata: {{mesaj?.responseMessage}}</p>
+    <p class="mb-0">Hata: {{mesaj?.failed_reason_msg}}</p>
+    <a [routerLink]="['/online-islemler']">Tekar denemek için listeye dön</a>
 </div>

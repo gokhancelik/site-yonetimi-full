@@ -15,7 +15,7 @@ const routes: Routes = [
     component: OdemeComponent
   },
   {
-    path: 'odeme-sonucu',
+    path: 'odeme-sonucu/:durum',
     component: OdemeSonucuComponent
   }
 ];

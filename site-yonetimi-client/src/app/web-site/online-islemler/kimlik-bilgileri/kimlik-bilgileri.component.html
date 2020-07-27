@@ -2,8 +2,14 @@
     <div class="col">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Kimlik Bilgileri</h5>
+                <div class="col" *ngIf="!kisi?.eposta || !kisi?.cepTelefon">
+                    <ngb-alert type="danger">Kimlik bilgileriniz güncel değil veya eksik.
+                        <br>
+                        Ödeme sonucunda eposta almak için eposta adresinizi ve mesaj alabilmek için telefon numaranızı
+                        tanımlayınız.</ngb-alert>
 
+                </div>
+                <h5 class="card-title">Kimlik Bilgileri</h5>
                 <form [formGroup]="form" (ngSubmit)="submit()" class="needs-validation" novalidate>
                     <div class="form-group">
                         <label for="tcKimlikNo">T.C. Kimlik No *</label>
@@ -74,7 +80,7 @@
                         </div>
                         <div class="col" *ngIf="guncellemeBasarili">
                             <ngb-alert type="success">Güncelleme Başarılı</ngb-alert>
-                            </div>
+                        </div>
                     </div>
                 </form>
             </div>

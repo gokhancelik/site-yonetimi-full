@@ -11,6 +11,7 @@ import { TahsilatOlusturSonucuDto } from '../../admin/islemler/services/odeme-is
   providedIn: 'root'
 })
 export class OnlineIslemlerService {
+  
 
   baseUrl: string;
 
@@ -26,6 +27,9 @@ export class OnlineIslemlerService {
   }
   getSanalPosLog(id): Observable<TahsilatSanalPosLog> {
     return this.http.get<TahsilatSanalPosLog>(`${this.baseUrl}/${id}/sanal-pos-log`);
+  }
+  getSonSanalPosLog(durum) {
+    return this.http.get<TahsilatSanalPosLog>(`${this.baseUrl}/son-sanal-pos-log/${durum}`);
   }
   getTahsilatlar(): Observable<Tahsilat[]> {
     return this.http.get<Tahsilat[]>(`${this.baseUrl}/tahsilatlar`);
