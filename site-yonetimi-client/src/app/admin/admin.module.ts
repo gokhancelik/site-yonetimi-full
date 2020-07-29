@@ -8,7 +8,7 @@ import {
   NbThemeModule, NbLayoutModule, NbMenuModule, NbSidebarModule, NbIconModule,
   NbActionsModule, NbSearchModule, NbUserModule, NbContextMenuModule
 } from '@nebular/theme';
-import { NbEvaIconsModule } from '@nebular/eva-icons';
+// import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -18,7 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
     AdminRoutingModule,
     NbThemeModule.forRoot({ name: 'default' }),
     NbLayoutModule,
-    NbEvaIconsModule,
+    // NbEvaIconsModule,
     NbMenuModule.forRoot(),
     NbSidebarModule.forRoot(),
     NbIconModule,

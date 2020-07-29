@@ -28,7 +28,6 @@ import { OdemeIslemleriModule } from './odeme-islemleri/odeme-islemleri.module';
 import { KisiCuzdanModule } from './kisi-cuzdan/kisi-cuzdan.module';
 import { FirmaModule } from './firma/firma.module';
 import { DuyurularModule } from './duyurular/duyurular.module';
-import { GraphQLModule } from '@nestjs/graphql';
 import { PaymentGatewayModule } from './payment-gateway/payment-gateway.module';
 import { RolModule } from './rol/rol.module';
 import { KisiRolModule } from './kisi-rol/kisi-rol.module';
@@ -60,11 +59,6 @@ import { ScheduleModule } from '@nestjs/schedule';
     KisiCuzdanModule,
     FirmaModule,
     DuyurularModule,
-    GraphQLModule.forRoot({
-      installSubscriptionHandlers: true,
-      autoSchemaFile: 'schema.gql',
-      include: [TahakkukModule]
-    }),
     PaymentGatewayModule,
     RolModule,
     KisiRolModule,

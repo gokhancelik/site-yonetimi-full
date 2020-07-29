@@ -3,10 +3,8 @@ import {
     CreateDateColumn, UpdateDateColumn,
     BaseEntity as TypeOrmBaseEntity
 } from "typeorm";
-import { Field, ID } from "@nestjs/graphql";
 
 export abstract class BaseEntity extends TypeOrmBaseEntity {
-    @Field(type => ID, { nullable: true })
     @PrimaryGeneratedColumn('uuid')
     id: string;
     @CreateDateColumn({ type: 'datetime' })

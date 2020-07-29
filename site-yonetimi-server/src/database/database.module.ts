@@ -41,11 +41,11 @@ import { Rol } from '../rol/rol.entity';
             options: {
                 encrypt: false
             },
-            host: '94.73.146.3',
+            host: '94.73.146.3',//'94.73.145.4',
             port: 1433,
-            username: 'u8998566_sy_cgdm',
-            password: 'QKah55X1CMwc47I',
-            database: 'u8998566_sy_cgdm',
+            username: 'u8998566_sy_cgdm',//'u8998566_zsite',
+            password: 'QKah55X1CMwc47I',//'SHKrw2jT4x8Vc4H',
+            database: 'u8998566_sy_cgdm',//'u8998566_zsite',
             entities: [
                 Borc,
                 AidatGrubu,

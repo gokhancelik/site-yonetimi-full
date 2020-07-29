@@ -13,7 +13,6 @@ import { OdemeGatewayComponent } from './odeme-gateway/odeme-gateway.component';
 import { OdenmisTahakkuklarComponent } from './odenmis-tahakkuklar/odenmis-tahakkuklar.component';
 import { TahsilatListComponent } from './tahsilat-list/tahsilat-list.component';
 import { OdemeSonucuComponent } from './odeme-sonucu/odeme-sonucu.component';
-import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { PaytrGatewayComponent } from './paytr-gateway/paytr-gateway.component';
 import { KimlikBilgileriComponent } from './kimlik-bilgileri/kimlik-bilgileri.component';
 @NgModule({
@@ -32,7 +31,6 @@ import { KimlikBilgileriComponent } from './kimlik-bilgileri/kimlik-bilgileri.co
     DxValidatorModule,
     DxButtonModule,
     PipesModule,
-    CreditCardDirectivesModule,
     NgbAlertModule
   ],
   entryComponents: [

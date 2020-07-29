@@ -39,12 +39,17 @@ export class AuthService {
     if (this.isBrowser) {
       let token = this.getToken();
       if (token) {
-        return JSON.parse(this.decodeToken(token.split('.')[1]));
+        let user = <Token>JSON.parse(this.decodeToken(token.split('.')[1]));
+        if (user.exp * 1000 < new Date().getTime()) {
+          this.logout();
+          return null;
+        }
+        return user;
       }
     }
     return null;
   }
-  decodeToken(base64IdToken){
+  decodeToken(base64IdToken) {
     return decodeURIComponent(atob(base64IdToken).replace(/(.)/g, function (m, p) {
       var code = p.charCodeAt(0).toString(16).toUpperCase();
       if (code.length < 2) {

@@ -12,7 +12,6 @@ import { TahsilatDurumu } from '../tahsilat/tahsilat.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { buildWhereQuery, buildFindCondition, buildOrder } from '../abstract/query-helper';
 import { QueryDto } from '../hesap-hareketi/hesap-hareketi.controller';
-import { TahakkuksArgs } from './dto/tahakkuk.args';
 
 @Injectable()
 export class TahakkukService extends BaseService<Tahakkuk> {
@@ -55,16 +54,6 @@ export class TahakkukService extends BaseService<Tahakkuk> {
                 },
             },
             order: buildOrder(query.sort)
-        });
-        return result;
-    }
-    findAllByQuery(query: TahakkuksArgs): Promise<Tahakkuk[]> {
-        // let whereCondition = buildFindCondition(query.filter);
-        let result = Tahakkuk.find<Tahakkuk>({
-            // where: whereCondition,
-            take: query.take,
-            skip: query.skip,
-            // order: buildOrder(query.sort)
         });
         return result;
     }

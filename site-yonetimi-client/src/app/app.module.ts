@@ -14,7 +14,7 @@ import { AuthInterceptor } from './auth/interceptors/auth-intercepter';
 import { registerLocaleData } from '@angular/common';
 import localeTr from '@angular/common/locales/tr';
 import localeTrExtra from '@angular/common/locales/extra/tr';
-import { NbEvaIconsModule } from '@nebular/eva-icons';
+// import { NbEvaIconsModule } from '@nebular/eva-icons';
 
 registerLocaleData(localeTr, localeTrExtra);
 @NgModule({
@@ -49,7 +49,7 @@ registerLocaleData(localeTr, localeTrExtra);
     }),
     NbThemeModule.forRoot({ name: 'corporate' }),
     NbLayoutModule,
-    NbEvaIconsModule,
+    // NbEvaIconsModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   { provide: LOCALE_ID, useValue: 'tr-TR' }],
