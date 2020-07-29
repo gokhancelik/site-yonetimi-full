@@ -19,6 +19,7 @@ export interface Token {
   providedIn: 'root'
 })
 export class AuthService {
+
   redirectUrl: any = '';
   isBrowser: boolean;
   constructor(private http: HttpClient,
@@ -27,6 +28,9 @@ export class AuthService {
   }
   authenticate(model: any) {
     return this.http.post<any>(`${environment.apiUrl}auth/login`, model)
+  }
+  sendPassword(value: any) {
+    return this.http.post<any>(`${environment.apiUrl}auth/send-password`, value)
   }
   getToken(): string {
     if (this.isBrowser) {

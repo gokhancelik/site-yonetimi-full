@@ -32,6 +32,7 @@ import { PaymentGatewayModule } from './payment-gateway/payment-gateway.module';
 import { RolModule } from './rol/rol.module';
 import { KisiRolModule } from './kisi-rol/kisi-rol.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { SmsGatewayModule } from './sms-gateway/sms-gateway.module';
 @Module({
   imports: [DatabaseModule,
     BorcModule,
@@ -62,7 +63,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     PaymentGatewayModule,
     RolModule,
     KisiRolModule,
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
+    SmsGatewayModule
   ],
   controllers: [AppController, HealthController],
   providers: [AppService],

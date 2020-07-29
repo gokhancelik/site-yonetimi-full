@@ -10,4 +10,8 @@ export class AuthController {
     async login(@Request() request) {
         return this.authService.login(request.user);
     }
+    @Post('send-password')
+    async sendPassword(@Body() data: { telno: string }) {
+        return this.authService.sendPassword(data.telno);
+    }
 }

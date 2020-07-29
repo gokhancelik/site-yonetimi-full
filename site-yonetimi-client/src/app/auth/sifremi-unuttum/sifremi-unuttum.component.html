@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="row mt-4 justify-content-md-center">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col" *ngIf="sonuc && !sonuc.success">
+                        <ngb-alert type="danger">{{sonuc.message}}</ngb-alert>
+
+                    </div>
+                    <h5 class="card-title">Şifre Talebi</h5>
+                    <form [formGroup]="form" (ngSubmit)="talepEt()" class="needs-validation" novalidate>
+                        <div class="form-group">
+                            <label for="telno">Cep Telefon *</label>
+                            <input type="tel" maxlength="10" class="form-control" formControlName="telno" id="telno">
+                            <div class="invalid-feedback" *ngIf="form.controls.telno.hasError('required')">
+                                Cep Telefon zorunludur
+                            </div>
+                            <div class="invalid-feedback" *ngIf="form.controls.telno.hasError('pattern')">
+                                Cep Telefon geçerli değil Ör: 5051234567
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Gönder</button>
+                            </div>
+                            <div class="col" *ngIf="sonuc?.success">
+                                <ngb-alert type="success">Şifreniz SMS olarak telefonunuza gönderilmiştir.</ngb-alert>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

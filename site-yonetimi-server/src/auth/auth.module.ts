@@ -7,6 +7,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './jwt-strategy/jwt-contants';
 import { LocalStrategy } from './local-strategy/local-strategy.service';
+import { SmsGatewayModule } from '../sms-gateway/sms-gateway.module';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { LocalStrategy } from './local-strategy/local-strategy.service';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '180m' },
     }),
-    
+    SmsGatewayModule
   ],
   providers: [AuthService, JwtStrategyService, LocalStrategy],
   controllers: [AuthController]
