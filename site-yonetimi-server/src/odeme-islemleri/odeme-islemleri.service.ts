@@ -137,7 +137,7 @@ export class OdemeIslemleriService {
     }
     async bankaKomisyonuKalemiOlustur(tutar, sanalPos: SanalPos) {
         var tahsilatKalem = new TahsilatKalem();
-        tahsilatKalem.tutar = Number((tutar * sanalPos.komisyon).toFixed(3));
+        tahsilatKalem.tutar = Number((tutar * sanalPos.komisyon).toFixed(2));
         let gelirTanimi = await this.gelirGiderTanimiService.getByKod(GelirGiderTanimi.BankaKomisyonu);
         tahsilatKalem.odemeTipiId = gelirTanimi.id;
         tahsilatKalem.odemeTipi = gelirTanimi;
@@ -412,11 +412,13 @@ export class OdemeIslemleriService {
         // }
     }
 
-    async tahsilatiOnayla(tahsilatId: string, hesapId: string) {
+    async tahsilatiOnayla(tahsilatId: string, hesapId: string, hesapHareketiOlustur = true) {
         let tahsilat = await this.tahsilatService.findById(tahsilatId);
         tahsilat.durumu = TahsilatDurumu.Onaylandi;
         await this.tahsilatService.update(tahsilat.id, tahsilat);
-        let hesapHareketi = await HesapHareketi.olustur(tahsilat.odemeTarihi, tahsilat.tutar, hesapId, tahsilat.id);
+        if(hesapHareketiOlustur){
+            let hesapHareketi = await HesapHareketi.olustur(tahsilat.odemeTarihi, tahsilat.tutar, hesapId, tahsilat.id);
+        }
         let uniqueTahakkukIds = [...new Set(tahsilat.tahsilatKalems.map(p => p.tahakkukId))];
         let tahakkuks = await this.tahakkukService.findByIds(uniqueTahakkukIds);
         for (const tahakkuk of tahakkuks) {

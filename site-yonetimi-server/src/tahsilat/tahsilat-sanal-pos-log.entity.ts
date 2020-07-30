@@ -1,7 +1,6 @@
 import { Entity, Column, ManyToOne } from "typeorm";
 import { BaseEntity } from "../abstract/base.entity";
 import { Tahsilat } from "./tahsilat.entity";
-import { SanalPos } from "../sanal-pos/sanal-pos.entity";
 
 @Entity({ name: 'TahsilatSanalPosLog' })
 export class TahsilatSanalPosLog extends BaseEntity {
@@ -16,4 +15,10 @@ export class TahsilatSanalPosLog extends BaseEntity {
 
     @Column({ default: false })
     durum: boolean;
+
+    @Column({ default: false })
+    aktarildiMi: boolean;
+
+    @Column({ type: 'nvarchar', nullable: true, length: 100 })
+    transactionId: string;
 }

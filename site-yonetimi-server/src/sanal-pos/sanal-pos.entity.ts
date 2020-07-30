@@ -32,7 +32,7 @@ export class SanalPos extends BaseEntity {
     @Column({ type: 'decimal', nullable: true, scale: 5, precision: 5 })
     komisyon: number;
 
-    @ManyToOne(type => HesapTanimi, { nullable: true })
+    @ManyToOne(type => HesapTanimi, { nullable: true, eager: true })
     hesap?: HesapTanimi;
 
     @Column({ type: 'uuid', nullable: true })
