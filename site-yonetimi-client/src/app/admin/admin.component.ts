@@ -145,6 +145,13 @@ export class AdminComponent implements OnInit {
             icon: 'exchange-alt',
           },
         },
+        {
+          title: 'İşlenmemiş Hesap Hareketleri',
+          link: '/admin/islemler/hesap-hareketi/islenmemisler',
+          icon: {
+            icon: 'exchange-alt',
+          },
+        }
       ]
     }
   ];

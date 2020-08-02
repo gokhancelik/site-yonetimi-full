@@ -33,6 +33,7 @@ import { TahakkukOdeComponent } from './tahakkuk-ode/tahakkuk-ode.component';
     NgbDatepickerModule,
     NgbModule
   ],
+  exports:[TahakkukOdeComponent],
   providers: [
     { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }
   ]

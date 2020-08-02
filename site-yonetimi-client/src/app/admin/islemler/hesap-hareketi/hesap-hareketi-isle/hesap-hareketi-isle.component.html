@@ -1,0 +1,62 @@
+<div class="modal-header">
+    <h4 class="modal-title">Hesap Hareketi İşle</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col">
+                    <b>Açıklama: </b>{{data.aciklama}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <b>Tutar: </b>{{data.tutar|currency:'TRY'}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <b>Tarih: </b>{{data.islemTarihi|date:'dd.MM.yyyy hh:mm'}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label>Hareket Tipi</label>
+                    <select class="form-control" [(ngModel)]="hareketTipi">
+                        <option value="tahsilat">Tahsilat</option>
+                        <option value="borc">Borç Ödemesi</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group" *ngIf="hareketTipi==='tahsilat'">
+                        <label for="meskenKisiId">Kimden</label>
+                        <select class="form-control" [(ngModel)]="dto.meskenKisiId"
+                            (ngModelChange)="meskenKisiIdChanged($event)" name="meskenKisiId">
+                            <option *ngFor="let mk of meskenKisiList" [value]="mk.id">
+                                {{mk.mesken.kod}}
+                                - {{mk.kisi.ad}} {{mk.kisi.soyad}}</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group" *ngIf="hareketTipi==='borc'">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <app-tahakkuk-ode *ngIf="selectedTahakkuks && selectedTahakkuks.length"
+                [selectedTahakkuks]="selectedTahakkuks" [tahsilatOlusturDto]="tahsilatOlusturDto"
+                [hesapHareketiId]="data.id">
+            </app-tahakkuk-ode>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Kapat</button>
+    <button type="button" *ngIf="hareketTipi!=='tahsilat'" class="btn btn-succes" (click)="kaydet()">Kaydet</button>
+</div>

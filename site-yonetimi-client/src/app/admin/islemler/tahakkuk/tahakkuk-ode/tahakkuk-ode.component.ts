@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { TahakkukModel } from '../tahakkuk-model';
 import { TahsilatService } from '../../tahsilat/tahsilat-service';
 import { TahakkukService } from '../tahakkuk-service';
@@ -16,8 +16,10 @@ import { MeskenKisiService } from '../../../tanimlamalar/mesken-kisi/mesken-kisi
   styleUrls: ['./tahakkuk-ode.component.scss']
 })
 export class TahakkukOdeComponent implements OnInit {
-  selectedTahakkuks: TahakkukModel[];
-  tahsilatOlusturDto: TahsilatOlusturDto = { odemeYontemi: OdemeYontemi.HavaleEFT };
+  @Input() selectedTahakkuks: TahakkukModel[];
+  @Input() tahsilatOlusturDto: TahsilatOlusturDto = { odemeYontemi: OdemeYontemi.HavaleEFT };
+  @Input() hesapHareketiId: string;
+  inputsDisabled;
   tahsilatSonucu: TahsilatOlusturSonucuDto;
   hesapTanimlari: HesapTanimi[];
   seciliTahakkukToplami: number;
@@ -36,6 +38,10 @@ export class TahakkukOdeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.tahsilatOlusturDto && this.tahsilatOlusturDto.odemeTarihi && this.tahsilatOlusturDto.tutar) {
+      this.inputsDisabled = true;
+      this.hesapla();
+    }
     this.seciliTahakkukToplami = this.selectedTahakkuks.map(p => p.tutar).reduce((p, c) => p + c, 0)
     this.neskenKisiService.getCuzdan(this.selectedTahakkuks[0].meskenKisiId)
       .subscribe(d => {
@@ -52,6 +58,7 @@ export class TahakkukOdeComponent implements OnInit {
   ode() {
     if (this.tahsilatSonucu) {
       this.tahsilatSonucu.hesapId = this.tahsilatOlusturDto.hesapId;
+      this.tahsilatSonucu.hesapHareketiId = this.hesapHareketiId;
       (this.odemeIslemleriService).tahakkukOde(this.tahsilatSonucu)
         .subscribe(d => {
           this.activeModal.close();

@@ -86,7 +86,7 @@ export class OdemeIslemleriService {
             } else {
                 let tahsilat = await this.tahakkuksuzTahsilatOlustur(meskenKisi.id, odeme.odemeTarihi, odemeYontemi, odenenTutar, sanalPos, odeme.odemeTipi);
                 tahsilat.save();
-                let hesapHareketi = await HesapHareketi.olustur(tahsilat.odemeTarihi, tahsilat.tutar, hesapTanim.id, tahsilat.id);
+                // let hesapHareketi = await HesapHareketi.olustur(tahsilat.odemeTarihi, tahsilat.tutar, hesapTanim.id, tahsilat.id);
                 let oncekiCuzdan = await this.kisiCuzdanService.getCuzdanByMeskenKisiId(meskenKisi.id);
                 let toplamTutar = oncekiCuzdan ? oncekiCuzdan.tutar + tahsilat.kullanilabilirMiktar : tahsilat.kullanilabilirMiktar;
                 await this.kisiCuzdanService.createByMeskenKisiId(toplamTutar, tahsilat.id, meskenKisi.id);
@@ -351,7 +351,12 @@ export class OdemeIslemleriService {
                 await this.tahsilatKalemService.create(tk);
             }
             if (yeniTahsilat.durumu === TahsilatDurumu.Onaylandi) {
-                let hesapHareketi = await HesapHareketi.olustur(yeniTahsilat.odemeTarihi, yeniTahsilat.tutar, dto.hesapId, yeniTahsilat.id);
+                let hesapHareketi = await HesapHareketi.findOne(dto.hesapHareketiId);
+                if (hesapHareketi) {
+                    hesapHareketi.tahsilatId = yeniTahsilat.id;
+                    hesapHareketi.save();
+                }
+                // let hesapHareketi = await HesapHareketi.olustur(yeniTahsilat.odemeTarihi, yeniTahsilat.tutar, dto.hesapId, yeniTahsilat.id);
                 let uniqueTahakkukIds = [...new Set(yeniTahsilat.tahsilatKalems.map(p => p.tahakkukId))];
                 let tahakkuks = await this.tahakkukService.findByIds(uniqueTahakkukIds);
                 for (const tahakkuk of tahakkuks) {
@@ -416,7 +421,7 @@ export class OdemeIslemleriService {
         let tahsilat = await this.tahsilatService.findById(tahsilatId);
         tahsilat.durumu = TahsilatDurumu.Onaylandi;
         await this.tahsilatService.update(tahsilat.id, tahsilat);
-        if(hesapHareketiOlustur){
+        if (hesapHareketiOlustur) {
             let hesapHareketi = await HesapHareketi.olustur(tahsilat.odemeTarihi, tahsilat.tutar, hesapId, tahsilat.id);
         }
         let uniqueTahakkukIds = [...new Set(tahsilat.tahsilatKalems.map(p => p.tahakkukId))];

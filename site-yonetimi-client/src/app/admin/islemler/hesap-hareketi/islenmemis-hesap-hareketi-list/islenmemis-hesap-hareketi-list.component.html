@@ -1,0 +1,5 @@
+<data-table [dataSource]="dataSource" [title]="'İşlenmemiş Hesap Hareketleri'" [columns]="columns" [editMode]="'popup'"
+    name="islenmemisHesapHareketleri" (onEditingStart)="onEditingStart($event)" (onRowUpdating)="onRowUpdating($event)" (onToolbarPreparing)="onToolbarPreparing($event)"
+    [allowAdding]="false" [allowDeleting]="false" (dxGridReady)="gridReady($event)" [allowUpdating]="true"
+    [remoteOperations]="remoteOperations">
+</data-table>

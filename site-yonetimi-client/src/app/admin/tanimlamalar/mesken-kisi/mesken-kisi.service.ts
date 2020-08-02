@@ -6,6 +6,7 @@ import { Mesken } from '../mesken/mesken.model';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { KisiCuzdan } from '../../islemler/services/odeme-islemleri.service';
+import { TahakkukModel } from '../../islemler/tahakkuk/tahakkuk-model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,8 @@ export class MeskenKisiService extends BaseCrudService {
   }
   getCurrentUserCuzdan(): Observable<KisiCuzdan> {
     return this.http.get<KisiCuzdan>(`${this.baseUrl}${this.path}/currentUserCuzdan`);
+  }
+  getOdenmemisTahakkuklar(id: string): Observable<TahakkukModel[]> {
+    return this.http.get<TahakkukModel[]>(`${this.baseUrl}${this.path}/${id}/odenmemis-aidatlar`);
   }
 }

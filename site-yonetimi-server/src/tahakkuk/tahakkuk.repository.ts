@@ -5,6 +5,7 @@ import { TahsilatDurumu } from '../tahsilat/tahsilat.entity';
 
 @EntityRepository(Tahakkuk)
 export class TahakkukRepository extends BaseRepository<Tahakkuk> {
+
     public async findAll(): Promise<Tahakkuk[]> {
         var aidatlar$ = super.find({
             join: {
@@ -91,6 +92,7 @@ export class TahakkukRepository extends BaseRepository<Tahakkuk> {
             })
         return aidatlar$;
     }
+
     public async getOdenmisAidatlar(userId: any): Promise<Tahakkuk[]> {
         var aidatlar$ =
             super.find({
@@ -114,7 +116,7 @@ export class TahakkukRepository extends BaseRepository<Tahakkuk> {
                     )
                 },
                 order: {
-                    vadeTarihi: 'ASC'
+                    vadeTarihi: 'DESC'
                 }
             })
         return aidatlar$;

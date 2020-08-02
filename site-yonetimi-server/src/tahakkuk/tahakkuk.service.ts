@@ -15,6 +15,7 @@ import { QueryDto } from '../hesap-hareketi/hesap-hareketi.controller';
 
 @Injectable()
 export class TahakkukService extends BaseService<Tahakkuk> {
+    
 
 
     constructor(@InjectRepository(TahakkukRepository) private _repository: TahakkukRepository,
@@ -31,6 +32,7 @@ export class TahakkukService extends BaseService<Tahakkuk> {
     async getOdenmemisAidatlar(userId): Promise<Tahakkuk[]> {
         return this._repository.getOdenmemisAidatlar(userId);
     }
+    
     getOdenmisAidatlar(userId: any): Promise<Tahakkuk[]> {
         return this._repository.getOdenmisAidatlar(userId);
     }

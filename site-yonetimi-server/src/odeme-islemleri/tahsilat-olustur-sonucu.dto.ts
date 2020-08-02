@@ -5,4 +5,5 @@ export class TahsilatOlusturSonucuDto {
     tahsilatlar: Tahsilat[];
     cuzdan: KisiCuzdan;
     hesapId?: string;
+    hesapHareketiId: string;
 }

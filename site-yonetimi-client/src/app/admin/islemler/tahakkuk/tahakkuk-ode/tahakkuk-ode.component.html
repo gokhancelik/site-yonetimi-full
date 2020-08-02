@@ -18,10 +18,10 @@
                             <input ngbButton type="radio" [value]="0"> Havale / EFT
                         </label>
                         <label ngbButtonLabel class="btn-secondary">
-                            <input ngbButton type="radio" [value]="1"> Kredi Kartı
+                            <input ngbButton type="radio" [value]="1" disabled> Kredi Kartı
                         </label>
                         <label ngbButtonLabel class="btn-secondary">
-                            <input ngbButton type="radio" [value]="2"> Kasa
+                            <input ngbButton type="radio" [value]="2" disabled> Kasa
                         </label>
 
                     </div>
@@ -41,7 +41,7 @@
                     <div class="input-group">
                         <input type="text" ngbDatepicker #d="ngbDatepicker" placeholder="yyyy-aa-gg"
                             class="form-control" id="odemeTarihi" name="odemeTarihi" required
-                            [(ngModel)]="tahsilatOlusturDto.odemeTarihi">
+                            [disabled]="inputsDisabled" [(ngModel)]="tahsilatOlusturDto.odemeTarihi">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()"
                                 type="button"></button>
@@ -52,11 +52,12 @@
                 <div class="form-group">
                     <label for="tutar">Tutar</label>
                     <input type="number" class="form-control" id="tutar" name="tutar" required
-                        [(ngModel)]="tahsilatOlusturDto.tutar">
+                        [disabled]="inputsDisabled" [(ngModel)]="tahsilatOlusturDto.tutar">
                 </div>
                 <div class="form-group">
                     <label for="odemeTarihi">Hesap</label>
-                    <select class="form-control" [(ngModel)]="tahsilatOlusturDto.hesapId" name="hesapId">
+                    <select class="form-control" [(ngModel)]="tahsilatOlusturDto.hesapId" name="hesapId"
+                        [disabled]="inputsDisabled">
                         <option *ngFor="let hesap of hesapTanimlari" [value]="hesap.id">{{hesap.ad}}</option>
                     </select>
                 </div>

@@ -15,7 +15,7 @@ export class HesapTanimiController extends BaseController<HesapTanimi, HesapTani
         super(service);
     }
     @Post(':id/hesap-hareketleri')
-    getHesapHareketleri(@Param('id') id: string, @Body(new ValidationPipe({ transform: true })) query: QueryDto): Promise<[HesapHareketi[], number]> {
+    getHesapHareketleri(@Param('id') id: string, @Body(new ValidationPipe({ transform: true })) query: QueryDto): Promise<HesapHareketi[]> {
         return this.hesapHareketiService.getHesapHareketleriByHesapId(id, query);
     }
 }

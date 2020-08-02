@@ -17,7 +17,7 @@ import { map } from 'rxjs/operators';
 })
 export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi> implements OnInit {
   grid: DxDataGridComponent;
-  remoteOperations: boolean = true;
+  remoteOperations: boolean = false;
   @Input() hesapTanimiId: string;
   constructor(service: HesapHareketleriService,
     private modal: NgbModal,
@@ -28,15 +28,12 @@ export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi>
   ngOnInit() {
     this.dataSource = new CustomStore({
       key: 'id',
-      loadMode: 'processed',
       load: (loadOptions: any) => {
-        console.log(loadOptions)
         if (this.hesapTanimiId) {
           return (this.hesapTanimiService).getHesapHareketleri(this.hesapTanimiId, loadOptions)
             .pipe(map(data => {
               return {
-                data: data[0],
-                totalCount: data[1],
+                data: data
               }
             })).toPromise();
         }
@@ -44,18 +41,15 @@ export class HesapHareketiListComponent extends BaseListComponent<HesapHareketi>
           return (this.service as HesapHareketleriService).getListWithInnerModel(loadOptions)
             .pipe(map(data => {
               return {
-                data: data[0],
-                totalCount: data[1],
+                data: data
               }
             })).toPromise();
         }
       },
       insert: (values) => {
-        console.log(values)
         return this.service.add(values).toPromise();
       },
       update: (key, values) => {
-        console.log(values)
         return this.service.update(key, values).toPromise();
       },
       remove: (key) => {

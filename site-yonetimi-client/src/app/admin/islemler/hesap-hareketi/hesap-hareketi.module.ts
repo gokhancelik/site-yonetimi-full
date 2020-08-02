@@ -12,10 +12,13 @@ import { HesapHareketiYukleComponent } from './hesap-hareketi-yukle/hesap-hareke
 import { HesaplarArasiTransferComponent } from './hesaplar-arasi-transfer/hesaplar-arasi-transfer.component';
 import { FormsModule } from '@angular/forms';
 import { DxDataGridModule } from 'devextreme-angular';
+import { IslenmemisHesapHareketiListComponent } from './islenmemis-hesap-hareketi-list/islenmemis-hesap-hareketi-list.component';
+import { HesapHareketiIsleComponent } from './hesap-hareketi-isle/hesap-hareketi-isle.component';
+import { TahakkukModule } from '../tahakkuk/tahakkuk.module';
 
 
 @NgModule({
-  declarations: [HesapHareketiComponent, HesapHareketiListComponent, HesapHareketiYukleComponent, HesaplarArasiTransferComponent],
+  declarations: [HesapHareketiComponent, HesapHareketiListComponent, HesapHareketiYukleComponent, HesaplarArasiTransferComponent, IslenmemisHesapHareketiListComponent, HesapHareketiIsleComponent],
   imports: [
     CommonModule,
     HesapHareketiRoutingModule,
@@ -26,7 +29,8 @@ import { DxDataGridModule } from 'devextreme-angular';
     FormsModule,
     NgbDatepickerModule,
     NgbModule,
-    DxDataGridModule
+    DxDataGridModule,
+    TahakkukModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }

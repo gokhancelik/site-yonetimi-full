@@ -21,7 +21,12 @@
         <!-- <ngb-progressbar [value]="topuYukleProgress" [striped]="true" [animated]="yukleniyor"></ngb-progressbar> -->
     </div>
 </div>
+<div class="row">
+    <div class="col-3">
+        <button class="btn btn-success" (click)="aktar()">Aktar</button>
+    </div>
+</div>
 <data-table [dataSource]="dataSource" [title]="'Hesap Hareketleri'" [columns]="columns" [editMode]="'row'"
     name="hesapHareketleri" (onRowUpdating)="onRowUpdating($event)" [allowAdding]="false" [allowDeleting]="false"
-    [allowUpdating]="true" >
+    [allowUpdating]="true">
 </data-table>

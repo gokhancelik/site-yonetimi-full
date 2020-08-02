@@ -98,7 +98,7 @@ export class TahsilatModel {
                 itemsAsync: injector.get(MeskenKisiService).getAllWithKisi(),
                 displayExpr: (item) => {
                     if (item)
-                        return item.kisi.ad + ' ' + item.kisi.soyad;
+                        return item.kisi.ad + ' ' + item.kisi.soyad + ' - ' + item.mesken.kod;
                     else
                         return "";
                 },

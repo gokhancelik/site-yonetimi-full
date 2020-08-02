@@ -28,22 +28,33 @@ export class HesapHareketiYukleComponent extends BaseListComponent<BankaHesapHar
   }
   dosyaYuklendi(e: FileList) {
     this.hesapHareketiFile = e[0];
-    this._service.upload({ data: this.hesapHareketiFile, fileName: this.hesapHareketiFile.name })
-    .subscribe(event => {
-      this.topuYukleProgress = 100;
-      this.topluYukleSonucu = event;
-      this.yukleniyor = false;
-      this.dataSource = new CustomStore({
-        key: 'dekontNo',
-        loadMode: 'raw',
-        load: () => {
-          return of(this.topluYukleSonucu).toPromise();
-        },
+    this._service.upload({ data: this.hesapHareketiFile, fileName: this.hesapHareketiFile.name }, 'akbank')
+      .subscribe(event => {
+        this.topuYukleProgress = 100;
+        this.topluYukleSonucu = event;
+        this.yukleniyor = false;
+        this.dataSource = new CustomStore({
+          key: 'dekontNo',
+          loadMode: 'raw',
+          load: () => {
+            return of(this.topluYukleSonucu).toPromise();
+          },
+        });
       });
-    });
   }
   dosyaSil() {
     this.hesapHareketiFile = null;
     this.fileInput.nativeElement.value = '';
+  }
+  aktar() {
+    var i, j, temparray, chunk = 100;
+    for (i = 0, j = this.topluYukleSonucu.length; i < j; i += chunk) {
+      temparray = this.topluYukleSonucu.slice(i, i + chunk);
+      this._service.aktar(temparray)
+      .subscribe(d => {
+
+      });
+    }
+    
   }
 }

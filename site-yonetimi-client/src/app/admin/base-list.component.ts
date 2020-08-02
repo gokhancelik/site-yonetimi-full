@@ -1,8 +1,9 @@
 
 import CustomStore from 'devextreme/data/custom_store';
-import { OnInit, Injector } from '@angular/core';
+import { OnInit, Injector, Directive } from '@angular/core';
 import { BaseCrudService } from './base-crud.service';
 import { map } from 'rxjs/operators';
+@Directive()
 export abstract class BaseListComponent<T extends { colDefs(injector?: Injector): any[] }> implements OnInit {
     settings: any = {};
     public hiddenColumns: Array<string> = new Array<string>('id');

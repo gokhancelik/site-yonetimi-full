@@ -7,6 +7,7 @@ import { AnyFilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import xlsx from 'node-xlsx';
 import { IsArray, IsOptional, IsNumber, IsNumberString } from "class-validator";
 import { Type, Transform } from 'class-transformer';
+import { HesapHareketiUploaderService } from './hesap-hareketi-uploader/hesap-hareketi-uploader.service';
 export class QueryDto {
     @IsOptional()
     @IsNumber()
@@ -31,7 +32,6 @@ export class QueryDto {
     @IsArray()
     @Type(() => String)
     @Transform((value: string) => {
-        console.log(value)
         return value;
     })
     group: any[];
@@ -40,7 +40,6 @@ export class QueryDto {
     @IsArray()
     @Type(() => SortDto)
     @Transform((value: string) => {
-        console.log(value)
         return value;
     })
     sort: SortDto[];
@@ -56,31 +55,36 @@ export class SortDto {
 @ApiTags('Hesap Hareketi')
 @Controller('HesapHareketi')
 export class HesapHareketiController extends BaseController<HesapHareketi, HesapHareketiService> {
-    constructor(service: HesapHareketiService) {
+    constructor(service: HesapHareketiService, private hesapHareketiUploader: HesapHareketiUploaderService) {
         super(service);
     }
 
     @Post('/withInnerModel')
-    getListWithInnerModel(@Body(new ValidationPipe({ transform: true })) query: QueryDto): Promise<[HesapHareketi[], number]> {
+    getListWithInnerModel(@Body(new ValidationPipe({ transform: true })) query: QueryDto): Promise<HesapHareketi[]> {
         return this.service.getListWithInnerModel(query);
     }
-
+    @Get('/islenmemis-tahsilatlar')
+    getIslenmemisTahsilatlar(@Body(new ValidationPipe({ transform: true })) query: QueryDto): Promise<HesapHareketi[]> {
+        return this.service.getIslenmemisTahsilatlar(query);
+    }
+    @Get('/islenmemis-odemeler')
+    getIslenmemisOdemeler(@Body(new ValidationPipe({ transform: true })) query: QueryDto): Promise<HesapHareketi[]> {
+        return this.service.getIslenmemisOdemeler(query);
+    }
     @Post('transfer')
     transfer(@Body() dto: { toHesapId: string, fromHesapId: string, tutar: number, islemTarihi: Date }): Promise<HesapHareketi[]> {
         return this.service.transfer(dto);
     }
     @Post('/upload')
     @UseInterceptors(FileInterceptor('file'))
-    @Bind(UploadedFile())
-    uploadFile(file) {
-        const workSheetsFromBuffer = xlsx.parse(file.buffer);
-        const result: BankaHesapHareketi[] = [];
-        for (let i = 1; i < workSheetsFromBuffer[0].data.length; i++) {
-            result.push(new BankaHesapHareketi(workSheetsFromBuffer[0].data[i]));
-        }
-        return result;
+    uploadFile(@UploadedFile() file: any, @Body() body: { bankName: string }) {
+        return this.hesapHareketiUploader.mapFromExcel(file.buffer, body.bankName);
     }
+    @Post('/aktar')
+    aktar(@Body() body: HesapHareketi[]) {
 
+        return this.service.aktarim(body);
+    }
 }
 
 export class BankaHesapHareketi {

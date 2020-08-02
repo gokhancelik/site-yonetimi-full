@@ -12,7 +12,7 @@ export class HesapTanimiService extends BaseCrudService {
   constructor(http: HttpClient) {
     super(http, 'hesap-tanimi');
   }
-  getHesapHareketleri(id: string, params): Observable<[Array<HesapHareketi>, number]> {
-    return this.http.post<[Array<HesapHareketi>, number]>(`${this.baseUrl}${this.path}/${id}/hesap-hareketleri`, params);
+  getHesapHareketleri(id: string, params): Observable<Array<HesapHareketi>> {
+    return this.http.post<Array<HesapHareketi>>(`${this.baseUrl}${this.path}/${id}/hesap-hareketleri`, params);
   }
 }

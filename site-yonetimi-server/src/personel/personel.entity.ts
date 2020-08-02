@@ -10,7 +10,7 @@ export class Personel extends BaseEntity {
     @Column('datetime2')
     baslamaTarihi: Date;
 
-    @Column('datetime2')
+    @Column('datetime2', { nullable: true })
     bitisTarihi: Date;
 
     @Column({ default: false })

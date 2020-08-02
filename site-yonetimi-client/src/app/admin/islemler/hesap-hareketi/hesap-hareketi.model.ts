@@ -17,6 +17,8 @@ export class HesapHareketi {
     borcId?: string;
     tutar: number;
     hesapTanimiId: string;
+    dekontNo: string;
+    aciklama: string;
     borc?: Borc;
     colDefs(injector: Injector) {
         return [{
@@ -59,14 +61,14 @@ export class HesapHareketi {
         {
             key: 'islemTarihi',
             name: 'İşlem Tarihi',
-            type: 'date',
-            format: 'dd.MM.yyyy',
+            type: 'datetime',
+            format: 'dd.MM.yyyy hh:mm',
             validators: [{
                 type: 'required',
                 message: 'İşlem Tarihi zorunludur',
             }],
             editorOptions: {
-                type: 'date',
+                type: 'datetime',
             },
         },
         {
@@ -95,6 +97,11 @@ export class HesapHareketi {
             },
             visible: true,
         },
+        {
+            key: 'dekontNo',
+            name: 'Dekont No',
+            type: 'string'
+        }
         ];
     }
 }
@@ -111,8 +118,8 @@ export class BankaHesapHareketi {
     colDefs(injector: Injector) {
         return [
             {
-                key: 'tarih',
-                name: 'Tarih',
+                key: 'islemTarihi',
+                name: 'İşlem Tarihi',
                 type: 'date',
                 format: 'dd.MM.yyyy',
                 validators: [{
@@ -138,11 +145,6 @@ export class BankaHesapHareketi {
                     valueExpr: 'aciklama'
                 },
                 visible: true,
-            },
-            {
-                key: 'etiket',
-                name: 'Etiket',
-                type: 'string'
             },
             {
                 key: 'tutar',

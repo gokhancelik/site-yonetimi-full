@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HesapHareketiComponent } from './hesap-hareketi.component';
 import { HesapHareketiListComponent } from './hesap-hareketi-list/hesap-hareketi-list.component';
 import { HesapHareketiYukleComponent } from './hesap-hareketi-yukle/hesap-hareketi-yukle.component';
+import { IslenmemisHesapHareketiListComponent } from './islenmemis-hesap-hareketi-list/islenmemis-hesap-hareketi-list.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'hesap-hareketi-yukle',
         component: HesapHareketiYukleComponent
+      },
+      {
+        path: 'islenmemisler',
+        component: IslenmemisHesapHareketiListComponent
       }
     ]
   }];

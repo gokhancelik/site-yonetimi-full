@@ -109,7 +109,11 @@ export class PaytrService {
     }
     async transaction(dto: PaytrTransactionDTO, res: Response): Promise<PaytrTransactionResultDTO> {
         let result: PaytrTransactionResultDTO = { success: false, message: '' };
-        let tahsilat = await this.tahsilatService.findByTahsilatNo(dto.tahsilatNo);
+        let tahsilat = await this.tahsilatService.findByTahsilatNo(dto.merchant_oid);
+        if(!tahsilat){
+            res.send("PAYTR notification failed: tahsilat bulunamadı");
+            return;
+        }
         let concatStr: string = `${dto.merchant_oid}${tahsilat.sanalPos.ayarlarParsed.merchant_salt}${dto.status}${dto.total_amount}`;
         let sha = CryptoJS.HmacSHA256(concatStr, tahsilat.sanalPos.ayarlarParsed.merchant_key);
         let token = sha.toString(CryptoJS.enc.Base64);
