@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AidatGrubu } from '../aidat-grubu/aidat-grubu.entity';
 import { FaizGrubu } from '../faiz-grubu/faiz-grubu.entity';
 import { GelirGiderTanimi } from '../gelir-gider-tanimi/gelir-gider-tanimi.entity';
@@ -27,58 +27,68 @@ import { Firma } from 'src/firma/firma.entity';
 import { Duyurular } from 'src/duyurular/duyurular.entity';
 import { KisiRol } from '../kisi-rol/kisi-rol.entity';
 import { Rol } from '../rol/rol.entity';
-
+const entities = [
+    Borc,
+    AidatGrubu,
+    FaizGrubu,
+    GelirGiderTanimi,
+    BankaTanim,
+    HesapTanimi,
+    HesapHareketi,
+    Kisi,
+    Mesken,
+    MeskenKisi,
+    MeskenAidatGrubu,
+    Tahakkuk,
+    Tahsilat,
+    TahsilatKalem,
+    SanalPos,
+    MeskenTipi,
+    TahsilatSanalPosLog,
+    Personel,
+    KurulTipi,
+    KurulUye,
+    KurulUyeTipi,
+    KisiCuzdan,
+    OdemeAktarimi,
+    Firma,
+    Duyurular,
+    KisiRol,
+    Rol
+]
+const cigdemSql: TypeOrmModuleOptions = {
+    type: 'mssql',
+    options: {
+        encrypt: false
+    },
+    host: '94.73.146.3',//'94.73.145.4',
+    port: 1433,
+    username: 'u8998566_sy_cgdm',//'u8998566_zsite',
+    password: 'QKah55X1CMwc47I',//'SHKrw2jT4x8Vc4H',
+    database: 'u8998566_sy_cgdm',//'u8998566_zsite',
+    entities: entities,
+    synchronize: true,
+    // logging: 'all'
+    // logging: ""
+}
+const testSql: TypeOrmModuleOptions = {
+    type: 'mssql',
+    options: {
+        encrypt: false
+    },
+    host: '94.73.145.4',//'94.73.145.4',
+    port: 1433,
+    username: 'u8998566_sy_test',//'u8998566_zsite',
+    password: 'GNka24G6NWcm54S',//'SHKrw2jT4x8Vc4H',
+    database: 'u8998566_sy_test',//'u8998566_zsite',
+    entities: entities,
+    synchronize: true,
+    // logging: 'all'
+    // logging: ""
+}
 @Module({
     imports: [
-        TypeOrmModule.forRoot({
-            type: 'mssql',
-
-            // host: 'localhost',
-            // port: 7010,
-            // username: 'sa',
-            // password: 'qwe123**',
-            // database: 'zsity',
-            options: {
-                encrypt: false
-            },
-            host: '94.73.146.3',//'94.73.145.4',
-            port: 1433,
-            username: 'u8998566_sy_cgdm',//'u8998566_zsite',
-            password: 'QKah55X1CMwc47I',//'SHKrw2jT4x8Vc4H',
-            database: 'u8998566_sy_cgdm',//'u8998566_zsite',
-            entities: [
-                Borc,
-                AidatGrubu,
-                FaizGrubu,
-                GelirGiderTanimi,
-                BankaTanim,
-                HesapTanimi,
-                HesapHareketi,
-                Kisi,
-                Mesken,
-                MeskenKisi,
-                MeskenAidatGrubu,
-                Tahakkuk,
-                Tahsilat,
-                TahsilatKalem,
-                SanalPos,
-                MeskenTipi,
-                TahsilatSanalPosLog,
-                Personel,
-                KurulTipi,
-                KurulUye,
-                KurulUyeTipi,
-                KisiCuzdan,
-                OdemeAktarimi,
-                Firma,
-                Duyurular,
-                KisiRol,
-                Rol
-            ],
-            synchronize: true,
-            // logging: 'all'
-            // logging: ""
-        })
+        TypeOrmModule.forRoot(testSql)
     ],
     exports: []
 })
