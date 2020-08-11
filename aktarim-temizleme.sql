@@ -1,7 +1,7 @@
 /*** Hesap Hareketlerini Sil****/
 delete from HesapHareketi
 --select * from HesapHareketi
-where tahsilatId in (select id from Tahsilat where odemeYontemi = 0)
+where tahsilatId in (select id from Tahsilat where odemeYontemi = 0) OR tahsilatId is null
 
 
 /*** Tahsilat Kalemlerini Sil****/
@@ -26,3 +26,4 @@ update OdemeAktarimi set islenenTutar = 0 where islenenTutar > 0
 
 select count(*) from OdemeAktarimi where islenenTutar < odenenTutar
 select * from OdemeAktarimi
+select * from KisiCuzdan
