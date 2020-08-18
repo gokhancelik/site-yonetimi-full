@@ -93,7 +93,7 @@ export class Tahakkuk extends BaseEntity {
         var ay = Math.floor(gunSayisi) / 30;
         faiz = (this.kalanAnaPara) * this.faizOrani * (ay > 0 ? ay : 0);
         faiz = faiz > 0 && this.durumu === AidatDurumu.Odenmedi ? faiz : 0;
-        return Number(faiz ? faiz.toFixed(3) : 0);
+        return Number(faiz ? faiz.toFixed(2) : 0);
     }
     haftaSonunuOtele(vadeTarihi: Date) {
         if (vadeTarihi.getDay() === 6)//cumartesi

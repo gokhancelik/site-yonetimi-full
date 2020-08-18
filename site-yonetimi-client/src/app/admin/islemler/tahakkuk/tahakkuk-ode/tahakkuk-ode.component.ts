@@ -17,7 +17,7 @@ import { MeskenKisiService } from '../../../tanimlamalar/mesken-kisi/mesken-kisi
 })
 export class TahakkukOdeComponent implements OnInit {
   @Input() selectedTahakkuks: TahakkukModel[];
-  @Input() tahsilatOlusturDto: TahsilatOlusturDto = { odemeYontemi: OdemeYontemi.HavaleEFT };
+  @Input() tahsilatOlusturDto: TahsilatOlusturDto = { odemeYontemi: OdemeYontemi.HavaleEFT, odemeTarihi: new Date(), tutar: 0 };
   @Input() hesapHareketiId: string;
   inputsDisabled;
   tahsilatSonucu: TahsilatOlusturSonucuDto;
@@ -40,8 +40,8 @@ export class TahakkukOdeComponent implements OnInit {
   ngOnInit(): void {
     if (this.tahsilatOlusturDto && this.tahsilatOlusturDto.odemeTarihi && this.tahsilatOlusturDto.tutar) {
       this.inputsDisabled = true;
-      this.hesapla();
     }
+    this.hesapla();
     this.seciliTahakkukToplami = this.selectedTahakkuks.map(p => p.tutar).reduce((p, c) => p + c, 0)
     this.neskenKisiService.getCuzdan(this.selectedTahakkuks[0].meskenKisiId)
       .subscribe(d => {

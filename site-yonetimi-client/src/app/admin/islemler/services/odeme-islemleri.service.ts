@@ -34,7 +34,7 @@ export class TahsilatOlusturDto {
   cuzdan?: KisiCuzdan;
 }
 export class TahsilatOlusturSonucuDto {
-  tahsilatlar: Tahsilat[];
+  tahsilat: Tahsilat;
   cuzdan: KisiCuzdan;
   hesapId: string;
   hesapHareketiId: string;

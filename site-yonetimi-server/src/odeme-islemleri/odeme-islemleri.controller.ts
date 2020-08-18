@@ -11,10 +11,8 @@ export class OdemeIslemleriController {
     ) {
     }
     @Put('tahakkuk-ode')
-    tahakkukOde(@Body(new ValidationPipe({ transform: true })) dto: TahsilatOlusturSonucuDto): Promise<Tahsilat[]> {
+    tahakkukOde(@Body(new ValidationPipe({ transform: true })) dto: TahsilatOlusturSonucuDto): Promise<Tahsilat> {
         return this.odemeIslemleriService.tahsilatKaydet(dto);
-        // return this.odemeIslemleriService.tahakkukOdeById(params.selectedTahakkuks, params.hesapHareketi.tutar, params.hesapHareketi.odemeTarihi,
-        //     OdemeYontemi.HavaleEFT, params.hesapHareketi.hesapId);
     }
     @Post('tahsilat-olustur')
     tahsilatOlustur(@Body(new ValidationPipe({ transform: true })) dto: TahsilatOlusturDto): Promise<TahsilatOlusturSonucuDto> {

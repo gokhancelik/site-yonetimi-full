@@ -56,7 +56,7 @@ export class KisiController extends BaseController<Kisi, KisiService> {
         return this.service.updateCurrentUser(request.user.userId, model);
     }
     @Get(':id/cuzdan')
-    getKisiCuzdan(@Param('id') id: string): Promise<KisiCuzdan> {
+    getKisiCuzdan(@Param('id') id: string): Promise<KisiCuzdan[]> {
         return this.kisiCuzdanService.getCuzdan(id);
     }
 }

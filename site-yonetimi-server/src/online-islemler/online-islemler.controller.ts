@@ -52,9 +52,7 @@ export class OnlineIslemlerController {
     async tahsilatOlustur(@Body(new ValidationPipe({ transform: true })) seciliTahakkuklar: Tahakkuk[]): Promise<Tahsilat> {
         let sanaPos = await this.sanalPosService.getAktif();
         let tahsilatSonucu = await this.odemeIslemleriService.krediKartiTahsilatiOlustur(seciliTahakkuklar, sanaPos);
-        let tahsilatlar = await this.odemeIslemleriService.tahsilatKaydet(tahsilatSonucu, TahsilatDurumu.Bekliyor);
-        let krediKartiTahsilati = tahsilatlar.find(p => p.odemeYontemi === OdemeYontemi.KrediKarti);
-        return krediKartiTahsilati;
+        return await this.odemeIslemleriService.tahsilatKaydet(tahsilatSonucu, TahsilatDurumu.Bekliyor);
     }
     @Post('odeme-basarili')
     async odemeBasarili(@Body(new ValidationPipe({ transform: true })) model: any, @Res() res): Promise<any> {

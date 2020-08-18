@@ -27,12 +27,12 @@ export class MeskenKisiController extends BaseController<MeskenKisi, MeskenKisiS
         return this.service.getAllWithKisi();
     }
     @Get(':id/cuzdan')
-    getKisiCuzdan(@Param('id') id: string): Promise<KisiCuzdan> {
+    getKisiCuzdan(@Param('id') id: string): Promise<KisiCuzdan[]> {
         return this.kisiCuzdanService.getCuzdanByMeskenKisiId(id);
     }
     @UseGuards(AuthGuard('jwt'))
     @Get('currentUserCuzdan')
-    getCurrentUserCuzdan(@Request() request): Promise<KisiCuzdan> {
+    getCurrentUserCuzdan(@Request() request): Promise<KisiCuzdan[]> {
         return this.kisiCuzdanService.getCuzdan(request.user.userId);
     }
     @UseInterceptors(ClassSerializerInterceptor)

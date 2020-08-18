@@ -10,14 +10,14 @@ import { KisiCuzdan } from '../../../islemler/services/odeme-islemleri.service';
   styleUrls: ['./kisi-detay.component.scss']
 })
 export class KisiDetayComponent extends BaseDetailComponent<Kisi, KisiService> implements OnInit {
-  cuzdan: KisiCuzdan;
+  cuzdan: number;
   constructor(injector: Injector, private kisiService: KisiService) {
     super(KisiService, injector, Kisi);
   }
   ngOnInit() {
     this.kisiService.getCuzdan(this.id)
       .subscribe(d => {
-        this.cuzdan = d;
+        this.cuzdan = d && d.length ? d.map(m => m.tutar).reduce((p, c) => p + c) : 0;
       })
   }
 }
