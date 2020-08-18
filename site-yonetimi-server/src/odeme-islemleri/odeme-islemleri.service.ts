@@ -395,7 +395,7 @@ export class OdemeIslemleriService {
         return entity;
     }
     // @Cron(CronExpression.EVERY_10_SECONDS)
-    @Cron('0 12 20 * *')
+    @Cron('0 12 19 * *')
     async borclularaMesajAt() {
         let today = new Date();
         let ikiAyOncesi = new Date(today.getFullYear(), today.getMonth() - 2, 1);
