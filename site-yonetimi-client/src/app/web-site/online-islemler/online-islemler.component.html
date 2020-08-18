@@ -3,12 +3,7 @@
 <div class="row pt-5 ">
     <div class="col">
         <ngb-tabset [justify]="'fill'" type="pills">
-            <ngb-tab>
-                <ng-template ngbTabTitle>Kimlik Bilgileri</ng-template>
-                <ng-template ngbTabContent>
-                    <app-kimlik-bilgileri></app-kimlik-bilgileri>
-                </ng-template>
-            </ngb-tab>
+            
             <ngb-tab>
                 <ng-template ngbTabTitle>Tahakkuklar</ng-template>
                 <ng-template ngbTabContent>
@@ -25,6 +20,12 @@
                 <ng-template ngbTabTitle>Ödeme Kayıtları</ng-template>
                 <ng-template ngbTabContent>
                     <app-tahsilat-list></app-tahsilat-list>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+                <ng-template ngbTabTitle>Kimlik Bilgileri</ng-template>
+                <ng-template ngbTabContent>
+                    <app-kimlik-bilgileri></app-kimlik-bilgileri>
                 </ng-template>
             </ngb-tab>
             <!-- <ngb-tab>
