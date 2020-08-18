@@ -9,10 +9,10 @@
 </div>
 <div class="row my-2">
     <div class="col">
-        <div class="row" *ngIf="cuzdan && cuzdan.aktifMi">
+        <div class="row" *ngIf="cuzdan">
             <div class="col">
                 <div class="alert alert-success">
-                    Cüzdanınızda {{cuzdan.tutar|currency:'TRY'}} var. Otomatik kullanılacak.
+                    Cüzdanınızda {{cuzdan|currency:'TRY'}} var. Otomatik kullanılacak.
                 </div>
             </div>
         </div>

@@ -21,12 +21,12 @@ export class TahakkukListComponent implements OnInit {
   dataSource: CustomStore;
   seciliTahakkuklar: Tahakkuk[] = [];
   grid: DxDataGridComponent;
-  cuzdan: KisiCuzdan;
+  cuzdan: number;
   dataSource$: Observable<Tahakkuk[]>;
   ngOnInit(): void {
     this.meskenKisiService.getCurrentUserCuzdan()
       .subscribe(d => {
-        this.cuzdan = d;
+        this.cuzdan = d && d.length ? d.map(f => f.tutar).reduce((p, c) => p + c) : 0;
       })
   }
   constructor(private service: OnlineIslemlerService,

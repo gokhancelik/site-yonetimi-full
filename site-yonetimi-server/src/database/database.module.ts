@@ -68,7 +68,7 @@ const cigdemSql: TypeOrmModuleOptions = {
     database: 'u8998566_sy_cgdm',//'u8998566_zsite',
     entities: entities,
     synchronize: true,
-    // logging: 'all'
+    //logging: 'all'
     // logging: ""
 }
 const testSql: TypeOrmModuleOptions = {
@@ -88,7 +88,7 @@ const testSql: TypeOrmModuleOptions = {
 }
 @Module({
     imports: [
-        TypeOrmModule.forRoot(testSql)
+        TypeOrmModule.forRoot(cigdemSql)
     ],
     exports: []
 })

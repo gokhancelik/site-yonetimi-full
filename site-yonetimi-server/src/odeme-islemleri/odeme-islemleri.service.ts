@@ -8,7 +8,7 @@ import { GelirGiderTanimiService } from '../gelir-gider-tanimi/gelir-gider-tanim
 import { TahsilatKalemService } from '../tahsilat-kalem/tahsilat-kalem.service';
 import { TahsilatService } from '../tahsilat/tahsilat.service';
 import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
-import { Connection, MoreThanOrEqual } from 'typeorm';
+import { Connection, MoreThanOrEqual, LessThanOrEqual, In } from 'typeorm';
 import { TahsilatSanalPosLog } from '../tahsilat/tahsilat-sanal-pos-log.entity';
 import { HesapHareketiService } from '../hesap-hareketi/hesap-hareketi.service';
 import { TahsilatSanalPosLogService } from '../tahsilat/tahsilat-sanal-pos-log.service';
@@ -21,13 +21,15 @@ import { OdemeAktarimi } from './odeme-aktarimi.entity';
 import { MeskenKisi } from '../mesken-kisi/mesken-kisi.entity';
 import { HesapTanimiService } from '../hesap-tanimi/hesap-tanimi.service';
 import { SanalPos } from '../sanal-pos/sanal-pos.entity';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { NetgsmSmsGatewayService } from '../sms-gateway/netgsm-sms-gateway.service';
 
 @Injectable()
 export class OdemeIslemleriService {
 
     constructor(
         // private readonly connection: Connection,
+        private readonly smsService: NetgsmSmsGatewayService,
         private tahakkukService: TahakkukService,
         private kisiCuzdanService: KisiCuzdanService,
         private tahsilatKalemService: TahsilatKalemService,
@@ -392,5 +394,50 @@ export class OdemeIslemleriService {
         await this.tahsilatSanalPosLogService.create(entity);
         return entity;
     }
-
+    // @Cron(CronExpression.EVERY_10_SECONDS)
+    @Cron('0 12 20 * *')
+    async borclularaMesajAt() {
+        let today = new Date();
+        let ikiAyOncesi = new Date(today.getFullYear(), today.getMonth() - 2, 1);
+        let borclular = await Tahakkuk.find({
+            join: {
+                alias: 'th',
+                innerJoinAndSelect: {
+                    meskenKisi: 'th.meskenKisi',
+                    mesken: 'meskenKisi.mesken',
+                    blok: 'mesken.ust',
+                    kisi: 'meskenKisi.kisi',
+                }
+            },
+            where: qb => {
+                qb.where({ // Filter Role fields
+                    durumu: AidatDurumu.Odenmedi,
+                    vadeTarihi: LessThanOrEqual(ikiAyOncesi),
+                })
+                    .andWhere('blok.kod in (\'B208\',\'AK10\',\'AK11\',\'CK02\',\'Y101\')')
+            }
+        });
+        let kisiler = [...new Set(borclular.map(p => p.meskenKisiId))];
+        for (const meskenKisiId of kisiler) {
+            let meskenKisi = await MeskenKisi.findOne({
+                join: {
+                    alias: 'meskenKisi',
+                    innerJoinAndSelect: {
+                        kisi: 'meskenKisi.kisi',
+                        mesken: 'meskenKisi.mesken'
+                    }
+                },
+                where: {
+                    id: meskenKisiId
+                }
+            });
+            let kisininBorclari = await this.tahakkukService.getOdenmemisAidatlar((meskenKisi).kisiId);
+            const { ad, soyad, telefon, sifre } = meskenKisi.kisi;
+            const { kod } = meskenKisi.mesken;
+            let tahsilat = await this.tahsilatOlustur({ odemeTarihi: new Date(), odemeYontemi: OdemeYontemi.HavaleEFT, tutar: 0, tahakkuks: kisininBorclari, sanalPos: null })
+            let mesaj = `SAYIN ${ad} ${soyad} (${kod}), ${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()} TARİHİ İTİBARİ İLE ${(tahsilat).tahsilat.tutar.toFixed(2)} TL BORCUNUZ BULUNMAKTADIR. https://cigdemadasi.turkuazvadisi.com ADRESİNDEN ÖDEME YAPABİLİRSİNİZ. \n TURKUAZ VADİSİ ÇİĞDEM ADASI.`
+            let sonuc = await this.smsService.send('90' + telefon, mesaj).toPromise();
+        }
+        await this.smsService.send('905058090200', 'Borclulara mesaj gönderildi.' + kisiler.length).toPromise();
+    }
 }
