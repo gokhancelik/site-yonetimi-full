@@ -8,7 +8,7 @@ import { GelirGiderTanimiService } from '../gelir-gider-tanimi/gelir-gider-tanim
 import { TahsilatKalemService } from '../tahsilat-kalem/tahsilat-kalem.service';
 import { TahsilatService } from '../tahsilat/tahsilat.service';
 import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
-import { Connection, MoreThanOrEqual, LessThanOrEqual, In } from 'typeorm';
+import { Connection, MoreThanOrEqual, LessThanOrEqual, In, LessThan } from 'typeorm';
 import { TahsilatSanalPosLog } from '../tahsilat/tahsilat-sanal-pos-log.entity';
 import { HesapHareketiService } from '../hesap-hareketi/hesap-hareketi.service';
 import { TahsilatSanalPosLogService } from '../tahsilat/tahsilat-sanal-pos-log.service';
@@ -395,10 +395,11 @@ export class OdemeIslemleriService {
         return entity;
     }
     // @Cron(CronExpression.EVERY_10_SECONDS)
-    @Cron('0 12 19 * *')
+    @Cron('0 30 16 19 * *')
     async borclularaMesajAt() {
         let today = new Date();
-        let ikiAyOncesi = new Date(today.getFullYear(), today.getMonth() - 2, 1);
+        let ikiAyOncesi = new Date();
+        ikiAyOncesi.setMonth(ikiAyOncesi.getMonth() - 2);
         let borclular = await Tahakkuk.find({
             join: {
                 alias: 'th',
@@ -432,12 +433,35 @@ export class OdemeIslemleriService {
                 }
             });
             let kisininBorclari = await this.tahakkukService.getOdenmemisAidatlar((meskenKisi).kisiId);
-            const { ad, soyad, telefon, sifre } = meskenKisi.kisi;
+            const { ad, soyad, cepTelefon, sifre } = meskenKisi.kisi;
             const { kod } = meskenKisi.mesken;
-            let tahsilat = await this.tahsilatOlustur({ odemeTarihi: new Date(), odemeYontemi: OdemeYontemi.HavaleEFT, tutar: 0, tahakkuks: kisininBorclari, sanalPos: null })
-            let mesaj = `SAYIN ${ad} ${soyad} (${kod}), ${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()} TARİHİ İTİBARİ İLE ${(tahsilat).tahsilat.tutar.toFixed(2)} TL BORCUNUZ BULUNMAKTADIR. https://cigdemadasi.turkuazvadisi.com ADRESİNDEN ÖDEME YAPABİLİRSİNİZ. \n TURKUAZ VADİSİ ÇİĞDEM ADASI.`
-            let sonuc = await this.smsService.send('90' + telefon, mesaj).toPromise();
+            if (cepTelefon.length === 10) {
+                let tahsilat = await this.tahsilatOlustur({ odemeTarihi: new Date(), odemeYontemi: OdemeYontemi.HavaleEFT, tutar: 0, tahakkuks: kisininBorclari, sanalPos: null })
+                let mesaj = `SAYIN ${ad} ${soyad} (${kod}), ${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()} TARİHİ İTİBARİ İLE ${(tahsilat).tahsilat.tutar.toFixed(2)} TL BORCUNUZ BULUNMAKTADIR. https://cigdemadasi.turkuazvadisi.com ADRESİNDEN ÖDEME YAPABİLİRSİNİZ. \n TURKUAZ VADİSİ ÇİĞDEM ADASI.`
+                let sonuc = await this.smsService.send('90' + cepTelefon, mesaj).toPromise();
+            }
         }
-        await this.smsService.send('905058090200', 'Borclulara mesaj gönderildi.' + kisiler.length).toPromise();
+    }
+    @Cron(CronExpression.EVERY_HOUR)
+    async bekleyenTahsilatlariSil() {
+        let today = new Date();
+        today.setHours(today.getHours() - 1);
+        let tahsilatlar = await Tahsilat.find({
+            where: {
+                durumu: TahsilatDurumu.Bekliyor,
+                olusturmaTarihi: LessThan(today)
+            }
+        });
+        await TahsilatKalem.delete({
+            tahsilatId: In(tahsilatlar.map(m => m.id))
+        });
+        await TahsilatSanalPosLog.delete({
+            tahsilatId: In(tahsilatlar.map(m => m.id)),
+            aktarildiMi: false
+        });
+        await Tahsilat.delete({
+            durumu: TahsilatDurumu.Bekliyor,
+            olusturmaTarihi: LessThan(today),
+        });
     }
 }
