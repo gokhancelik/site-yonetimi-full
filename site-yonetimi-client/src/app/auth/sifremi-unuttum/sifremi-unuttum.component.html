@@ -20,14 +20,19 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-1">
+                            <div class="col-sm-6">
                                 <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Gönder</button>
                             </div>
-                            <div class="col-1">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
                                 <a [routerLink]="['/auth','login']">Giriş Yap</a>
                             </div>
-                            <div class="col" *ngIf="sonuc?.success">
-                                <ngb-alert type="success">Şifreniz SMS olarak telefonunuza gönderilmiştir.</ngb-alert>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12" *ngIf="sonuc?.success">
+                                <ngb-alert type="success">Şifreniz SMS olarak telefonunuza gönderilmiştir.
+                                </ngb-alert>
                             </div>
                         </div>
                     </form>
