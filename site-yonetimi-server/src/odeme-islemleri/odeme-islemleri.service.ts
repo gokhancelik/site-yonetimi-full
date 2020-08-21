@@ -8,9 +8,8 @@ import { GelirGiderTanimiService } from '../gelir-gider-tanimi/gelir-gider-tanim
 import { TahsilatKalemService } from '../tahsilat-kalem/tahsilat-kalem.service';
 import { TahsilatService } from '../tahsilat/tahsilat.service';
 import { HesapHareketi } from '../hesap-hareketi/hesap-hareketi.entity';
-import { Connection, MoreThanOrEqual, LessThanOrEqual, In, LessThan } from 'typeorm';
+import { LessThanOrEqual, In, LessThan } from 'typeorm';
 import { TahsilatSanalPosLog } from '../tahsilat/tahsilat-sanal-pos-log.entity';
-import { HesapHareketiService } from '../hesap-hareketi/hesap-hareketi.service';
 import { TahsilatSanalPosLogService } from '../tahsilat/tahsilat-sanal-pos-log.service';
 import { KisiCuzdan } from '../kisi-cuzdan/kisi-cuzdan.entity';
 import { TahsilatOlusturDto } from './tahsilat-olustur.dto';
@@ -41,17 +40,15 @@ export class OdemeIslemleriService {
         private gelirGiderTanimiService: GelirGiderTanimiService) {
     }
     async odemeleriDagit() {
-        let sanalPos = await SanalPos.findOne({ where: { aktifMi: true } });
-        let butunOdemeler = await OdemeAktarimi.createQueryBuilder()
+        const sanalPos = await SanalPos.findOne({ where: { aktifMi: true } });
+        const butunOdemeler = await OdemeAktarimi.createQueryBuilder()
             .where('odenenTutar > islenenTutar and odenenTutar > 0 and bagimsizBolumKod is not null')
             .orderBy('odemeTarihi', 'ASC')
             .getMany();
-        let uniqueBagimsizBolumKods = [...new Set(butunOdemeler.map(p => p.bagimsizBolumKod))];
-        let islemler: Array<Array<Promise<any>>> = [];
-        let chunk = -1;
+        const uniqueBagimsizBolumKods = [...new Set(butunOdemeler.map(p => p.bagimsizBolumKod))];
         for (const bagimsizBolumKod of uniqueBagimsizBolumKods) {
-            let odemeler = butunOdemeler.filter(p => p.bagimsizBolumKod === bagimsizBolumKod);
-            let aktarim = this.aktarimYap(odemeler, bagimsizBolumKod, sanalPos);
+            const odemeler = butunOdemeler.filter(p => p.bagimsizBolumKod === bagimsizBolumKod);
+            const aktarim = this.aktarimYap(odemeler, bagimsizBolumKod, sanalPos);
             // if (!islemler[chunk] || islemler[chunk].length >= 10) {
             //     chunk++;
             //     islemler[chunk] = [];
@@ -64,16 +61,16 @@ export class OdemeIslemleriService {
         // }
     }
     private async aktarimYap(odemeler: OdemeAktarimi[], bagimsizBolumKod: string, sanalPos: SanalPos): Promise<void> {
-        let meskenKisi: MeskenKisi = await this.meskenKisiService.getByMeskenKod(bagimsizBolumKod);
+        const meskenKisi: MeskenKisi = await this.meskenKisiService.getByMeskenKod(bagimsizBolumKod);
         for (const odeme of odemeler) {
             //odenmemis tahakkuklari getir.
-            let tahakkuklar = await this.tahakkukService.getOdenmemisAidatlar(meskenKisi.kisiId);
-            let odemeYontemi = this.getOdemeYontemiFromOdeme(odeme);
-            let hesapTanim = await this.hesapTanimiService.findByAktarimId(odeme.bankaKodu);
-            let odenenTutar = odeme.odenenTutar;
+            const tahakkuklar = await this.tahakkukService.getOdenmemisAidatlar(meskenKisi.kisiId);
+            const odemeYontemi = this.getOdemeYontemiFromOdeme(odeme);
+            const hesapTanim = await this.hesapTanimiService.findByAktarimId(odeme.bankaKodu);
+            const odenenTutar = odeme.odenenTutar;
 
             if (tahakkuklar.length) {
-                let tahsilat = await this.tahsilatOlustur({
+                const tahsilat = await this.tahsilatOlustur({
                     tahakkuks: tahakkuklar,
                     tutar: odenenTutar,
                     odemeTarihi: odeme.odemeTarihi,
@@ -83,7 +80,7 @@ export class OdemeIslemleriService {
                 tahsilat.hesapId = hesapTanim.id;
                 await this.tahsilatKaydet(tahsilat, TahsilatDurumu.Onaylandi);
             } else {
-                let tahsilat = await this.tahakkuksuzTahsilatOlustur(meskenKisi.id, odeme.odemeTarihi, odemeYontemi, odenenTutar, sanalPos, odeme.odemeTipi);
+                const tahsilat = await this.tahakkuksuzTahsilatOlustur(meskenKisi.id, odeme.odemeTarihi, odemeYontemi, odenenTutar, sanalPos, odeme.odemeTipi);
                 tahsilat.save();
                 // let hesapHareketi = await HesapHareketi.olustur(tahsilat.odemeTarihi, tahsilat.tutar, hesapTanim.id, tahsilat.id);
                 // let oncekiCuzdan = await this.kisiCuzdanService.getCuzdanByMeskenKisiId(meskenKisi.id);
@@ -103,7 +100,7 @@ export class OdemeIslemleriService {
         return tahakkuk.kalanAnaPara;
     }
     async tahakkuksuzTahsilatOlustur(meskenKisiId: string, odemeTarihi: Date, odemeYontemi: OdemeYontemi, tutar: number, sanalPos: SanalPos, odemeTipiKod: string) {
-        let tahsilat = new Tahsilat();
+        const tahsilat = new Tahsilat();
         tahsilat.durumu = TahsilatDurumu.Onaylandi;
         tahsilat.meskenKisi = await this.meskenKisiService.findById(meskenKisiId);
         tahsilat.odemeTarihi = new Date(odemeTarihi);
@@ -111,13 +108,12 @@ export class OdemeIslemleriService {
         tahsilat.tahsilatKalems = [];
         tahsilat.tutar = tutar;
         tahsilat.kullanilanTutar = 0;
-        let aciklama = [];
         if (odemeYontemi === OdemeYontemi.KrediKarti && sanalPos) {
-            let komisyonKalemi = await this.bankaKomisyonuKalemiOlustur(tahsilat.tutar, sanalPos);
+            const komisyonKalemi = await this.bankaKomisyonuKalemiOlustur(tahsilat.tutar, sanalPos);
             tahsilat.tahsilatKalems.push(komisyonKalemi);
             tahsilat.kullanilanTutar += komisyonKalemi.tutar;
         }
-        let tahsilatKalem = new TahsilatKalem();
+        const tahsilatKalem = new TahsilatKalem();
         tahsilatKalem.tutar = tahsilat.kullanilabilirMiktar;
         tahsilatKalem.odemeTipiId = (await this.gelirGiderTanimiService.getByKod(odemeTipiKod)).id;
         tahsilat.tahsilatKalems.push(tahsilatKalem);
@@ -129,19 +125,19 @@ export class OdemeIslemleriService {
     }
     async faizKalemiOlustur(tahakkuk: Tahakkuk, odemeTarihi: Date) {
         tahakkuk.odemeTarihi = odemeTarihi;
-        var tahsilatKalem = new TahsilatKalem();
+        const tahsilatKalem = new TahsilatKalem();
         tahsilatKalem.tahakkukId = tahakkuk.id;
         tahsilatKalem.tahakkuk = tahakkuk;
         tahsilatKalem.tutar = tahakkuk.faiz;
-        let gelirTanimi = await this.gelirGiderTanimiService.getByKod(GelirGiderTanimi.Faiz);
+        const gelirTanimi = await this.gelirGiderTanimiService.getByKod(GelirGiderTanimi.Faiz);
         tahsilatKalem.odemeTipiId = gelirTanimi.id;
         tahsilatKalem.odemeTipi = gelirTanimi;
         return tahsilatKalem;
     }
     async bankaKomisyonuKalemiOlustur(tutar, sanalPos: SanalPos) {
-        var tahsilatKalem = new TahsilatKalem();
+        const tahsilatKalem = new TahsilatKalem();
         tahsilatKalem.tutar = Number((tutar * sanalPos.komisyon).toFixed(2));
-        let gelirTanimi = await this.gelirGiderTanimiService.getByKod(GelirGiderTanimi.BankaKomisyonu);
+        const gelirTanimi = await this.gelirGiderTanimiService.getByKod(GelirGiderTanimi.BankaKomisyonu);
         tahsilatKalem.odemeTipiId = gelirTanimi.id;
         tahsilatKalem.odemeTipi = gelirTanimi;
         return tahsilatKalem;
@@ -149,17 +145,17 @@ export class OdemeIslemleriService {
     async tahsilatOlustur(dto: TahsilatOlusturDto): Promise<TahsilatOlusturSonucuDto> {
         await this.cuzdanVarsaOdemeYap(dto.tahakkuks[0].meskenKisiId);
 
-        let sonuc = new TahsilatOlusturSonucuDto();
-        let tahakkuklar = await this.tahakkukService.findByIds(dto.tahakkuks.map(p => p.id));
-        let tutar = dto.tutar;
-        let odemeTarihi = new Date(dto.odemeTarihi);
-        let odemeYontemi = dto.odemeYontemi;
+        const sonuc = new TahsilatOlusturSonucuDto();
+        const tahakkuklar = await this.tahakkukService.findByIds(dto.tahakkuks.map(p => p.id));
+        const tutar = dto.tutar;
+        const odemeTarihi = new Date(dto.odemeTarihi);
+        const odemeYontemi = dto.odemeYontemi;
         if (tahakkuklar.length) {
             if (!tutar) {
                 sonuc.tahsilat = await this.tahakkuktanTahsilatOlustur(tahakkuklar, odemeTarihi, odemeYontemi, dto.sanalPos);
             }
             else {
-                let tahsilat = await this.tahakkukVeTutardanTahsilatOlustur(tahakkuklar, tutar, odemeTarihi, odemeYontemi, dto.sanalPos);
+                const tahsilat = await this.tahakkukVeTutardanTahsilatOlustur(tahakkuklar, tutar, odemeTarihi, odemeYontemi, dto.sanalPos);
                 if (Number(tahsilat.kullanilabilirMiktar.toFixed(2)) > 0) {
                     sonuc.cuzdan = new KisiCuzdan();
                     sonuc.cuzdan.tutar = tahsilat.kullanilabilirMiktar;
@@ -173,7 +169,7 @@ export class OdemeIslemleriService {
     }
 
     async cuzdanVarsaOdemeYap(meskenKisiId: string) {
-        let cuzdanlar = await this.kisiCuzdanService.getCuzdanByMeskenKisiId(meskenKisiId);
+        const cuzdanlar = await this.kisiCuzdanService.getCuzdanByMeskenKisiId(meskenKisiId);
         if (cuzdanlar && cuzdanlar.length) {
             for (const cuzdan of cuzdanlar) {
                 await this.cuzdandanOde(cuzdan);
@@ -182,11 +178,11 @@ export class OdemeIslemleriService {
     }
 
     async cuzdandanOde(cuzdan: KisiCuzdan) {
-        let tahsilat = cuzdan.tahsilat;
-        let meskenKisi: MeskenKisi = await this.meskenKisiService.findById(cuzdan.tahsilat.meskenKisiId);
-        let tahakkuklar = await this.tahakkukService.getOdenmemisAidatlar(meskenKisi.kisiId);
+        const tahsilat = cuzdan.tahsilat;
+        const meskenKisi: MeskenKisi = await this.meskenKisiService.findById(cuzdan.tahsilat.meskenKisiId);
+        const tahakkuklar = await this.tahakkukService.getOdenmemisAidatlar(meskenKisi.kisiId);
         for (const tahakkuk of tahakkuklar) {
-            var faizKalemi = await this.faizKalemiOlustur(tahakkuk, tahsilat.odemeTarihi);
+            const faizKalemi = await this.faizKalemiOlustur(tahakkuk, tahsilat.odemeTarihi);
             if (faizKalemi.tutar > 0) {
                 if (faizKalemi.tutar >= tahsilat.kullanilabilirMiktar) {
                     faizKalemi.tutar = tahsilat.kullanilabilirMiktar;
@@ -200,9 +196,9 @@ export class OdemeIslemleriService {
                     tahsilat.tahsilatKalems.push(faizKalemi);
                 }
             }
-            let gecerliTahakkukKalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk);
+            const gecerliTahakkukKalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk);
             if (tahsilat.kullanilabilirMiktar >= gecerliTahakkukKalanTutar) {
-                var tahakkukTahsilatKalemi = new TahsilatKalem();
+                const tahakkukTahsilatKalemi = new TahsilatKalem();
                 tahakkukTahsilatKalemi.odemeTipiId = tahakkuk.odemeTipiId;
                 tahakkukTahsilatKalemi.odemeTipi = tahakkuk.odemeTipi;
                 tahakkukTahsilatKalemi.tahakkukId = tahakkuk.id;
@@ -213,7 +209,7 @@ export class OdemeIslemleriService {
                 tahakkuk.durumu = AidatDurumu.Odendi;
                 await tahakkuk.save();
             } else {
-                var tahakkukTahsilatKalemi = new TahsilatKalem();
+                const tahakkukTahsilatKalemi = new TahsilatKalem();
                 tahakkukTahsilatKalemi.odemeTipiId = tahakkuk.odemeTipiId;
                 tahakkukTahsilatKalemi.odemeTipi = tahakkuk.odemeTipi;
                 tahakkukTahsilatKalemi.tahakkukId = tahakkuk.id;
@@ -233,7 +229,7 @@ export class OdemeIslemleriService {
         }
     }
     async tahakkukVeTutardanTahsilatOlustur(tahakkuklar: Tahakkuk[], tutar: number, odemeTarihi: Date, odemeYontemi: OdemeYontemi, sanalPos: SanalPos): Promise<Tahsilat> {
-        let tahsilat = new Tahsilat();
+        const tahsilat = new Tahsilat();
         tahsilat.durumu = TahsilatDurumu.Bekliyor;
         tahsilat.guncelleyen = 'username';
         tahsilat.meskenKisiId = tahakkuklar[0].meskenKisiId;
@@ -244,14 +240,14 @@ export class OdemeIslemleriService {
         tahsilat.tahsilatKalems = [];
         tahsilat.tutar = tutar;
         tahsilat.kullanilanTutar = 0;
-        let aciklama = [];
+        const aciklama = [];
         if (odemeYontemi === OdemeYontemi.KrediKarti && sanalPos) {
-            let komisyonKalemi = await this.bankaKomisyonuKalemiOlustur(tahsilat.tutar, sanalPos);
+            const komisyonKalemi = await this.bankaKomisyonuKalemiOlustur(tahsilat.tutar, sanalPos);
             tahsilat.tahsilatKalems.push(komisyonKalemi);
             tahsilat.kullanilanTutar += komisyonKalemi.tutar;
         }
         for (const tahakkuk of tahakkuklar) {
-            var faizKalemi = await this.faizKalemiOlustur(tahakkuk, tahsilat.odemeTarihi);
+            const faizKalemi = await this.faizKalemiOlustur(tahakkuk, tahsilat.odemeTarihi);
             if (faizKalemi.tutar > 0) {
                 if (faizKalemi.tutar >= tahsilat.kullanilabilirMiktar) {
                     faizKalemi.tutar = tahsilat.kullanilabilirMiktar;
@@ -263,9 +259,9 @@ export class OdemeIslemleriService {
                     tahsilat.tahsilatKalems.push(faizKalemi);
                 }
             }
-            let gecerliTahakkukKalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk);
+            const gecerliTahakkukKalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk);
             if (tahsilat.kullanilabilirMiktar >= gecerliTahakkukKalanTutar) {
-                var tahakkukTahsilatKalemi = new TahsilatKalem();
+                const tahakkukTahsilatKalemi = new TahsilatKalem();
                 tahakkukTahsilatKalemi.odemeTipiId = tahakkuk.odemeTipiId;
                 tahakkukTahsilatKalemi.odemeTipi = tahakkuk.odemeTipi;
                 tahakkukTahsilatKalemi.tahakkukId = tahakkuk.id;
@@ -275,7 +271,7 @@ export class OdemeIslemleriService {
                 tahsilat.kullanilanTutar += tahakkukTahsilatKalemi.tutar;
                 aciklama.push(tahakkuk.aciklama);
             } else {
-                var tahakkukTahsilatKalemi = new TahsilatKalem();
+                const tahakkukTahsilatKalemi = new TahsilatKalem();
                 tahakkukTahsilatKalemi.odemeTipiId = tahakkuk.odemeTipiId;
                 tahakkukTahsilatKalemi.odemeTipi = tahakkuk.odemeTipi;
                 tahakkukTahsilatKalemi.tahakkukId = tahakkuk.id;
@@ -295,7 +291,7 @@ export class OdemeIslemleriService {
         return tahsilat;
     }
     async tahakkuktanTahsilatOlustur(tahakkuklar: Tahakkuk[], odemeTarihi: Date, odemeYontemi: OdemeYontemi, sanalPos: SanalPos) {
-        let tahsilat = new Tahsilat();
+        const tahsilat = new Tahsilat();
         tahsilat.durumu = TahsilatDurumu.Bekliyor;
         tahsilat.guncelleyen = 'username';
         tahsilat.meskenKisiId = tahakkuklar[0].meskenKisiId;
@@ -303,14 +299,14 @@ export class OdemeIslemleriService {
         tahsilat.odemeYontemi = odemeYontemi;
         tahsilat.olusturan = 'username';
         tahsilat.tahsilatKalems = [];
-        let aciklama = [];
+        const aciklama = [];
         for (const tahakkuk of tahakkuklar) {
-            var faizKalemi = await this.faizKalemiOlustur(tahakkuk, tahsilat.odemeTarihi);
+            const faizKalemi = await this.faizKalemiOlustur(tahakkuk, tahsilat.odemeTarihi);
             if (faizKalemi.tutar > 0) {
                 tahsilat.tahsilatKalems.push(faizKalemi);
             }
-            let kalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk);
-            var tahakkukTahsilatKalemi = new TahsilatKalem();
+            const kalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk);
+            const tahakkukTahsilatKalemi = new TahsilatKalem();
             tahakkukTahsilatKalemi.odemeTipiId = tahakkuk.odemeTipiId;
             tahakkukTahsilatKalemi.odemeTipi = tahakkuk.odemeTipi;
             tahakkukTahsilatKalemi.tahakkukId = tahakkuk.id;
@@ -319,10 +315,10 @@ export class OdemeIslemleriService {
             tahsilat.tahsilatKalems.push(tahakkukTahsilatKalemi);
             aciklama.push(tahakkuk.aciklama);
         }
-        var toplamTutar = tahsilat.tahsilatKalems.map(m => m.tutar).reduce((prev, current) => prev + current, 0);
+        const toplamTutar = tahsilat.tahsilatKalems.map(m => m.tutar).reduce((prev, current) => prev + current, 0);
         tahsilat.tutar = toplamTutar;
         if (odemeYontemi === OdemeYontemi.KrediKarti && sanalPos) {
-            let komisyonKalemi = await this.bankaKomisyonuKalemiOlustur(tahsilat.tutar, sanalPos);
+            const komisyonKalemi = await this.bankaKomisyonuKalemiOlustur(tahsilat.tutar, sanalPos);
             tahsilat.tahsilatKalems.push(komisyonKalemi);
             tahsilat.tutar = tahsilat.tahsilatKalems.map(m => m.tutar).reduce((prev, current) => prev + current, 0);
             tahsilat.sanalPos = sanalPos;
@@ -346,15 +342,15 @@ export class OdemeIslemleriService {
                 await this.tahsilatKalemService.create(tk);
             }
             if (dto.tahsilat.durumu === TahsilatDurumu.Onaylandi) {
-                let hesapHareketi = await HesapHareketi.findOne(dto.hesapHareketiId);
+                const hesapHareketi = await HesapHareketi.findOne(dto.hesapHareketiId);
                 if (hesapHareketi) {
                     hesapHareketi.tahsilatId = dto.tahsilat.id;
                     hesapHareketi.save();
                 }
-                let uniqueTahakkukIds = [...new Set(dto.tahsilat.tahsilatKalems.map(p => p.tahakkukId))];
-                let tahakkuks = await this.tahakkukService.findByIds(uniqueTahakkukIds);
+                const uniqueTahakkukIds = [...new Set(dto.tahsilat.tahsilatKalems.map(p => p.tahakkukId))];
+                const tahakkuks = await this.tahakkukService.findByIds(uniqueTahakkukIds);
                 for (const tahakkuk of tahakkuks) {
-                    let kalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk); //Transaction yaptiginda burasi duzeltilecek asagidaki gibi
+                    const kalanTutar = await this.tahakkukKalanTutarHesapla(tahakkuk); //Transaction yaptiginda burasi duzeltilecek asagidaki gibi
                     if (kalanTutar <= 0) {
                         await this.tahakkukService.tahakkukKapat(tahakkuk);
                     }
@@ -370,14 +366,14 @@ export class OdemeIslemleriService {
     }
 
     async tahsilatiOnayla(tahsilatId: string, hesapId: string, hesapHareketiOlustur = true) {
-        let tahsilat = await this.tahsilatService.findById(tahsilatId);
+        const tahsilat = await this.tahsilatService.findById(tahsilatId);
         tahsilat.durumu = TahsilatDurumu.Onaylandi;
         await this.tahsilatService.update(tahsilat.id, tahsilat);
         if (hesapHareketiOlustur) {
-            let hesapHareketi = await HesapHareketi.olustur(tahsilat.odemeTarihi, tahsilat.tutar, hesapId, tahsilat.id);
+            await HesapHareketi.olustur(tahsilat.odemeTarihi, tahsilat.tutar, hesapId, tahsilat.id);
         }
-        let uniqueTahakkukIds = [...new Set(tahsilat.tahsilatKalems.map(p => p.tahakkukId))];
-        let tahakkuks = await this.tahakkukService.findByIds(uniqueTahakkukIds);
+        const uniqueTahakkukIds = [...new Set(tahsilat.tahsilatKalems.map(p => p.tahakkukId))];
+        const tahakkuks = await this.tahakkukService.findByIds(uniqueTahakkukIds);
         for (const tahakkuk of tahakkuks) {
             await this.tahakkukService.tahakkukKapat(tahakkuk);
         }
@@ -387,7 +383,7 @@ export class OdemeIslemleriService {
         return this.tahsilatOlustur({ tahakkuks: tahakkuklarDto, odemeYontemi: OdemeYontemi.KrediKarti, odemeTarihi: new Date(), tutar: 0, sanalPos })
     }
     async sanalPosLogEkle(tahsilatId: string, log: string, durum: boolean): Promise<TahsilatSanalPosLog> {
-        let entity = new TahsilatSanalPosLog();
+        const entity = new TahsilatSanalPosLog();
         entity.mesaj = log;
         entity.durum = durum;
         entity.tahsilatId = tahsilatId;
@@ -397,10 +393,10 @@ export class OdemeIslemleriService {
     // @Cron(CronExpression.EVERY_10_SECONDS)
     @Cron('0 30 16 19 * *')
     async borclularaMesajAt() {
-        let today = new Date();
-        let ikiAyOncesi = new Date();
+        const today = new Date();
+        const ikiAyOncesi = new Date();
         ikiAyOncesi.setMonth(ikiAyOncesi.getMonth() - 2);
-        let borclular = await Tahakkuk.find({
+        const borclular = await Tahakkuk.find({
             join: {
                 alias: 'th',
                 innerJoinAndSelect: {
@@ -418,9 +414,9 @@ export class OdemeIslemleriService {
                     .andWhere('blok.kod in (\'B208\',\'AK10\',\'AK11\',\'CK02\',\'Y101\')')
             }
         });
-        let kisiler = [...new Set(borclular.map(p => p.meskenKisiId))];
+        const kisiler = [...new Set(borclular.map(p => p.meskenKisiId))];
         for (const meskenKisiId of kisiler) {
-            let meskenKisi = await MeskenKisi.findOne({
+            const meskenKisi = await MeskenKisi.findOne({
                 join: {
                     alias: 'meskenKisi',
                     innerJoinAndSelect: {
@@ -432,36 +428,39 @@ export class OdemeIslemleriService {
                     id: meskenKisiId
                 }
             });
-            let kisininBorclari = await this.tahakkukService.getOdenmemisAidatlar((meskenKisi).kisiId);
-            const { ad, soyad, cepTelefon, sifre } = meskenKisi.kisi;
+            const kisininBorclari = await this.tahakkukService.getOdenmemisAidatlar((meskenKisi).kisiId);
+            const { ad, soyad, cepTelefon } = meskenKisi.kisi;
             const { kod } = meskenKisi.mesken;
             if (cepTelefon.length === 10) {
-                let tahsilat = await this.tahsilatOlustur({ odemeTarihi: new Date(), odemeYontemi: OdemeYontemi.HavaleEFT, tutar: 0, tahakkuks: kisininBorclari, sanalPos: null })
-                let mesaj = `SAYIN ${ad} ${soyad} (${kod}), ${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()} TARİHİ İTİBARİ İLE ${(tahsilat).tahsilat.tutar.toFixed(2)} TL BORCUNUZ BULUNMAKTADIR. https://cigdemadasi.turkuazvadisi.com ADRESİNDEN ÖDEME YAPABİLİRSİNİZ. \n TURKUAZ VADİSİ ÇİĞDEM ADASI.`
-                let sonuc = await this.smsService.send('90' + cepTelefon, mesaj).toPromise();
+                const tahsilat = await this.tahsilatOlustur({ odemeTarihi: new Date(), odemeYontemi: OdemeYontemi.HavaleEFT, tutar: 0, tahakkuks: kisininBorclari, sanalPos: null })
+                const mesaj = `SAYIN ${ad} ${soyad} (${kod}), ${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()} TARİHİ İTİBARİ İLE ${(tahsilat).tahsilat.tutar.toFixed(2)} TL BORCUNUZ BULUNMAKTADIR. https://cigdemadasi.turkuazvadisi.com ADRESİNDEN ÖDEME YAPABİLİRSİNİZ. \n TURKUAZ VADİSİ ÇİĞDEM ADASI.`
+                await this.smsService.send('90' + cepTelefon, mesaj).toPromise();
             }
         }
     }
     @Cron(CronExpression.EVERY_HOUR)
     async bekleyenTahsilatlariSil() {
-        let today = new Date();
+        const today = new Date();
         today.setHours(today.getHours() - 1);
-        let tahsilatlar = await Tahsilat.find({
+        const tahsilatlar = await Tahsilat.find({
             where: {
                 durumu: TahsilatDurumu.Bekliyor,
                 olusturmaTarihi: LessThan(today)
             }
         });
-        await TahsilatKalem.delete({
-            tahsilatId: In(tahsilatlar.map(m => m.id))
-        });
-        await TahsilatSanalPosLog.delete({
-            tahsilatId: In(tahsilatlar.map(m => m.id)),
-            aktarildiMi: false
-        });
-        await Tahsilat.delete({
-            durumu: TahsilatDurumu.Bekliyor,
-            olusturmaTarihi: LessThan(today),
-        });
+        if (tahsilatlar.length) {
+            await TahsilatKalem.delete({
+                tahsilatId: In(tahsilatlar.map(m => m.id))
+            });
+            await TahsilatSanalPosLog.delete({
+                tahsilatId: In(tahsilatlar.map(m => m.id)),
+                aktarildiMi: false
+            });
+            await Tahsilat.delete({
+                durumu: TahsilatDurumu.Bekliyor,
+                olusturmaTarihi: LessThan(today),
+            });
+        }
+
     }
 }

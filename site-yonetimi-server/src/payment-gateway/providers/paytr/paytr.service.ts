@@ -140,10 +140,8 @@ export class PaytrService {
             }
         });
 
-        let trans_ids: any = body.trans_ids;
-        this.logger.debug(body);
+        let trans_ids: string[] = JSON.parse(body.trans_ids);
         let hash = body.hash;
-        trans_ids = trans_ids.split('\\');
         this.logger.debug(trans_ids);
         let concatStr: string = `${trans_ids.join('')}${sanalPos.ayarlarParsed.merchant_salt}`;
         let sha = CryptoJS.HmacSHA256(concatStr, sanalPos.ayarlarParsed.merchant_key);

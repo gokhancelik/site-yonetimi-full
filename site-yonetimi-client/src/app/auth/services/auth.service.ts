@@ -2,7 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { isPlatformBrowser } from '@angular/common';
-
+import * as jwt_decode from 'jwt-decode';
 
 export interface Token {
   username: string,
@@ -43,7 +43,7 @@ export class AuthService {
     if (this.isBrowser) {
       let token = this.getToken();
       if (token) {
-        let user = <Token>JSON.parse(this.decodeToken(token.split('.')[1]));
+        let user = <Token>jwt_decode(token);
         if (user.exp * 1000 < new Date().getTime()) {
           this.logout();
           return null;

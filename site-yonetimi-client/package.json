@@ -30,6 +30,7 @@
     "devextreme": "^20.1.6",
     "devextreme-angular": "^20.1.6",
     "devextreme-schematics": "^1.2.2",
+    "jwt-decode": "^2.2.0",
     "rxjs": "~6.6.0",
     "swagger-angular-generator": "^4.2.2",
     "tslib": "^2.0.0",
