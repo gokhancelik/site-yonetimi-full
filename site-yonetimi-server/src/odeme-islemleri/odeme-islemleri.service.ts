@@ -42,7 +42,7 @@ export class OdemeIslemleriService {
     async odemeleriDagit() {
         const sanalPos = await SanalPos.findOne({ where: { aktifMi: true } });
         const butunOdemeler = await OdemeAktarimi.createQueryBuilder()
-            .where('odenenTutar > islenenTutar and odenenTutar > 0 and bagimsizBolumKod is not null')
+            .where('ROUND(odenenTutar,3) > ROUND(islenenTutar,3) and odenenTutar > 0 and bagimsizBolumKod is not null')
             .orderBy('odemeTarihi', 'ASC')
             .getMany();
         const uniqueBagimsizBolumKods = [...new Set(butunOdemeler.map(p => p.bagimsizBolumKod))];
@@ -67,12 +67,10 @@ export class OdemeIslemleriService {
             const tahakkuklar = await this.tahakkukService.getOdenmemisAidatlar(meskenKisi.kisiId);
             const odemeYontemi = this.getOdemeYontemiFromOdeme(odeme);
             const hesapTanim = await this.hesapTanimiService.findByAktarimId(odeme.bankaKodu);
-            const odenenTutar = odeme.odenenTutar;
-
             if (tahakkuklar.length) {
                 const tahsilat = await this.tahsilatOlustur({
                     tahakkuks: tahakkuklar,
-                    tutar: odenenTutar,
+                    tutar: odeme.kalanTutar,
                     odemeTarihi: odeme.odemeTarihi,
                     odemeYontemi: odemeYontemi,
                     sanalPos: sanalPos
@@ -80,14 +78,14 @@ export class OdemeIslemleriService {
                 tahsilat.hesapId = hesapTanim.id;
                 await this.tahsilatKaydet(tahsilat, TahsilatDurumu.Onaylandi);
             } else {
-                const tahsilat = await this.tahakkuksuzTahsilatOlustur(meskenKisi.id, odeme.odemeTarihi, odemeYontemi, odenenTutar, sanalPos, odeme.odemeTipi);
+                const tahsilat = await this.tahakkuksuzTahsilatOlustur(meskenKisi.id, odeme.odemeTarihi, odemeYontemi, odeme.kalanTutar, sanalPos, odeme.odemeTipi);
                 tahsilat.save();
                 // let hesapHareketi = await HesapHareketi.olustur(tahsilat.odemeTarihi, tahsilat.tutar, hesapTanim.id, tahsilat.id);
                 // let oncekiCuzdan = await this.kisiCuzdanService.getCuzdanByMeskenKisiId(meskenKisi.id);
                 // let toplamTutar = oncekiCuzdan ? oncekiCuzdan.tutar + tahsilat.kullanilabilirMiktar : tahsilat.kullanilabilirMiktar;
                 await this.kisiCuzdanService.createByMeskenKisiId(tahsilat.kullanilabilirMiktar, tahsilat.id, meskenKisi.id);
             }
-            odeme.islenenTutar = odeme.odenenTutar;
+            odeme.islenenTutar += odeme.kalanTutar;
             odeme.save();
         }
     }
