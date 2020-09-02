@@ -42,7 +42,7 @@ export class OdemeIslemleriService {
     async odemeleriDagit() {
         const sanalPos = await SanalPos.findOne({ where: { aktifMi: true } });
         const butunOdemeler = await OdemeAktarimi.createQueryBuilder()
-            .where('ROUND(odenenTutar,3) > ROUND(islenenTutar,3) and odenenTutar > 0 and bagimsizBolumKod is not null')
+            .where('ROUND(odenenTutar,3) > ROUND(islenenTutar,3) and odenenTutar > 0 and bagimsizBolumKod is not null and odemeSekli <> \'İade\'')
             .orderBy('odemeTarihi', 'ASC')
             .getMany();
         const uniqueBagimsizBolumKods = [...new Set(butunOdemeler.map(p => p.bagimsizBolumKod))];
