@@ -142,9 +142,8 @@ export class OdemeIslemleriService {
     }
     async tahsilatOlustur(dto: TahsilatOlusturDto): Promise<TahsilatOlusturSonucuDto> {
         await this.cuzdanVarsaOdemeYap(dto.tahakkuks[0].meskenKisiId);
-
         const sonuc = new TahsilatOlusturSonucuDto();
-        const tahakkuklar = await this.tahakkukService.findByIds(dto.tahakkuks.map(p => p.id));
+        const tahakkuklar = (await this.tahakkukService.findByIds(dto.tahakkuks.map(p => p.id))).filter(p => p.durumu === AidatDurumu.Odenmedi);
         const tutar = dto.tutar;
         const odemeTarihi = new Date(dto.odemeTarihi);
         const odemeYontemi = dto.odemeYontemi;
